@@ -12,7 +12,7 @@ function love.load()
     player = {}
     player.x = 400
     player.y = 300
-    player.speed = 2.5
+    player.speed = 125
     player.scale = 2
     player.spriteSheet = love.graphics.newImage('assets/MC/greenDude_movement.png')
     player.grid = anim8.newGrid(16, 16, player.spriteSheet:getWidth(), player.spriteSheet:getHeight())
@@ -31,38 +31,39 @@ function love.load()
     player.anim = player.animations.down
     isMoving = false
 
-    cam = camera.new(player.x + 8, player.y + 8, 2.25)
+    cameraZoom = 2.25
+    cam = camera.new(player.x + 8, player.y + 8, cameraZoom)
     cam.smoother = camera.smooth.damped(5)
 end
  
 function love.update(dt)
     if love.keyboard.isDown("w") then
         if love.keyboard.isDown("a") and not love.keyboard.isDown("d") then
-            moveUpLeft()
+            moveUpLeft(dt)
             isMoving = true
         elseif love.keyboard.isDown("d") and not love.keyboard.isDown("a") then
-            moveUpRight()
+            moveUpRight(dt)
             isMoving = true
         else
-            moveUp()
+            moveUp(dt)
             isMoving = true
         end
     elseif love.keyboard.isDown("s") then
         if love.keyboard.isDown("a") and not love.keyboard.isDown("d") then
-            moveDownLeft()
+            moveDownLeft(dt)
             isMoving = true
         elseif love.keyboard.isDown("d") and not love.keyboard.isDown("a") then
-            moveDownRight()
+            moveDownRight(dt)
             isMoving = true
         else
-            moveDown()
+            moveDown(dt)
             isMoving = true
         end
     elseif love.keyboard.isDown("d") then
-        moveRight()
+        moveRight(dt)
         isMoving = true
     elseif love.keyboard.isDown("a") then
-        moveLeft()
+        moveLeft(dt)
         isMoving = true
     else
         isMoving = false
@@ -74,6 +75,17 @@ function love.update(dt)
 
     player.anim:update(dt)
     cam:lockPosition(player.x, player.y, camera.smoother)
+
+    local clampX = (love.graphics.getWidth() / 2) / cameraZoom
+    local clampY = (love.graphics.getHeight() / 2) / cameraZoom
+
+    if cam.x < clampX then
+        cam.x = clampX
+    end
+
+    if cam.y < clampY then
+        cam.y = clampY
+    end
 end
 
 function love.draw()
@@ -88,63 +100,63 @@ function love.draw()
         player.anim:draw(player.spriteSheet, player.x, player.y, nil, player.scale, player.scale, 8, 8)
     cam:detach()
     
-    love.graphics.setBlendMode("alpha")
-    love.graphics.origin()
-    love.graphics.setColor(0, 0, 0, 1)
-    love.graphics.print("Hello", 10, 10)
-    love.graphics.setColor(1, 1, 1, 1)
+    -- love.graphics.setBlendMode("alpha")
+    -- love.graphics.origin()
+    -- love.graphics.setColor(0, 0, 0, 1)
+    -- love.graphics.print("Hello", 10, 10)
+    -- love.graphics.setColor(1, 1, 1, 1)
 end
 
 diagonalOffset = math.sqrt(2) / 2
 
-function moveDown()
-    player.y = player.y + player.speed
+function moveDown(dt)
+    player.y = player.y + (player.speed * dt)
     player.anim = player.animations.down
     changeMovementStartFrame(player.anim)
 end
 
-function moveDownLeft()
-    player.y = player.y + (player.speed * diagonalOffset)
-    player.x = player.x - (player.speed * diagonalOffset)
+function moveDownLeft(dt)
+    player.y = player.y + (player.speed * diagonalOffset * dt)
+    player.x = player.x - (player.speed * diagonalOffset * dt)
     player.anim = player.animations.downLeft
     changeMovementStartFrame(player.anim)
 end
 
-function moveLeft()
-    player.x = player.x - player.speed
+function moveLeft(dt)
+    player.x = player.x - (player.speed * dt)
     player.anim = player.animations.left
     changeMovementStartFrame(player.anim)
 end
 
-function moveUpLeft()
-    player.y = player.y - (player.speed * diagonalOffset)
-    player.x = player.x - (player.speed * diagonalOffset)
+function moveUpLeft(dt)
+    player.y = player.y - (player.speed * diagonalOffset * dt)
+    player.x = player.x - (player.speed * diagonalOffset * dt)
     player.anim = player.animations.upLeft
     changeMovementStartFrame(player.anim)
 end
 
-function moveUp()
-    player.y = player.y - player.speed
+function moveUp(dt)
+    player.y = player.y - (player.speed * dt)
     player.anim = player.animations.up
     changeMovementStartFrame(player.anim)
 end
 
-function moveUpRight()
-    player.y = player.y - (player.speed * diagonalOffset)
-    player.x = player.x + (player.speed * diagonalOffset)
+function moveUpRight(dt)
+    player.y = player.y - (player.speed * diagonalOffset * dt)
+    player.x = player.x + (player.speed * diagonalOffset * dt)
     player.anim = player.animations.upRight
     changeMovementStartFrame(player.anim)
 end
 
-function moveRight()
-    player.x = player.x + player.speed
+function moveRight(dt)
+    player.x = player.x + (player.speed * dt)
     player.anim = player.animations.right
     changeMovementStartFrame(player.anim)
 end
 
-function moveDownRight()
-    player.y = player.y + (player.speed * diagonalOffset)
-    player.x = player.x + (player.speed * diagonalOffset)
+function moveDownRight(dt)
+    player.y = player.y + (player.speed * diagonalOffset * dt)
+    player.x = player.x + (player.speed * diagonalOffset * dt)
     player.anim = player.animations.downRight
     changeMovementStartFrame(player.anim)
 end
