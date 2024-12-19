@@ -76,15 +76,26 @@ function love.update(dt)
     player.anim:update(dt)
     cam:lockPosition(player.x, player.y, camera.smoother)
 
-    local clampX = (love.graphics.getWidth() / 2) / cameraZoom
-    local clampY = (love.graphics.getHeight() / 2) / cameraZoom
+    --- left/top clamps
+    local minX = (love.graphics.getWidth() / 2) / cameraZoom
+    local minY = (love.graphics.getHeight() / 2) / cameraZoom
 
-    if cam.x < clampX then
-        cam.x = clampX
+    if cam.x < minX then
+        cam.x = minX
+    end
+    if cam.y < minY then
+        cam.y = minY
     end
 
-    if cam.y < clampY then
-        cam.y = clampY
+    --- right/bottom clamps
+    local mapW = (gameMap.width * gameMap.tilewidth)
+    local mapH = (gameMap.height * gameMap.tilewidth)
+
+    if cam.x > (mapW - minX) then
+        cam.x = (mapW - minX)
+    end
+    if cam.y > (mapH - minY) then
+        cam.y = (mapH - minY)
     end
 end
 
