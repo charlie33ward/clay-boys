@@ -1,18 +1,20 @@
+local CameraManager = require 'cameraManager'
+
 function love.load()
     --- LIBRARIES
-    camera = require 'libraries.camera'
-
     anim8 = require 'libraries.anim8'
-    love.graphics.setDefaultFilter('nearest', 'nearest')
+    bf = require 'libraries.breezefield'
 
     sti = require 'libraries.sti'
     gameMap = sti('maps/test-map.lua')
+
+    love.graphics.setDefaultFilter('nearest', 'nearest')
     
     --- PLAYER SPRITE CONFIG
     player = {}
     player.x = 400
     player.y = 300
-    player.speed = 125
+    player.speed = 150
     player.scale = 2
     player.spriteSheet = love.graphics.newImage('assets/MC/greenDude_movement.png')
     player.grid = anim8.newGrid(16, 16, player.spriteSheet:getWidth(), player.spriteSheet:getHeight())
@@ -27,80 +29,75 @@ function love.load()
     player.animations.right = anim8.newAnimation(player.grid('1-4', 7), 0.2)
     player.animations.downRight = anim8.newAnimation(player.grid('1-4', 8), 0.2)
 
-
     player.anim = player.animations.down
     isMoving = false
 
-    cameraZoom = 2.25
-    cam = camera.new(player.x + 8, player.y + 8, cameraZoom)
-    cam.smoother = camera.smooth.damped(5)
+    --- PHYSICS/COLLISION
+    world = bf.newWorld()
+    player.collider = world:newCollider("rectangle", {350, 100, 20, 32})
+    player.collider:setFixedRotation(true)
+
+    wall = world:newCollider("rectangle", {500, 300, 100, 10})
+    wall:setType("static")
+
+    
+    cam = CameraManager:new()
+    cam:load(player.x + 8, player.y + 8)
 end
- 
+
 function love.update(dt)
+    vx = 0
+    vy = 0
+
     if love.keyboard.isDown("w") then
         if love.keyboard.isDown("a") and not love.keyboard.isDown("d") then
-            moveUpLeft(dt)
+            moveUpLeft()
             isMoving = true
         elseif love.keyboard.isDown("d") and not love.keyboard.isDown("a") then
-            moveUpRight(dt)
+            moveUpRight()
             isMoving = true
         else
-            moveUp(dt)
+            moveUp()
             isMoving = true
         end
     elseif love.keyboard.isDown("s") then
         if love.keyboard.isDown("a") and not love.keyboard.isDown("d") then
-            moveDownLeft(dt)
+            moveDownLeft()
             isMoving = true
         elseif love.keyboard.isDown("d") and not love.keyboard.isDown("a") then
-            moveDownRight(dt)
+            moveDownRight()
             isMoving = true
         else
-            moveDown(dt)
+            moveDown()
             isMoving = true
         end
     elseif love.keyboard.isDown("d") then
-        moveRight(dt)
+        moveRight()
         isMoving = true
     elseif love.keyboard.isDown("a") then
-        moveLeft(dt)
+        moveLeft()
         isMoving = true
     else
         isMoving = false
     end
 
+    player.collider:setLinearVelocity(vx, vy)
+
     if isMoving == false then
         player.anim:gotoFrame(1)
     end
 
+    world:update(dt)
+    player.x = player.collider.getX()
+    player.y = player.collider.getY()
     player.anim:update(dt)
-    cam:lockPosition(player.x, player.y, camera.smoother)
 
-    --- left/top clamps
-    local minX = (love.graphics.getWidth() / 2) / cameraZoom
-    local minY = (love.graphics.getHeight() / 2) / cameraZoom
+    cam:update(dt, player.x, player.y, gameMap.width, gameMap.height, gameMap.tilewidth)
 
-    if cam.x < minX then
-        cam.x = minX
-    end
-    if cam.y < minY then
-        cam.y = minY
-    end
-
-    --- right/bottom clamps
-    local mapW = (gameMap.width * gameMap.tilewidth)
-    local mapH = (gameMap.height * gameMap.tilewidth)
-
-    if cam.x > (mapW - minX) then
-        cam.x = (mapW - minX)
-    end
-    if cam.y > (mapH - minY) then
-        cam.y = (mapH - minY)
-    end
 end
 
 function love.draw()
-    cam:attach()
+    cam:getCam():attach()
         gameMap:drawLayer(gameMap.layers["ground"])
         gameMap:drawLayer(gameMap.layers["ground-details"])
         gameMap:drawLayer(gameMap.layers["paths"])
@@ -109,65 +106,61 @@ function love.draw()
         gameMap:drawLayer(gameMap.layers["decorations-2"])
 
         player.anim:draw(player.spriteSheet, player.x, player.y, nil, player.scale, player.scale, 8, 8)
-    cam:detach()
-    
-    -- love.graphics.setBlendMode("alpha")
-    -- love.graphics.origin()
-    -- love.graphics.setColor(0, 0, 0, 1)
-    -- love.graphics.print("Hello", 10, 10)
-    -- love.graphics.setColor(1, 1, 1, 1)
+        world:draw()
+    cam:getCam():detach()
+
 end
 
 diagonalOffset = math.sqrt(2) / 2
 
-function moveDown(dt)
-    player.y = player.y + (player.speed * dt)
+function moveDown()
+    vy = player.speed
     player.anim = player.animations.down
     changeMovementStartFrame(player.anim)
 end
 
-function moveDownLeft(dt)
-    player.y = player.y + (player.speed * diagonalOffset * dt)
-    player.x = player.x - (player.speed * diagonalOffset * dt)
+function moveDownLeft()
+    vx = player.speed * -1 * diagonalOffset
+    vy = player.speed * diagonalOffset
     player.anim = player.animations.downLeft
     changeMovementStartFrame(player.anim)
 end
 
-function moveLeft(dt)
-    player.x = player.x - (player.speed * dt)
+function moveLeft()
+    vx = player.speed * -1
     player.anim = player.animations.left
     changeMovementStartFrame(player.anim)
 end
 
-function moveUpLeft(dt)
-    player.y = player.y - (player.speed * diagonalOffset * dt)
-    player.x = player.x - (player.speed * diagonalOffset * dt)
+function moveUpLeft()
+    vx = player.speed * -1 * diagonalOffset
+    vy = player.speed * -1 * diagonalOffset
     player.anim = player.animations.upLeft
     changeMovementStartFrame(player.anim)
 end
 
-function moveUp(dt)
-    player.y = player.y - (player.speed * dt)
+function moveUp()
+    vy = player.speed * -1
     player.anim = player.animations.up
     changeMovementStartFrame(player.anim)
 end
 
-function moveUpRight(dt)
-    player.y = player.y - (player.speed * diagonalOffset * dt)
-    player.x = player.x + (player.speed * diagonalOffset * dt)
+function moveUpRight()
+    vx = player.speed * diagonalOffset 
+    vy = player.speed * -1 * diagonalOffset
     player.anim = player.animations.upRight
     changeMovementStartFrame(player.anim)
 end
 
-function moveRight(dt)
-    player.x = player.x + (player.speed * dt)
+function moveRight()
+    vx = player.speed
     player.anim = player.animations.right
     changeMovementStartFrame(player.anim)
 end
 
-function moveDownRight(dt)
-    player.y = player.y + (player.speed * diagonalOffset * dt)
-    player.x = player.x + (player.speed * diagonalOffset * dt)
+function moveDownRight()
+    vx = player.speed * diagonalOffset 
+    vy = player.speed * diagonalOffset
     player.anim = player.animations.downRight
     changeMovementStartFrame(player.anim)
 end
