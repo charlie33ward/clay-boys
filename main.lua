@@ -1,8 +1,8 @@
 local CameraManager = require 'cameraManager'
+local player = require 'player'
 
 function love.load()
     --- LIBRARIES
-    anim8 = require 'libraries.anim8'
     bf = require 'libraries.breezefield'
 
     sti = require 'libraries.sti'
@@ -10,36 +10,20 @@ function love.load()
 
     love.graphics.setDefaultFilter('nearest', 'nearest')
     
-    --- PLAYER SPRITE CONFIG
-    player = {}
-    player.x = 400
-    player.y = 300
-    player.speed = 150
-    player.scale = 2
-    player.spriteSheet = love.graphics.newImage('assets/MC/greenDude_movement.png')
-    player.grid = anim8.newGrid(16, 16, player.spriteSheet:getWidth(), player.spriteSheet:getHeight())
-
-    player.animations = {}
-    player.animations.down = anim8.newAnimation(player.grid('1-4', 1), 0.2)
-    player.animations.downLeft = anim8.newAnimation(player.grid('1-4', 2), 0.2)
-    player.animations.left = anim8.newAnimation(player.grid('1-4', 3), 0.2)
-    player.animations.upLeft = anim8.newAnimation(player.grid('1-4', 4), 0.2)
-    player.animations.up = anim8.newAnimation(player.grid('1-4', 5), 0.2)
-    player.animations.upRight = anim8.newAnimation(player.grid('1-4', 6), 0.2)
-    player.animations.right = anim8.newAnimation(player.grid('1-4', 7), 0.2)
-    player.animations.downRight = anim8.newAnimation(player.grid('1-4', 8), 0.2)
-
-    player.anim = player.animations.down
-    isMoving = false
 
     --- PHYSICS/COLLISION
     world = bf.newWorld()
     player.collider = world:newCollider("rectangle", {350, 100, 20, 32})
     player.collider:setFixedRotation(true)
 
-    wall = world:newCollider("rectangle", {500, 300, 100, 10})
-    wall:setType("static")
-
+    walls = {}
+    if gameMap.layers["walls"] then
+        for i, obj in pairs(gameMap.layers["walls"].objects) do
+            local wall = world:newRectangleCollider(obj.x, obj.y, obj.width, obj.height)
+            wall:setType('static')
+            table.insert(walls, wall)
+        end
+    end
     
     cam = CameraManager:new()
     cam:load(player.x + 8, player.y + 8)

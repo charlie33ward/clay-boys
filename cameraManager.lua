@@ -38,7 +38,6 @@ function cameraManager:update(dt, x, y, width, height, tileWidth)
         self.cam.y = (mapH - minY)
     end
 
-    
 end
 
 function cameraManager:getCam()
