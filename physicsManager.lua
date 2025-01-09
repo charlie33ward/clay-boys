@@ -1,8 +1,10 @@
-bf = require 'libraries.breezefield'
+local bf = require 'libraries.breezefield'
 
 local physicsManager = {
     wallColliders = {},
     world = nil,
+    clones = {},
+    balls = {}
 }
 
 function physicsManager:new()
@@ -36,6 +38,15 @@ function physicsManager:createWall(x, y, width, height)
     local wall = self.world:newCollider('rectangle', args)
     wall:setType('static')
     table.insert(self.wallColliders, wall)
+end
+
+function physicsManager:throwBallCollider(x, y)
+    
+    return 
+end
+
+function physicsManager:destroyBallCollider()
+
 end
 
 function physicsManager:getWalls()

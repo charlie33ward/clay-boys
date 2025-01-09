@@ -1,4 +1,4 @@
-anim8 = require 'libraries.anim8'
+local anim8 = require 'libraries.anim8'
 
 --- load: player table, spritesheet animations, collider
 
@@ -11,7 +11,9 @@ local player = {
     vy = 0,
     isMoving = false,
     maxClones = 1,
-    currentClones = 0
+    currentClones = 0,
+    balls = {},
+    dir = ''
 }
 
 function player:new(physicsManager)
@@ -41,9 +43,10 @@ function player:load()
     self.animations.downRight = anim8.newAnimation(self.grid('1-4', 8), 0.2)
 
     self.anim = self.animations.down
+    self.dir = 'd'
     self.isMoving = false
 
-    -- self:loadBall()
+    self:loadBall()
 
     self.collider = self.physicsManager:createPlayerCollider()
 end
@@ -56,60 +59,82 @@ function player:loadBall()
 end
 
 function player:update(dt)
+    self.wasMoving = self.isMoving
     self.vx = 0
     self.vy = 0
+    self.isMoving = false
 
     if love.keyboard.isDown("w") then
         if love.keyboard.isDown("a") and not love.keyboard.isDown("d") then
             self:moveUpLeft()
             self.isMoving = true
+            self.dir = 'ul'
         elseif love.keyboard.isDown("d") and not love.keyboard.isDown("a") then
             self:moveUpRight()
             self.isMoving = true
+            self.dir = 'ur'
         else
             self:moveUp()
             self.isMoving = true
+            self.dir = 'u'
         end
     elseif love.keyboard.isDown("s") then
         if love.keyboard.isDown("a") and not love.keyboard.isDown("d") then
             self:moveDownLeft()
             self.isMoving = true
+            self.dir = 'dl'
         elseif love.keyboard.isDown("d") and not love.keyboard.isDown("a") then
             self:moveDownRight()
             self.isMoving = true
+            self.dir = 'dr'
         else
             self:moveDown()
             self.isMoving = true
+            self.dir = 'd'
         end
     elseif love.keyboard.isDown("d") then
         self:moveRight()
         self.isMoving = true
+        self.dir = 'r'
     elseif love.keyboard.isDown("a") then
         self:moveLeft()
         self.isMoving = true
+        self.dir = 'l'
     else
         self.isMoving = false
     end
 
     self.x = self.collider.getX()
     self.y = self.collider.getY()
-    self.anim:update(dt)
+
+    if self.isMoving then
+        self.anim:update(dt)
+    elseif self.wasMoving then  -- If we just stopped moving
+        self.anim:gotoFrame(1)  -- Go to idle frame
+    end
     
     self.physicsManager:updatePlayerVelocity(self.vx, self.vy)
 end
 
 function player:draw()
-    self.anim:draw(self.spriteSheet, self.x, self.y, nil, self.scale, self.scale, 8, 8)
+    self.anim:draw(self.movementSheet, self.x, self.y, nil, self.scale, self.scale, 8, 8)
 end
 
 function player:getPlayer()
     return self.player
 end
 
-function player:throw()
-    if self.currentClones < self.MaxClones then
+function player:throwBall()
+    if self.currentClones < self.maxClones then
         
+
+
+
     end
+end
+
+function player:destroyBall()
+
 end
 
 function player:combine(clone)
@@ -172,7 +197,7 @@ end
 
 --- Because walking animation starts frame 2
 function player:changeMovementStartFrame(animation)
-    if (isMoving == false) then
+    if not self.wasMoving then
         animation:gotoFrame(2)
     end 
 end
