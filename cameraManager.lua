@@ -2,7 +2,9 @@ camera = require 'libraries.camera'
 
 local cameraManager = {
     cam = nil,
-    cameraZoom = 2.25
+    cameraZoom = 2.25,
+    yOffset = 0,
+    xOffset = 0
 }
 
 function cameraManager:new() 
@@ -12,25 +14,38 @@ function cameraManager:new()
     return manager
 end
 
+function cameraManager:getCameraZoom()
+    return self.cameraZoom
+end
+
 function cameraManager:load(x, y)
     self.cam = camera.new(x, y, self.cameraZoom)
     self.cam.smoother = camera.smooth.damped(5)
+
+    love.graphics.setDefaultFilter("nearest", "nearest")
 end
 
 function cameraManager:update(dt, x, y, width, height, tileWidth)
-
     self.cam:lockPosition(x, y, self.cam.smoother)
+
+    local xRound = math.floor(self.cam.x * self.cameraZoom + 0.5) / self.cameraZoom
+    local yRound = math.floor(self.cam.y * self.cameraZoom + 0.5) / self.cameraZoom
+    self.xOffset = self.cam.x - xRound
+    self.yOffset = self.cam.y - yRound
+    self.cam.x = xRound
+    self.cam.y = yRound
+
 
     local minX = (love.graphics.getWidth() / 2) / self.cameraZoom
     local minY = (love.graphics.getHeight() / 2) / self.cameraZoom
 
+
+    
+    --- MAP SIZE CLAMPS
     if self.cam.x < minX then self.cam.x = minX end
     if self.cam.y < minY then self.cam.y = minY end
-
-    --- right/bottom clamps
     local mapW = (width * tileWidth)
     local mapH = (height * tileWidth)
-
     if self.cam.x > (mapW - minX) then
         self.cam.x = (mapW - minX)
     end
@@ -38,6 +53,15 @@ function cameraManager:update(dt, x, y, width, height, tileWidth)
         self.cam.y = (mapH - minY)
     end
 
+
+end
+
+function cameraManager:getOffsetX()
+    return self.xOffset
+end
+
+function cameraManager:getOffsetY()
+    return self.yOffset
 end
 
 function cameraManager:getCam()

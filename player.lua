@@ -9,7 +9,9 @@ local player = {
     scale = 2,
     vx = 0,
     vy = 0,
-    isMoving = false
+    isMoving = false,
+    maxClones = 1,
+    currentClones = 0
 }
 
 function player:new(physicsManager)
@@ -22,9 +24,11 @@ end
 
 
 function player:load()
-    self.spriteSheet = love.graphics.newImage('assets/MC/greenDude_movement.png')
+    self.movementSheet = love.graphics.newImage('assets/sprites/redDude_movement.png')
+    self.throwSheet = love.graphics.newImage('assets/sprites/redDude_throwing.png')
 
-    self.grid = anim8.newGrid(16, 16, self.spriteSheet:getWidth(), self.spriteSheet:getHeight())
+
+    self.grid = anim8.newGrid(16, 16, self.movementSheet:getWidth(), self.movementSheet:getHeight())
 
     self.animations = {}
     self.animations.down = anim8.newAnimation(self.grid('1-4', 1), 0.2)
@@ -39,7 +43,16 @@ function player:load()
     self.anim = self.animations.down
     self.isMoving = false
 
+    -- self:loadBall()
+
     self.collider = self.physicsManager:createPlayerCollider()
+end
+
+function player:loadBall()
+    self.ball = {}
+    self.ball.sheet = love.graphics.newImage('assets/sprites/ball-fizzle.png')
+    self.ball.grid = newGrid(8, 8, self.ball.spriteSheet:getWidth(), self.ball.spriteSheet:getHeight())
+    self.ball.anim = anim8.newAnimation(self.ball.grid('1-7'), 0.1, 'pauseAtEnd')
 end
 
 function player:update(dt)
@@ -91,6 +104,16 @@ end
 
 function player:getPlayer()
     return self.player
+end
+
+function player:throw()
+    if self.currentClones < self.MaxClones then
+        
+    end
+end
+
+function player:combine(clone)
+
 end
 
 local diagonalOffset = math.sqrt(2) / 2

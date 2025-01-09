@@ -2,7 +2,7 @@ bf = require 'libraries.breezefield'
 
 local physicsManager = {
     wallColliders = {},
-    world = nil
+    world = nil,
 }
 
 function physicsManager:new()
@@ -31,7 +31,9 @@ function physicsManager:updatePlayerVelocity(vx, vy)
 end
 
 function physicsManager:createWall(x, y, width, height)
-    local wall = self.world:newRectangleCollider(x, y, width, height)
+    local args = {x, y, width, height}
+
+    local wall = self.world:newCollider('rectangle', args)
     wall:setType('static')
     table.insert(self.wallColliders, wall)
 end
