@@ -3,6 +3,10 @@
  <editorsettings>
   <export target="puzzle-test1.lua" format="lua"/>
  </editorsettings>
+ <properties>
+  <property name="height" type="int" value="0"/>
+  <property name="width" type="int" value="0"/>
+ </properties>
  <tileset firstgid="1" name="basic grounds" tilewidth="32" tileheight="32" spacing="2" margin="1" tilecount="504" columns="42">
   <image source="tilesets/puzzle-test/32x32-ground-tilesetSheet-modified.png" width="1428" height="408"/>
  </tileset>

@@ -1,6 +1,7 @@
 local sti = require 'libraries.sti'
 
-local mapManager = {}
+local mapManager = {
+}
 
 function mapManager:new(physicsManager)
     local manager = {}
@@ -19,6 +20,17 @@ function mapManager:load()
             self.physicsManager:createWall(obj.x + (obj.width / 2), obj.y + (obj.height / 2), obj.width, obj.height)
         end
     end
+
+    local width = self.map.width * self.map.tilewidth
+    local height = self.map.height * self.map.tileheight
+    self:createMapBoundaries(width, height)
+end
+
+function mapManager:createMapBoundaries(width, height)
+    self.physicsManager:createWall(width + 1, height / 2, 2, height)
+    self.physicsManager:createWall(-1, height / 2, 2, height)
+    self.physicsManager:createWall(width / 2, -1, width, 2)
+    self.physicsManager:createWall(width / 2, height + 1, width, 2)
 end
 
 function mapManager:getCurrentMap()
