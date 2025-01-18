@@ -4,8 +4,6 @@ local physicsManager = require 'physicsManager'
 local mapManager = require 'mapManager'
 
 function love.load()
-    --- LIBRARIES
-    sti = require 'libraries.sti'
     love.graphics.setDefaultFilter('nearest', 'nearest')
 
     phys = physicsManager:new()
@@ -20,8 +18,6 @@ function love.load()
     cam = CameraManager:new()
     cam:load(player.x + 8, player.y + 8)
 
-
-    
 end
 
 function love.update(dt)
@@ -30,6 +26,8 @@ function love.update(dt)
 
     local currentMap = map:getCurrentMap()
     cam:update(dt, player.x, player.y, currentMap.width, currentMap.height, currentMap.tilewidth)
+
+    map:update(dt)
     
 end
 
@@ -40,6 +38,8 @@ function love.draw()
         player:draw()
 
     cam:getCam():detach()
+
+    player:drawDebug()
 end
 
 function love.keypressed(key, scancode, isrepeat)

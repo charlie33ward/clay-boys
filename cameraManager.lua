@@ -4,7 +4,8 @@ local cameraManager = {
     cam = nil,
     cameraZoom = 2.25,
     yOffset = 0,
-    xOffset = 0
+    xOffset = 0,
+    inPuzzle = false
 }
 
 function cameraManager:new() 
@@ -30,8 +31,6 @@ function cameraManager:update(dt, x, y, width, height, tileWidth)
 
     local xRound = math.floor(self.cam.x * self.cameraZoom + 0.5) / self.cameraZoom
     local yRound = math.floor(self.cam.y * self.cameraZoom + 0.5) / self.cameraZoom
-    self.xOffset = self.cam.x - xRound
-    self.yOffset = self.cam.y - yRound
     self.cam.x = xRound
     self.cam.y = yRound
 

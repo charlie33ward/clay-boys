@@ -3,6 +3,11 @@ local sti = require 'libraries.sti'
 local mapManager = {
 }
 
+local puzzle1 = {
+    blueSwitch = false,
+    greenSwitch = false
+}
+
 function mapManager:new(physicsManager)
     local manager = {}
     setmetatable(manager, self)
@@ -13,7 +18,7 @@ end
 
 function mapManager:load()
     love.graphics.setDefaultFilter('nearest', 'nearest')
-    self.map = sti('maps/puzzle-test1.lua')
+    self.map = sti('maps/test-map.lua')
 
     if self.map.layers["walls"] then
         for i, obj in pairs(self.map.layers["walls"].objects) do
@@ -38,16 +43,17 @@ function mapManager:getCurrentMap()
 end
 
 function mapManager:draw()
+    -- self.map:drawLayer(self.map.layers["space"])
     self.map:drawLayer(self.map.layers["ground"])
-    self.map:drawLayer(self.map.layers["wall-sprites"])
-    self.map:drawLayer(self.map.layers["wall-sprites-2"])
-    self.map:drawLayer(self.map.layers["wall-sprites-3"])
-    self.map:drawLayer(self.map.layers["green-puzzle"])
-    self.map:drawLayer(self.map.layers["blue-puzzle"])
+    self.map:drawLayer(self.map.layers["ground-details"])
+    self.map:drawLayer(self.map.layers["paths"])
+    self.map:drawLayer(self.map.layers["ground-upper"])
+    self.map:drawLayer(self.map.layers["decorations"])
+    self.map:drawLayer(self.map.layers["decorations-2"])
 end
 
 function mapManager:update(dt)
-    
+    self.map:update(dt)
 end
 
 return mapManager
