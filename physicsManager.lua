@@ -2,7 +2,9 @@ local bf = require 'libraries.breezefield'
 
 local physicsManager = {
     wallColliders = {},
-    world = nil
+    world = nil,
+    playerRadius = 10,
+    cloneRadius = 5
 }
 
 function physicsManager:new()
@@ -21,9 +23,15 @@ function physicsManager:update(dt)
 end
 
 function physicsManager:createPlayerCollider(x, y)
-    self.playerCollider = self.world:newCollider("circle", {x, y, 10})
+    self.playerCollider = self.world:newCollider("circle", {x, y, self.playerRadius})
     self.playerCollider:setFixedRotation(true)
     return self.playerCollider
+end
+
+function physicsManager:createCloneCollider(x, y)
+    local cloneCollider = self.world:newCollider("circle", {x, y, self.cloneRadius})
+    cloneCollider:setFixedRotation(true)
+    return cloneCollider
 end
 
 function physicsManager:updatePlayerVelocity(vx, vy)
@@ -31,9 +39,7 @@ function physicsManager:updatePlayerVelocity(vx, vy)
 end
 
 function physicsManager:createWall(x, y, width, height)
-    local args = {x, y, width, height}
-
-    local wall = self.world:newCollider('rectangle', args)
+    local wall = self.world:newCollider('rectangle', {x, y, width, height})
     wall:setType('static')
     table.insert(self.wallColliders, wall)
 end

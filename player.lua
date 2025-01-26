@@ -1,5 +1,6 @@
 local anim8 = require 'libraries.anim8'
 local timer = require 'libraries.timer'
+local clone = require 'cloneManager'
 
 local diagonalOffset = math.sqrt(2) / 2
 local throwVectors = {
@@ -51,6 +52,7 @@ function player:new(physicsManager, mapManager)
     self.__index = self
     self.physicsManager = physicsManager
     self.mapManager = mapManager
+    self.cloneManager = clone:new(physicsManager)
     return manager
 end
 
@@ -98,6 +100,9 @@ function player:load()
     end
 
     self.collider = self.physicsManager:createPlayerCollider(self.spawnPoint.x, self.spawnPoint.y)
+
+    self.cloneManager:setValidStates(validStates)
+    self.cloneManager:load()
 end
 
 function player:loadBall()
@@ -119,39 +124,7 @@ function player:update(dt)
         self.speed = gameParams.walkSpeed
     end
 
-    if love.keyboard.isDown("w") then
-        if love.keyboard.isDown("a") and not love.keyboard.isDown("d") then
-            self:moveUpLeft()
-            self.dir = 'ul'
-        elseif love.keyboard.isDown("d") and not love.keyboard.isDown("a") then
-            self:moveUpRight()
-            self.dir = 'ur'
-        else
-            self:moveUp()
-            self.dir = 'u'
-        end
-    elseif love.keyboard.isDown("s") then
-        if love.keyboard.isDown("a") and not love.keyboard.isDown("d") then
-            self:moveDownLeft()
-            self.dir = 'dl'
-        elseif love.keyboard.isDown("d") and not love.keyboard.isDown("a") then
-            self:moveDownRight()
-            self.dir = 'dr'
-        else
-            self:moveDown()
-            self.dir = 'd'
-        end
-    elseif love.keyboard.isDown("d") then
-        self:moveRight()
-        self.dir = 'r'
-    elseif love.keyboard.isDown("a") then
-        self:moveLeft()
-        self.dir = 'l'
-    else
-        if self.state ~= validStates.THROWING then
-            self.state = validStates.IDLE
-        end
-    end
+    self:handleMovementInput()
 
     self.x = self.collider.getX()
     self.y = self.collider.getY()
@@ -164,7 +137,6 @@ function player:update(dt)
         elseif self.state == validStates.THROWING then
             self.anim:gotoFrame(1)
         end
-
     end
 
     self.anim:update(dt)
@@ -179,6 +151,7 @@ function player:update(dt)
     end
     
     self.physicsManager:updatePlayerVelocity(self.vx, self.vy)
+    self.cloneManager:update(dt, self.vx, self.vy, self.dir, self.state)
 end
 
 function player:draw()
@@ -196,6 +169,7 @@ function player:draw()
         end
     end
 
+    self.cloneManager:draw()
 end
 
 function player:getCurrentSheet()
@@ -293,7 +267,12 @@ function player:destroyBall(ball)
         ball.collider:destroy()
         ball.collider = nil
 
-        timer.after(.5, function() table.remove(self.balls, 1) end)
+
+        timer.after(0, function()
+            self.cloneManager:newClone(ball.endX, ball.endY)
+        end)
+
+        timer.after(0.5, function() table.remove(self.balls, 1) end)
         
     end
 end
@@ -301,6 +280,7 @@ end
 function player:combine(clone)
 
 end
+
 
 function player:decideAnim()
     if self.state == validStates.THROWING then
@@ -360,6 +340,47 @@ function player:moveDownRight()
     self.vx = self.speed * diagonalOffset 
     self.vy = self.speed * diagonalOffset
     self:decideStateAfterMove()
+end
+
+function player:handleMovementInput()
+    if love.keyboard.isDown("w") then
+        if love.keyboard.isDown("a") and not love.keyboard.isDown("d") then
+            self:moveUpLeft()
+            self.dir = 'ul'
+        elseif love.keyboard.isDown("d") and not love.keyboard.isDown("a") then
+            self:moveUpRight()
+            self.dir = 'ur'
+        else
+            self:moveUp()
+            self.dir = 'u'
+        end
+    elseif love.keyboard.isDown("s") then
+        if love.keyboard.isDown("a") and not love.keyboard.isDown("d") then
+            self:moveDownLeft()
+            self.dir = 'dl'
+        elseif love.keyboard.isDown("d") and not love.keyboard.isDown("a") then
+            self:moveDownRight()
+            self.dir = 'dr'
+        else
+            self:moveDown()
+            self.dir = 'd'
+        end
+    elseif love.keyboard.isDown("d") then
+        self:moveRight()
+        self.dir = 'r'
+    elseif love.keyboard.isDown("a") then
+        self:moveLeft()
+        self.dir = 'l'
+    else
+        if self.state ~= validStates.THROWING then
+            self.state = validStates.IDLE
+        end
+    end
+end
+
+
+function player:spawnClone()
+
 end
 
 return player

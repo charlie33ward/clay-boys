@@ -1,6 +1,6 @@
 
 gameManager = {
-
+    
 }
 
 function gameManager:new()
@@ -15,6 +15,10 @@ function gameManager:load()
 end
 
 function gameManager:update()
+
+end
+
+function gameManager:draw()
 
 end
 

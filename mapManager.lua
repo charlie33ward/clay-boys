@@ -18,7 +18,7 @@ end
 
 function mapManager:load()
     love.graphics.setDefaultFilter('nearest', 'nearest')
-    self.map = sti('maps/test-map.lua')
+    self.map = sti('maps/puzzle-test1.lua')
 
     if self.map.layers["walls"] then
         for i, obj in pairs(self.map.layers["walls"].objects) do
@@ -43,17 +43,22 @@ function mapManager:getCurrentMap()
 end
 
 function mapManager:draw()
-    -- self.map:drawLayer(self.map.layers["space"])
+    self.map:drawLayer(self.map.layers["space"])
     self.map:drawLayer(self.map.layers["ground"])
-    self.map:drawLayer(self.map.layers["ground-details"])
-    self.map:drawLayer(self.map.layers["paths"])
-    self.map:drawLayer(self.map.layers["ground-upper"])
     self.map:drawLayer(self.map.layers["decorations"])
-    self.map:drawLayer(self.map.layers["decorations-2"])
+    -- self.map:drawLayer(self.map.layers["walls"])
+    self.map:drawLayer(self.map.layers["wall-sprites"])
+    self.map:drawLayer(self.map.layers["green-puzzle"])
+    self.map:drawLayer(self.map.layers["blue-puzzle"])
+
 end
 
 function mapManager:update(dt)
     self.map:update(dt)
+end
+
+function mapManager:buttonPressed()
+
 end
 
 return mapManager
