@@ -52,15 +52,14 @@ function cameraManager:update(dt, x, y, width, height, tileWidth)
         self.cam.y = (mapH - minY)
     end
 
-
 end
 
-function cameraManager:getOffsetX()
-    return self.xOffset
+function cameraManager:getX()
+    return self.cam.x
 end
 
-function cameraManager:getOffsetY()
-    return self.yOffset
+function cameraManager:getY()
+    return self.cam.y
 end
 
 function cameraManager:getCam()

@@ -17,6 +17,7 @@ function love.load()
 
     cam = CameraManager:new()
     cam:load(player.x + 8, player.y + 8)
+    mapManager:setCam(cam)
 
 end
 
@@ -39,7 +40,8 @@ function love.draw()
 
     cam:getCam():detach()
 
-    player:drawDebug()
+    map:getCurrentMap():drawDebug()
+
 end
 
 function love.keypressed(key, scancode, isrepeat)

@@ -14,6 +14,11 @@ local throwVectors = {
     dr = {x = 1 * diagonalOffset, y = 1 * diagonalOffset}
 }
 
+local smoothingFactor = 50
+local function lerp(a, b, t)
+    return a + (b - a) * t
+end
+
 local playerAnims = {
     move = {},
     throw = {}
@@ -126,8 +131,8 @@ function player:update(dt)
 
     self:handleMovementInput()
 
-    self.x = self.collider.getX()
-    self.y = self.collider.getY()
+    self.x = lerp(self.x, self.collider.getX(), smoothingFactor * dt)
+    self.y = lerp(self.y, self.collider.getY(), smoothingFactor * dt)
 
     local newAnim = self:decideAnim()
     if newAnim ~= self.anim then
@@ -207,10 +212,8 @@ local startedThrow = false
 function player:startThrowBall()
     if not canThrow then
         startedThrow = false
-        debugMessages.start = 'false start throw'
         return
     end
-    debugMessages.start = 'throw started'
     self.state = validStates.THROWING
     startedThrow = true
 end

@@ -38,6 +38,12 @@ function physicsManager:updatePlayerVelocity(vx, vy)
     self.playerCollider:setLinearVelocity(vx, vy)
 end
 
+function physicsManager:createPuzzleWall(args)
+    local wall = self.world:newCollider('rectangle', args.x, args.y, args.width, args.height)
+    wall:setType('static')
+    return wall
+end
+
 function physicsManager:createWall(x, y, width, height)
     local wall = self.world:newCollider('rectangle', {x, y, width, height})
     wall:setType('static')
@@ -46,7 +52,7 @@ end
 
 function physicsManager:createBallCollider(args)
     local ball = self.world:newCollider('circle', args)
-
+    
     return ball
 end
 
