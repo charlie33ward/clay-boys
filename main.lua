@@ -41,6 +41,8 @@ function love.draw()
     cam:getCam():detach()
 
     map:getCurrentMap():drawDebug()
+    player:drawDebug()
+    map:drawDebug()
 
 end
 

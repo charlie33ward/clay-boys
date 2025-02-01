@@ -101,10 +101,12 @@ function player:load()
         for i, obj in pairs(spawnLayer.objects) do
             self.spawnPoint.x = obj.x
             self.spawnPoint.y = obj.y
+            break
         end
     end
 
     self.collider = self.physicsManager:createPlayerCollider(self.spawnPoint.x, self.spawnPoint.y)
+    self.collider:setIdentifier(self.physicsManager.getValidIdentifiers().player)
 
     self.cloneManager:setValidStates(validStates)
     self.cloneManager:load()
@@ -185,7 +187,7 @@ function player:drawDebug()
     local y = 50
     if debugMessages then
         for i, message in pairs(debugMessages) do
-            love.graphics.print(message, 50, y)
+            love.graphics.print(message, 400, y)
             y = y + 20
         end
     end
@@ -243,6 +245,7 @@ function player:throwBall()
         ball.anim:pause()
 
         ball.collider = self.physicsManager:createBallCollider(calculateBallArgs(self.x, self.y, self.dir, ball.spawnDistance, ball.radius))
+        ball.collider:setIdentifier(self.physicsManager.getValidIdentifiers().ball)
         ball.collider:setLinearVelocity(ball.speed * throwVectors[self.dir].x, ball.speed * throwVectors[self.dir].y)
 
         function ball.collider:enter(other)

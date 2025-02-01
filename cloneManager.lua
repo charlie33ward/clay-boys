@@ -68,10 +68,11 @@ end
 
 function cloneManager:newClone(x, y)
     local clone = {
-        -- anim = self.cloneAnim:clone()
+        
     }
 
     clone.collider = self.physicsManager:createCloneCollider(x, y)
+    clone.collider:setIdentifier(self.physicsManager.getValidIdentifiers().clone)
     table.insert(self.activeClones, clone)
 end
 

@@ -2,7 +2,9 @@
 local set_funcs, lp, lg, COLLIDER_TYPES = unpack(
    require((...):gsub('collider', '') .. '/utils'))
 
-local Collider = {}
+local Collider = {
+   identifier = ''
+}
 Collider.__index = Collider
 
 
@@ -74,5 +76,24 @@ function Collider:collider_contacts()
    end
    return colliders
 end
+
+local validIdentifiers = {
+   clone = 'clone',
+   player = 'player',
+   ball = 'ball'
+}
+
+function Collider.getValidIdentifiers()
+   return validIdentifiers
+end
+
+function Collider:setIdentifier(identifier)
+   self.identifier = validIdentifiers[identifier]
+end
+
+function Collider:getIdentifier()
+   return self.identifier
+end
+
 
 return Collider

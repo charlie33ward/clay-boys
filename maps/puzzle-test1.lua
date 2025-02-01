@@ -727,7 +727,7 @@ return {
         },
         {
           id = 102,
-          name = "",
+          name = "switch",
           type = "",
           shape = "rectangle",
           x = 256,

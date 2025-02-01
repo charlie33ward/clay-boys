@@ -14,6 +14,16 @@ local puzzle1 = {
     }
 }
 
+local currentInstance = nil
+
+function mapManager.setCurrentInstance(instance)
+    currentInstance = instance
+end
+
+function mapManager.getCurrentInstance()
+    return currentInstance
+end
+
 local camCoords = {
     x = 0,
     y = 0
@@ -28,6 +38,7 @@ function mapManager:new(physicsManager)
     setmetatable(manager, self)
     self.__index = self
     self.physicsManager = physicsManager
+    mapManager.setCurrentInstance(self)
     return manager
 end
 
@@ -68,19 +79,50 @@ function mapManager:getCurrentMap()
     return self.map
 end
 
+local debug = {}
+
 function mapManager:createPuzzlePhysics()
-    
+    debug.started = 'started stuff'
     if self.currentMapData.blue then
+        debug.blue = 'blue'
         for _, obj in pairs(self.map.layers['blue-puzzle'].objects) do
+        debug.objects = 'objects'
             if obj.name == 'switch' then
+                debug.switch = 'switch'
                 local switch = {
                     obj = obj,
-                    -- collider = self.physicsManager:
+                    isTriggered = false
                 }
-                obj:setSensor(true)
-                -- local switchCollider = 
+                switch.collider = self.physicsManager:createPuzzleWall(obj.x, obj.y, obj.width, obj.height)
+                switch.collider:setSensor(true)
+                debug.isSensor = tostring(switch.collider:isSensor())
+                debug.sensorWorking = debug.isSensor and "true" or "false"
+
+                function switch:getSwitchCollider()
+                    return switch.collider
+                end
+
+                function switch.collider:enter(other)
+                    if other.identifier ~= mapManager.getCurrentInstance().physicsManager.getValidIdentifiers().ball then
+                        switch:onTriggered()
+                    end
+                end
+
+                function switch.collider:exit(other)
+                    if other.identifier ~= mapManager.getCurrentInstance().physicsManager.getValidIdentifiers().ball then
+                        switch:onReleased()
+                    end
+                end
+
+                function switch:onTriggered() 
+                    switch.isTriggered = true
+                end
+
+                function switch:onReleased()
+                    switch.isTriggered = false
+                end
             else
-                local puzzleWall = self.physicsManager:createPuzzleWall(obj.x + (obj.width / 2), obj.y + (obj.height / 2), obj.width, obj.height)
+                local puzzleWall = self.physicsManager:createPuzzleWall(obj.x, obj.y, obj.width, obj.height)
                 table.insert(self.currentMapData.blue.walls, puzzleWall)
             end
         end
@@ -109,6 +151,17 @@ function mapManager:draw()
     self.map:drawLayer(self.map.layers["green-puzzle"])
     self.map:drawLayer(self.map.layers["blue-puzzle"])
 
+end
+
+function mapManager:drawDebug()
+    local y = 50
+
+    if debug then
+        for _, message in pairs(debug) do
+            love.graphics.print(message, 400, y)
+            y = y + 20
+        end
+    end
 end
 
 function mapManager:update(dt)
