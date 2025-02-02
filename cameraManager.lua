@@ -2,17 +2,40 @@ camera = require 'libraries.camera'
 
 local cameraManager = {
     cam = nil,
-    cameraZoom = 2.25,
+    defaultCameraZoom = 2,
+    cameraZoom = 2,
     yOffset = 0,
-    xOffset = 0,
-    inPuzzle = false
+    xOffset = 0
 }
 
-function cameraManager:new() 
+local inPuzzle = false
+local puzzleCamPosition = {
+    x = 0,
+    y = 0
+}
+
+function cameraManager:new()
     local manager = {}
     setmetatable(manager, self)
     self.__index = self
     return manager
+end
+
+function cameraManager:setPuzzleCam(zoom, x, y)
+    self.cameraZoom = zoom
+    puzzleCamPosition.x = x
+    puzzleCamPosition.y = y
+    inPuzzle = true
+end
+
+function cameraManager:setDefaultCam()
+    self.cameraZoom = self.defaultCameraZoom
+    inPuzzle = false
+end
+
+
+function cameraManager:setCameraZoom(zoom)
+    self.cameraZoom = zoom
 end
 
 function cameraManager:getCameraZoom()
@@ -27,7 +50,12 @@ function cameraManager:load(x, y)
 end
 
 function cameraManager:update(dt, x, y, width, height, tileWidth)
-    self.cam:lockPosition(x, y, self.cam.smoother)
+    if inPuzzle then
+        self.cam:lockPosition(puzzleCamPosition.x, puzzleCamPosition.y, camera.smooth.damped(8))
+    else
+        self.cam.smoother = camera.smooth.damped(5)
+        self.cam:lockPosition(x, y, self.cam.smoother)
+    end
 
     local xRound = math.floor(self.cam.x * self.cameraZoom + 0.5) / self.cameraZoom
     local yRound = math.floor(self.cam.y * self.cameraZoom + 0.5) / self.cameraZoom

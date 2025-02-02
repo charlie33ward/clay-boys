@@ -25,7 +25,9 @@ local playerAnims = {
 }
 
 local gameParams = {
-    walkSpeed = 150
+    walkSpeed = 150,
+    throwLength = 0.82,
+    combineDistance = 15
 }
 
 local validStates = {
@@ -108,8 +110,17 @@ function player:load()
     self.collider = self.physicsManager:createPlayerCollider(self.spawnPoint.x, self.spawnPoint.y)
     self.collider:setIdentifier(self.physicsManager.getValidIdentifiers().player)
 
+    
+
     self.cloneManager:setValidStates(validStates)
     self.cloneManager:load()
+end
+
+function player:addCombineSensor()
+    local sensorShape = love.physics.newCircleShape(gameParams.combineDistance)
+    local sensorFixture = love.physics.newFixture(self.collider.body, sensorShape)
+    sensorFixture:setSensor(true)
+    
 end
 
 function player:loadBall()
@@ -249,7 +260,9 @@ function player:throwBall()
         ball.collider:setLinearVelocity(ball.speed * throwVectors[self.dir].x, ball.speed * throwVectors[self.dir].y)
 
         function ball.collider:enter(other)
-            player:destroyBall(ball)
+            if other.identifier == 'wall' and other.identifier ~= 'detectionArea' then
+                player:destroyBall(ball)
+            end
         end
 
         table.insert(self.balls, ball)
@@ -257,7 +270,7 @@ function player:throwBall()
         timer.after(0.25, function()
             self.state = validStates.IDLE
         end)
-        timer.after(0.75, function()
+        timer.after(gameParams.throwLength, function()
             player:destroyBall(ball)
         end)
     end

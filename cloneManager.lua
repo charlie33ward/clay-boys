@@ -67,9 +67,7 @@ function cloneManager:draw()
 end
 
 function cloneManager:newClone(x, y)
-    local clone = {
-        
-    }
+    local clone = {}
 
     clone.collider = self.physicsManager:createCloneCollider(x, y)
     clone.collider:setIdentifier(self.physicsManager.getValidIdentifiers().clone)

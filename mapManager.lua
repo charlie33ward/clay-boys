@@ -1,20 +1,39 @@
 local sti = require 'libraries.sti'
 
+local debug = {}
+
 local mapManager = {
     wallColliders = {}
 }
 
 local puzzle1 = {
-    filepath = 'maps/puzzle-test1.lua',
+    filepath = 'maps/puzzle-test1.lua'
+}
+
+local puzzleState = {
     blue = {
-        walls = {}
+        opacity = 1,
+        walls = {},
+        switch = nil
     },
     green = {
-        walls = {}
+        opacity = 1,
+        walls = {},
+        switch = nil
     }
 }
 
+local puzzleCamSettings = {
+    x = 0,
+    y = 0
+}
+
+local function setPuzzleOpacity(color, opacity)
+    puzzleState[color].opacity = opacity
+end
+
 local currentInstance = nil
+local physicsManager = nil
 
 function mapManager.setCurrentInstance(instance)
     currentInstance = instance
@@ -33,11 +52,15 @@ function mapManager:setCam(cam)
     self.cam = cam
 end
 
-function mapManager:new(physicsManager)
+function mapManager:setPlayer(player)
+    self.player = player
+end
+
+function mapManager:new(physics)
     local manager = {}
     setmetatable(manager, self)
     self.__index = self
-    self.physicsManager = physicsManager
+    physicsManager = physics
     mapManager.setCurrentInstance(self)
     return manager
 end
@@ -56,7 +79,7 @@ function mapManager:load()
 
     if self.map.layers["walls"] then
         for i, obj in pairs(self.map.layers["walls"].objects) do
-            self.physicsManager:createWall(obj.x + (obj.width / 2), obj.y + (obj.height / 2), obj.width, obj.height)
+            physicsManager:createWall(obj.x + (obj.width / 2), obj.y + (obj.height / 2), obj.width, obj.height)
         end
     end
 
@@ -66,69 +89,175 @@ function mapManager:load()
 
     self:createPuzzlePhysics()
     self:initializePuzzleState(self.currentMapData)
+    self:createPuzzleCamArea()
+end
+
+function mapManager:createPuzzleCamArea()
+    for _,layer in pairs(self.map.layers) do
+        if layer.name:match("cam") then
+            for _, obj in pairs(layer.objects) do
+                if obj.name == 'puzzle-zone' then
+                    local zone = {
+                        obj = obj,
+                        x = obj.x,
+                        y = obj.y,
+                        width = obj.width,
+                        height = obj.height
+                    }
+                    zone.collider = physicsManager:createDetectionArea(zone.x, zone.y, zone.width, zone.height)
+                    zone.collider:setIdentifier('detectionArea')
+
+                    function zone.collider:enter(other)
+                        if other.identifier == 'player' then
+                            debug.zone = 'entered'
+                            mapManager.cam:setPuzzleCam(puzzleCamSettings.zoom, puzzleCamSettings.x, puzzleCamSettings.y)
+                        end
+                    end
+
+                    function zone.collider:exit(other)
+                        if other.identifier == 'player' then
+                            debug.zone = 'exited'
+                            mapManager.cam:setDefaultCam()
+                        end
+                    end
+                elseif obj.name == 'cam-position' then
+                    puzzleCamSettings.x = obj.x
+                    puzzleCamSettings.y = obj.y
+                    puzzleCamSettings.zoom = obj.properties.zoom
+                end
+            end
+        end
+    end
+
+
 end
 
 function mapManager:createMapBoundaries(width, height)
-    self.physicsManager:createWall(width + 1, height / 2, 2, height)
-    self.physicsManager:createWall(-1, height / 2, 2, height)
-    self.physicsManager:createWall(width / 2, -1, width, 2)
-    self.physicsManager:createWall(width / 2, height + 1, width, 2)
+    physicsManager:createWall(width + 1, height / 2, 2, height)
+    physicsManager:createWall(-1, height / 2, 2, height)
+    physicsManager:createWall(width / 2, -1, width, 2)
+    physicsManager:createWall(width / 2, height + 1, width, 2)
 end
 
 function mapManager:getCurrentMap()
     return self.map
 end
 
-local debug = {}
-
 function mapManager:createPuzzlePhysics()
-    debug.started = 'started stuff'
-    if self.currentMapData.blue then
-        debug.blue = 'blue'
-        for _, obj in pairs(self.map.layers['blue-puzzle'].objects) do
-        debug.objects = 'objects'
-            if obj.name == 'switch' then
-                debug.switch = 'switch'
-                local switch = {
-                    obj = obj,
-                    isTriggered = false
-                }
-                switch.collider = self.physicsManager:createPuzzleWall(obj.x, obj.y, obj.width, obj.height)
-                switch.collider:setSensor(true)
-                debug.isSensor = tostring(switch.collider:isSensor())
-                debug.sensorWorking = debug.isSensor and "true" or "false"
-
-                function switch:getSwitchCollider()
-                    return switch.collider
-                end
-
-                function switch.collider:enter(other)
-                    if other.identifier ~= mapManager.getCurrentInstance().physicsManager.getValidIdentifiers().ball then
-                        switch:onTriggered()
-                    end
-                end
-
-                function switch.collider:exit(other)
-                    if other.identifier ~= mapManager.getCurrentInstance().physicsManager.getValidIdentifiers().ball then
-                        switch:onReleased()
-                    end
-                end
-
-                function switch:onTriggered() 
-                    switch.isTriggered = true
-                end
-
-                function switch:onReleased()
-                    switch.isTriggered = false
-                end
-            else
-                local puzzleWall = self.physicsManager:createPuzzleWall(obj.x, obj.y, obj.width, obj.height)
-                table.insert(self.currentMapData.blue.walls, puzzleWall)
+    for _, layer in pairs(self.map.layers) do
+        local layerName = layer.name:match('.-puzzle$')
+        if layerName then
+            for _, obj in pairs (layer.objects) do
+                local color = layerName:match("^(%w+)-puzzle$")
+                self:createPuzzleObject(obj, color)
             end
+        end
+    
+    end
+end
+
+function mapManager:createPuzzleObject(obj, color)    
+    if obj.name == 'switch' then
+        if not puzzleState[color].switch then   
+            local switch = self:createSwitch(obj, color)
+            puzzleState[color].switch = switch
+        end
+    else
+        local wall = self:createPuzzleWall(obj, color)
+        table.insert(puzzleState[color].walls, wall)
+    end
+end
+
+local function calculateSafePlayerCoords(x1, y1, x2, y2, collider)
+    local middleX = (x1 + x2) / 2
+    local middleY = (y1 + y2) / 2
+    local playerX, playerY = collider:getX(), collider:getY()
+    
+    if playerX > middleX then
+        playerX = x2 + 1
+    else
+        playerX = x1 - 1
+    end
+    if playerY > middleY then
+       playerY = y2 + 1
+    else
+        playerY = y1 - 1 
+    end
+    return playerX, playerY
+end
+
+function mapManager:createPuzzleWall(obj, color)
+    local wall = {
+        obj = obj
+    }
+    wall.collider = physicsManager:createPuzzleWall(obj.x, obj.y, obj.width, obj.height)
+
+    function wall:deactivateCollider()
+        wall.collider:setSensor(true)
+    end
+
+    function wall:activateCollider()
+        local x1, y1, x2, y2 = wall.obj.x, wall.obj.y, wall.obj.x + wall.obj.width, wall.obj.y + wall.obj.height
+        local colliders = physicsManager:getWorld():queryRectangleArea(x1, y1, x2, y2)
+        if colliders then
+            for _, collider in pairs(colliders) do
+                if collider.identifier == 'player' then
+                    local safeX, safeY = calculateSafePlayerCoords(x1, y1, x2, y2, collider)
+                    collider:setPosition(safeX, safeY)
+                end
+            end
+        end
+        
+        wall.collider:setSensor(false)
+    end
+
+    return wall
+end
+
+function mapManager:createSwitch(obj, color)
+    local switch = {
+        obj = obj,
+        color = color,
+        isTriggered = false
+    }
+
+    switch.collider = physicsManager:createPuzzleWall(obj.x, obj.y, obj.width, obj.height)
+    switch.collider:setSensor(true)
+    switch.collider:setIdentifier(physicsManager.getValidIdentifiers().switch)
+
+    function switch:getSwitchCollider()
+        return switch.collider
+    end
+
+    function switch.collider:enter(other)
+        if other.identifier ~= physicsManager.getValidIdentifiers().ball then
+            switch:onTriggered()
         end
     end
 
+    function switch.collider:exit(other)
+        if other.identifier ~= physicsManager.getValidIdentifiers().ball then
+            switch:onReleased()
+        end
+    end
+
+    function switch:onTriggered() 
+        switch.isActive = true
+        setPuzzleOpacity(switch.color, 0.2)
+        for _, wall in pairs(puzzleState[switch.color].walls) do
+            wall:deactivateCollider()
+        end
+    end
+
+    function switch:onReleased()
+        switch.isActive = false
+        setPuzzleOpacity(switch.color, 1)
+        for _, wall in pairs(puzzleState[switch.color].walls) do
+            wall:activateCollider()
+        end
+    end
 end
+
 
 function mapManager:initializePuzzleState(puzzle)
 
@@ -146,10 +275,16 @@ function mapManager:draw()
 
     self.map:drawLayer(self.map.layers["ground"])
     self.map:drawLayer(self.map.layers["decorations"])
-    -- self.map:drawLayer(self.map.layers["walls"])
+    self.map:drawLayer(self.map.layers["puzzle-walls"])
     self.map:drawLayer(self.map.layers["wall-sprites"])
+
+    love.graphics.setColor(1, 1, 1, puzzleState.green.opacity)
     self.map:drawLayer(self.map.layers["green-puzzle"])
-    self.map:drawLayer(self.map.layers["blue-puzzle"])
+    love.graphics.setColor(1, 1, 1, 1)
+
+    love.graphics.setColor(1, 1, 1, puzzleState.blue.opacity)
+    self.map:drawLayer(self.map.layers["blue-puzzle"])  
+    love.graphics.setColor(1, 1, 1, 1)
 
 end
 

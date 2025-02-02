@@ -10,7 +10,7 @@ return {
   tilewidth = 32,
   tileheight = 32,
   nextlayerid = 21,
-  nextobjectid = 179,
+  nextobjectid = 183,
   properties = {
     ["height"] = 0,
     ["width"] = 0
@@ -265,7 +265,7 @@ return {
       id = 20,
       name = "walls",
       class = "",
-      visible = true,
+      visible = false,
       opacity = 1,
       offsetx = 0,
       offsety = 0,
@@ -639,7 +639,7 @@ return {
         },
         {
           id = 96,
-          name = "",
+          name = "switch",
           type = "",
           shape = "rectangle",
           x = 512,
@@ -747,7 +747,7 @@ return {
       id = 3,
       name = "spawn-point",
       class = "",
-      visible = true,
+      visible = false,
       opacity = 1,
       offsetx = 0,
       offsety = 0,
@@ -776,7 +776,7 @@ return {
       id = 13,
       name = "next-level",
       class = "",
-      visible = true,
+      visible = false,
       opacity = 1,
       offsetx = 0,
       offsety = 0,
@@ -814,29 +814,29 @@ return {
       properties = {},
       objects = {
         {
-          id = 122,
+          id = 180,
           name = "cam-position",
           type = "",
           shape = "point",
-          x = 401,
-          y = 272,
+          x = 400.667,
+          y = 253.333,
           width = 0,
           height = 0,
           rotation = 0,
           visible = true,
           properties = {
-            ["zoom"] = 1
+            ["zoom"] = 1.5
           }
         },
         {
-          id = 124,
-          name = "cam-zone",
+          id = 181,
+          name = "puzzle-zone",
           type = "",
           shape = "rectangle",
-          x = 201,
-          y = 127,
-          width = 419,
-          height = 270,
+          x = 218.667,
+          y = 108,
+          width = 347.333,
+          height = 264,
           rotation = 0,
           visible = true,
           properties = {}

@@ -45,6 +45,14 @@ function physicsManager:createPuzzleWall(x, y, width, height)
     return wall
 end
 
+function physicsManager:createDetectionArea(x, y, width, height)
+    local args = {x + width / 2, y + height / 2, width, height}
+    local area = self.world:newCollider('rectangle', args)
+    area:setType('static')
+    area:setSensor(true)
+    return area
+end
+
 function physicsManager:createWall(x, y, width, height)
     local wall = self.world:newCollider('rectangle', {x, y, width, height})
     wall:setType('static')
@@ -53,7 +61,7 @@ end
 
 function physicsManager:createBallCollider(args)
     local ball = self.world:newCollider('circle', args)
-    
+    ball:setFixedRotation(true)
     return ball
 end
 

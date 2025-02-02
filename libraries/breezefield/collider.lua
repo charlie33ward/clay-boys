@@ -80,7 +80,10 @@ end
 local validIdentifiers = {
    clone = 'clone',
    player = 'player',
-   ball = 'ball'
+   ball = 'ball',
+   switch = 'switch',
+   detectionArea = 'detectionArea',
+   combineSensor = 'combineSensor'
 }
 
 function Collider.getValidIdentifiers()
@@ -89,10 +92,6 @@ end
 
 function Collider:setIdentifier(identifier)
    self.identifier = validIdentifiers[identifier]
-end
-
-function Collider:getIdentifier()
-   return self.identifier
 end
 
 
