@@ -35,12 +35,11 @@ end
 function love.draw()
     cam:getCam():attach()
         map:draw()
-        phys:getWorld():draw()
+        -- phys:getWorld():draw()
         player:draw()
 
     cam:getCam():detach()
 
-    map:getCurrentMap():drawDebug()
     player:drawDebug()
     map:drawDebug()
 

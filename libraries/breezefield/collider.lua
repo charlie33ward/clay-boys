@@ -3,7 +3,8 @@ local set_funcs, lp, lg, COLLIDER_TYPES = unpack(
    require((...):gsub('collider', '') .. '/utils'))
 
 local Collider = {
-   identifier = ''
+   identifier = '',
+   parent = nil
 }
 Collider.__index = Collider
 
@@ -86,13 +87,26 @@ local validIdentifiers = {
    combineSensor = 'combineSensor'
 }
 
+
 function Collider.getValidIdentifiers()
    return validIdentifiers
 end
 
 function Collider:setIdentifier(identifier)
-   self.identifier = validIdentifiers[identifier]
+   if validIdentifiers[identifier] then
+      self.identifier = validIdentifiers[identifier]   
+   end
 end
+
+function Collider:setParent(parent)
+   self.parent = parent
+end
+
+function Collider:getParent()
+   return self.parent
+end
+
+
 
 
 return Collider

@@ -1061,17 +1061,17 @@ function Map:drawObjectLayer(layer)
 	lg.setColor(r,g,b,a)
 end
 
-local debugMessages = {}
+-- local debugMessages = {}
 
-function Map:drawDebug()
-    local y = 50
-    if debugMessages then
-        for i, message in pairs(debugMessages) do
-            love.graphics.print(message, 50, y)
-            y = y + 20
-        end
-    end
-end
+-- function Map:drawDebug()
+--     local y = 50
+--     if debugMessages then
+--         for i, message in pairs(debugMessages) do
+--             love.graphics.print(message, 50, y)
+--             y = y + 20
+--         end
+--     end
+-- end
 
 
 --- Default draw function for Image Layers
@@ -1099,8 +1099,6 @@ function Map:drawImageLayer(layer, camCoords, zoom)
 		local imagewidth, imageheight = layer.image:getDimensions()
 		local mapWidth = self.width * self.tilewidth
 		local mapHeight = self.height * self.tileheight
-
-		debugMessages.mapDimensions = "imagewidth: " ..imagewidth.. ", imageheight: " ..imageheight
 
 		local screenWidth = love.graphics.getWidth() / zoom
 		local screenHeight = love.graphics.getHeight() / zoom

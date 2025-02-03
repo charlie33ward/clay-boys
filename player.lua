@@ -26,8 +26,9 @@ local playerAnims = {
 
 local gameParams = {
     walkSpeed = 150,
-    throwLength = 0.82,
-    combineDistance = 15
+    throwLength = 1.5,
+    combineDistance = 24,
+    playerMass = 5
 }
 
 local validStates = {
@@ -45,7 +46,7 @@ local player = {
     vx = 0,
     vy = 0,
     state = validStates.IDLE,
-    maxClones = 1,
+    maxClones = 5,
     currentClones = 0,
     balls = {},
     dir = 'd'
@@ -59,7 +60,7 @@ function player:new(physicsManager, mapManager)
     self.__index = self
     self.physicsManager = physicsManager
     self.mapManager = mapManager
-    self.cloneManager = clone:new(physicsManager)
+    self.cloneManager = clone:new(physicsManager, self)
     return manager
 end
 
@@ -109,19 +110,31 @@ function player:load()
 
     self.collider = self.physicsManager:createPlayerCollider(self.spawnPoint.x, self.spawnPoint.y)
     self.collider:setIdentifier(self.physicsManager.getValidIdentifiers().player)
+    self.collider.body:setMass(gameParams.playerMass)
 
-    
+    self.combineSensor = self:addCombineSensor(gameParams.combineDistance)
 
     self.cloneManager:setValidStates(validStates)
     self.cloneManager:load()
 end
 
-function player:addCombineSensor()
-    local sensorShape = love.physics.newCircleShape(gameParams.combineDistance)
-    local sensorFixture = love.physics.newFixture(self.collider.body, sensorShape)
-    sensorFixture:setSensor(true)
-    
+function player:onCombine()
+    self.currentClones = self.currentClones - 1
 end
+
+function player:addCombineSensor(radius)
+    local combineCollider = self.physicsManager:createBallCollider({self.spawnPoint.x, self.spawnPoint.y, radius})
+
+    combineCollider:getBody():setMass(0)
+    combineCollider:setSensor(true)
+    local ax, ay = self.collider.getX(), self.collider.getY()
+    self.combineJoint = love.physics.newWeldJoint(self.collider:getBody(), combineCollider:getBody(), ax, ay, false)
+    combineCollider:setIdentifier('combineSensor')
+    combineCollider:setParent(self)
+
+    return combineCollider
+ end
+
 
 function player:loadBall()
     self.ball = {}
@@ -198,10 +211,12 @@ function player:drawDebug()
     local y = 50
     if debugMessages then
         for i, message in pairs(debugMessages) do
-            love.graphics.print(message, 400, y)
+            love.graphics.print(message, 50, y)
             y = y + 20
         end
     end
+
+    self.cloneManager:drawDebug()
 end
 
 function player:getPlayer()
@@ -237,6 +252,7 @@ function player:throwBall()
     end
     
     if self.currentClones < self.maxClones then
+        -- self.currentClones = self.currentClones + 1
         canThrow = false
         timer.after(throwCooldown, function() canThrow = true end)
         
@@ -245,7 +261,6 @@ function player:throwBall()
             radius = 4,
             speed = 120,
             spinSpeed = 10,
-            timer = 5,
             anim = self.ball.anim:clone(),
             endX = 0,
             endY = 0
@@ -260,7 +275,9 @@ function player:throwBall()
         ball.collider:setLinearVelocity(ball.speed * throwVectors[self.dir].x, ball.speed * throwVectors[self.dir].y)
 
         function ball.collider:enter(other)
-            if other.identifier == 'wall' and other.identifier ~= 'detectionArea' then
+            if other.userData and other.userData.identifier == 'combineSensor' then  
+                return
+            elseif other.identifier == 'wall' or other.identifier == 'clone' or other.identifier == '' then
                 player:destroyBall(ball)
             end
         end
@@ -273,7 +290,16 @@ function player:throwBall()
         timer.after(gameParams.throwLength, function()
             player:destroyBall(ball)
         end)
+    else
+        self:failThrow()
     end
+end
+
+function player:failThrow()
+    self.anim:gotoFrame(2)
+    timer.after(0.25, function()
+        self.state = validStates.IDLE
+    end)
 end
 
 function player:destroyBall(ball)
@@ -288,7 +314,7 @@ function player:destroyBall(ball)
 
 
         timer.after(0, function()
-            self.cloneManager:newClone(ball.endX, ball.endY)
+            self.cloneManager:newClone(ball.endX, ball.endY, gameParams.playerMass)
         end)
 
         timer.after(0.5, function() table.remove(self.balls, 1) end)

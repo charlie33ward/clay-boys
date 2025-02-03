@@ -25,12 +25,14 @@ end
 function physicsManager:createPlayerCollider(x, y)
     self.playerCollider = self.world:newCollider("circle", {x, y, self.playerRadius})
     self.playerCollider:setFixedRotation(true)
+    self.playerCollider:setType('dynamic')
     return self.playerCollider
 end
 
 function physicsManager:createCloneCollider(x, y)
     local cloneCollider = self.world:newCollider("circle", {x, y, self.cloneRadius})
     cloneCollider:setFixedRotation(true)
+    cloneCollider:setType('dynamic')
     return cloneCollider
 end
 
@@ -53,6 +55,8 @@ function physicsManager:createDetectionArea(x, y, width, height)
     return area
 end
 
+
+
 function physicsManager:createWall(x, y, width, height)
     local wall = self.world:newCollider('rectangle', {x, y, width, height})
     wall:setType('static')
@@ -67,10 +71,6 @@ end
 
 function physicsManager.getValidIdentifiers()
     return bf.Collider.getValidIdentifiers()
-end
-
-function physicsManager:destroyBallCollider()
-
 end
 
 function physicsManager:getWalls()
