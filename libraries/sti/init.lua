@@ -1061,22 +1061,22 @@ function Map:drawObjectLayer(layer)
 	lg.setColor(r,g,b,a)
 end
 
--- local debugMessages = {}
+local debug = {}
 
--- function Map:drawDebug()
---     local y = 50
---     if debugMessages then
---         for i, message in pairs(debugMessages) do
---             love.graphics.print(message, 50, y)
---             y = y + 20
---         end
---     end
--- end
+function Map:drawDebug()
+    local y = 50
+    if debug then
+        for i, message in pairs(debug) do
+            love.graphics.print(message, 50, y)
+            y = y + 20
+        end
+    end
+end
 
 
 --- Default draw function for Image Layers
 -- @param layer The Image Layer to draw
-function Map:drawImageLayer(layer, camCoords, zoom)
+function Map:drawImageLayer(layer, camCoords, zoom, dimensions)
 	if type(layer) == "string" or type(layer) == "number" then
 		layer = self.layers[layer]
 	end
@@ -1093,6 +1093,8 @@ function Map:drawImageLayer(layer, camCoords, zoom)
 	
 	camCoords = camCoords or {x = 0, y = 0}
 	zoom = zoom or 1
+	local rows = dimensions.rows or 1
+	local columns = dimensions.columns or 1
 
 	if layer.image ~= "" then
 
@@ -1100,57 +1102,26 @@ function Map:drawImageLayer(layer, camCoords, zoom)
 		local mapWidth = self.width * self.tilewidth
 		local mapHeight = self.height * self.tileheight
 
-		local screenWidth = love.graphics.getWidth() / zoom
-		local screenHeight = love.graphics.getHeight() / zoom
-		local screenLeft = camCoords.x - (screenWidth / 2)
-        local screenRight = camCoords.x + (screenWidth / 2)
-        local screenTop = camCoords.y - (screenHeight / 2)
-        local screenBottom = camCoords.y + (screenHeight / 2)
-
-		local baseX = getParallaxOffset(layer.offsetx, layer.parallaxx or 1, camCoords.x)
-		local baseY = getParallaxOffset(layer.offsety, layer.parallaxy or 1, camCoords.y)
-
-		local function isRectVisible(rectX, rectY)
-			local rectLeft = rectX
-			local rectRight = rectX + imagewidth
-			local rectTop = rectY
-			local rectBottom = rectY + imageheight
-
-			return (rectRight > screenLeft or rectLeft < screenRight or rectBottom > screenTop or rectTop < screenBottom)
-		end
+		local baseX = getParallaxOffset(layer.offsetx, layer.parallaxx or 1, camCoords.x) - 200
+		local baseY = getParallaxOffset(layer.offsety, layer.parallaxy or 1, camCoords.y) - 200
 
 		lg.draw(layer.image, baseX, baseY)
 
-		local startY = getStartPosition(baseY, imageheight)
-		local startX = getStartPosition(baseX, imagewidth)
+		-- local startY = getStartPosition(baseY, imageheight)
+		-- local startX = getStartPosition(baseX, imagewidth)
+		-- local xCount = 0
+		-- local yCount = 0
 
-		if layer.repeaty then
-			local x = startX
-			local y = startY
+		for row = 0, rows - 1 do
+			local y = baseY + (row * imageheight)
 
-			while y < mapHeight do 
-				lg.draw(layer.image, baseX, y)
-				if layer.repeatx then 
-					while x < mapWidth do
-						if isRectVisible(x, y) then	
-							lg.draw(layer.image, baseX, y)
-						end
-						x = x + imagewidth
-					end
-				end
-				y = y + imageheight
-			end
-		elseif layer.repeatx then
-			local startX = getStartPosition(baseX, imagewidth)
-			local x = startX
-
-			while x < mapWidth do 
-				lg.draw(layer.image, x, baseY)
-				x = x + imagewidth
+			for col = 0, columns - 1 do
+				local x = baseX + (col * imagewidth)
+				lg.draw(layer.image, x, y)
 			end
 		end
 
-		local px, py = layer.parallaxx or 1, layer.paralaxy or 1
+		
 
 	end
 end
