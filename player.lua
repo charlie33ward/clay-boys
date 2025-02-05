@@ -26,7 +26,7 @@ local playerAnims = {
 
 local gameParams = {
     walkSpeed = 150,
-    throwLength = 1.5,
+    throwLength = 2.5,
     combineDistance = 24,
     playerMass = 5
 }
@@ -110,6 +110,7 @@ function player:load()
 
     self.collider = self.physicsManager:createPlayerCollider(self.spawnPoint.x, self.spawnPoint.y)
     self.collider:setIdentifier(self.physicsManager.getValidIdentifiers().player)
+    self.collider:setParent(self)
     self.collider.body:setMass(gameParams.playerMass)
 
     self.combineSensor = self:addCombineSensor(gameParams.combineDistance)
@@ -121,6 +122,7 @@ end
 function player:onCombine()
     self.currentClones = self.currentClones - 1
 end
+
 
 function player:addCombineSensor(radius)
     local combineCollider = self.physicsManager:createBallCollider({self.spawnPoint.x, self.spawnPoint.y, radius})
@@ -180,7 +182,7 @@ function player:update(dt)
             obj.anim:update(dt)
         end
     end
-    
+
     self.physicsManager:updatePlayerVelocity(self.vx, self.vy)
     self.cloneManager:update(dt, self.vx, self.vy, self.dir, self.state)
 end
@@ -322,10 +324,9 @@ function player:destroyBall(ball)
     end
 end
 
-function player:combine(clone)
+function player:resetPlayerLocation()
 
 end
-
 
 function player:decideAnim()
     if self.state == validStates.THROWING then

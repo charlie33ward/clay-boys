@@ -1,4 +1,5 @@
 local sti = require 'libraries.sti'
+local timer = require 'libraries.timer'
 
 local debug = {}
 
@@ -7,8 +8,17 @@ local mapManager = {
 }
 
 local puzzle1 = {
-    filepath = 'maps/puzzle-test1.lua'
+    filepath = 'maps/puzzle-test1.lua',
+    dimensions = {
+        rows = 3,
+        columns = 3
+    }
 }
+
+local wallsToUpdate = {}
+
+local activatedPuzzleWalls = {}
+local puzzleWallKey = 0
 
 local puzzleState = {
     blue = {
@@ -109,14 +119,12 @@ function mapManager:createPuzzleCamArea()
 
                     function zone.collider:enter(other)
                         if other.identifier == 'player' then
-                            debug.zone = 'entered'
                             mapManager.cam:setPuzzleCam(puzzleCamSettings.zoom, puzzleCamSettings.x, puzzleCamSettings.y)
                         end
                     end
 
                     function zone.collider:exit(other)
                         if other.identifier == 'player' then
-                            debug.zone = 'exited'
                             mapManager.cam:setDefaultCam()
                         end
                     end
@@ -168,47 +176,32 @@ function mapManager:createPuzzleObject(obj, color)
     end
 end
 
-local function calculateSafePlayerCoords(x1, y1, x2, y2, collider)
-    local middleX = (x1 + x2) / 2
-    local middleY = (y1 + y2) / 2
-    local playerX, playerY = collider:getX(), collider:getY()
+local function createPuzzleCollider(wall)
     
-    if playerX > middleX then
-        playerX = x2 + 1
-    else
-        playerX = x1 - 1
-    end
-    if playerY > middleY then
-       playerY = y2 + 1
-    else
-        playerY = y1 - 1 
-    end
-    return playerX, playerY
 end
+
 
 function mapManager:createPuzzleWall(obj, color)
     local wall = {
-        obj = obj
+        obj = obj,
+        pendingPushes = {}
     }
     wall.collider = physicsManager:createPuzzleWall(obj.x, obj.y, obj.width, obj.height)
+    wall.key = puzzleWallKey
+    puzzleWallKey = puzzleWallKey + 1
 
     function wall:deactivateCollider()
         wall.collider:setSensor(true)
     end
 
     function wall:activateCollider()
-        local x1, y1, x2, y2 = wall.obj.x, wall.obj.y, wall.obj.x + wall.obj.width, wall.obj.y + wall.obj.height
-        local colliders = physicsManager:getWorld():queryRectangleArea(x1, y1, x2, y2)
-        if colliders then
-            for _, collider in pairs(colliders) do
-                if collider.identifier == 'player' then
-                    local safeX, safeY = calculateSafePlayerCoords(x1, y1, x2, y2, collider)
-                    collider:setPosition(safeX, safeY)
-                end
-            end
+        table.insert(wallsToUpdate, wall)
+    end
+
+    function wall:update(dt)
+        if wall.collider == nil then
+            wall.collider = physicsManager:createPuzzleWall(obj.x, obj.y, obj.width, obj.height)
         end
-        
-        wall.collider:setSensor(false)
     end
 
     return wall
@@ -266,7 +259,7 @@ end
 function mapManager:draw()
 
     if self.cam then
-        self.map:drawImageLayer(self.map.layers["space"], camCoords, self.cam:getCameraZoom())
+        self.map:drawImageLayer(self.map.layers["space"], camCoords, self.cam:getCameraZoom(), self.currentMapData.dimensions)
     else
         self.map:drawImageLayer(self.map.layers["space"])
     end
@@ -300,6 +293,15 @@ function mapManager:drawDebug()
 end
 
 function mapManager:update(dt)
+    for i = #wallsToUpdate, 1, -1 do
+        local wall = wallsToUpdate[i]
+        wall.collider:destroy()
+        wall.collider = nil
+        wall:update(dt)
+        table.remove(wallsToUpdate, i)
+    end
+    
+    timer.update(dt)
     if self.cam then
         camCoords.x = self.cam:getX()
         camCoords.y = self.cam:getY()

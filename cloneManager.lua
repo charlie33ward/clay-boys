@@ -58,6 +58,7 @@ function cloneManager:update(dt, vx, vy, dir, state)
             clone.collider:setLinearVelocity(vx, vy)
         end
     end
+    
     if self.combiningClones then
         for _, clone in pairs(self.combiningClones) do
             if clone.readyToDestroy == true then
@@ -98,6 +99,11 @@ function cloneManager:draw()
     end
 end
 
+function cloneManager:destroyAllClones()
+    self.activeClones = {}
+    self.combiningClones = {}
+end
+
 function cloneManager:drawDebug()
     local y = 50
 
@@ -113,8 +119,9 @@ function cloneManager:newClone(x, y, mass)
     local clone = {}
     clone.collider = cloneManager.physicsManager:createCloneCollider(x, y)
     clone.collider:setIdentifier('clone')
-
     clone.collider:getBody():setMass(mass)
+    clone.collider:setParent(clone)
+
     clone.id = cloneID
     cloneID = cloneID + 1
     clone.mergeTimer = 0.75
@@ -146,7 +153,7 @@ function cloneManager:combine(sensor, clone)
     clone.endX, clone.endY = parent.collider.getX(), parent.collider.getY()
 
 
-    timer.tween(clone.mergeTimer, clone, { opacity = 0, x = clone.endX, y = clone.endY }, 'out-quart',
+    timer.tween(clone.mergeTimer, clone, { opacity = 0, x = clone.endX, y = clone.endY }, 'out-expo',
     function()
         clone.readyToDestroy = true
     end)

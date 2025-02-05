@@ -23,6 +23,8 @@ function gameManager:draw()
 end
 
 function gameManager:restartPuzzle()
-
+    -- reset clones function
+    -- reset player location and any stats
+    
 end
 
