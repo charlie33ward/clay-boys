@@ -1107,10 +1107,6 @@ function Map:drawImageLayer(layer, camCoords, zoom, dimensions)
 
 		lg.draw(layer.image, baseX, baseY)
 
-		-- local startY = getStartPosition(baseY, imageheight)
-		-- local startX = getStartPosition(baseX, imagewidth)
-		-- local xCount = 0
-		-- local yCount = 0
 
 		for row = 0, rows - 1 do
 			local y = baseY + (row * imageheight)

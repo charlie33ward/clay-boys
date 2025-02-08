@@ -1,10 +1,14 @@
-local CameraManager = require 'cameraManager'
+local cameraManager = require 'cameraManager'
 local playerCharacter = require 'player'
 local physicsManager = require 'physicsManager'
 local mapManager = require 'mapManager'
+local gameManager = require 'gameManager'
 
 function love.load()
     love.graphics.setDefaultFilter('nearest', 'nearest')
+
+    game = gameManager.getInstance()
+    game:load()
 
     phys = physicsManager:new()
     phys:load()
@@ -15,40 +19,55 @@ function love.load()
     player = playerCharacter:new(phys, map)
     player:load()
 
-    cam = CameraManager:new()
+    game:setPlayer(player)
+
+    cam = cameraManager:new()
     cam:load(player.x + 8, player.y + 8)
     mapManager:setCam(cam)
 
 end
 
 function love.update(dt)
-    player:update(dt)
-    phys:update(dt)
+    if game:isPlaying() then
+        player:update(dt)
+        phys:update(dt)
 
-    local currentMap = map:getCurrentMap()
-    cam:update(dt, player.x, player.y, currentMap.width, currentMap.height, currentMap.tilewidth)
+        local currentMap = map:getCurrentMap()
+        cam:update(dt, player.x, player.y, currentMap.width, currentMap.height, currentMap.tilewidth)
 
-    map:update(dt)
-    
+        map:update(dt)
+    end
+
+    game:update(dt)
 end
 
 function love.draw()
-    cam:getCam():attach()
-        map:draw()
-        -- phys:getWorld():draw()
-        player:draw()
+    if game:isPlaying() then
+        cam:getCam():attach()
+            map:draw()
+            -- phys:getWorld():draw()
+            player:draw()
 
-    cam:getCam():detach()
+        cam:getCam():detach()
 
-    map:getCurrentMap():drawDebug()
-    player:drawDebug()
-    map:drawDebug()
+        -- map:getCurrentMap():drawDebug()
+        player:drawDebug()
+        -- map:drawDebug()
+    end
 
+    game:draw()
+    love.graphics.print("FPS: " .. tostring(love.timer.getFPS()), 700, 50)
 end
 
 function love.keypressed(key, scancode, isrepeat)
     if key == 'space' or key == 'lalt' then
         player:startThrowBall()
+    end
+    if key == 'escape' then
+        game:onPauseButton()
+    end
+    if key == 'r' then
+        game:restartPuzzle()
     end
 end
 

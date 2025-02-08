@@ -1,6 +1,7 @@
 local anim8 = require 'libraries.anim8'
 local timer = require 'libraries.timer'
 local clone = require 'cloneManager'
+local gameManager = require 'gameManager'
 
 local diagonalOffset = math.sqrt(2) / 2
 local throwVectors = {
@@ -53,6 +54,7 @@ local player = {
 }
 
 local debugMessages = {}
+local ballId = 0
 
 function player:new(physicsManager, mapManager)
     local manager = {}
@@ -74,23 +76,7 @@ function player:load()
     self.moveGrid = anim8.newGrid(16, 16, self.movementSheet:getWidth(), self.movementSheet:getHeight())
     self.throwGrid = anim8.newGrid(16, 16, self.throwSheet:getWidth(), self.throwSheet:getHeight())
 
-    playerAnims.move['d'] = anim8.newAnimation(self.moveGrid('1-4', 1), 0.2)
-    playerAnims.move['dl'] = anim8.newAnimation(self.moveGrid('1-4', 2), 0.2)
-    playerAnims.move['l'] = anim8.newAnimation(self.moveGrid('1-4', 3), 0.2)
-    playerAnims.move['ul'] = anim8.newAnimation(self.moveGrid('1-4', 4), 0.2)
-    playerAnims.move['u'] = anim8.newAnimation(self.moveGrid('1-4', 5), 0.2)
-    playerAnims.move['ur'] = anim8.newAnimation(self.moveGrid('1-4', 6), 0.2)
-    playerAnims.move['r'] = anim8.newAnimation(self.moveGrid('1-4', 7), 0.2)
-    playerAnims.move['dr'] = anim8.newAnimation(self.moveGrid('1-4', 8), 0.2)
-
-    playerAnims.throw['d'] = anim8.newAnimation(self.throwGrid('1-2', 1), 10)
-    playerAnims.throw['dl'] = anim8.newAnimation(self.throwGrid('1-2', 2), 10)
-    playerAnims.throw['l'] = anim8.newAnimation(self.throwGrid('1-2', 3), 10)
-    playerAnims.throw['ul'] = anim8.newAnimation(self.throwGrid('1-2', 4), 10)
-    playerAnims.throw['u'] = anim8.newAnimation(self.throwGrid('1-2', 5), 10)
-    playerAnims.throw['ur'] = anim8.newAnimation(self.throwGrid('1-2', 6), 10)
-    playerAnims.throw['r'] = anim8.newAnimation(self.throwGrid('1-2', 7), 10)
-    playerAnims.throw['dr'] = anim8.newAnimation(self.throwGrid('1-2', 8), 10)
+    self:setAnims()
 
     self.dir = 'd'
     self.anim = playerAnims.move[self.dir]
@@ -119,8 +105,19 @@ function player:load()
     self.cloneManager:load()
 end
 
+function player:reset()
+    self.currentClones = 0
+    self.collider:setPosition(self.spawnPoint.x, self.spawnPoint.y)
+    for _, ball in pairs(self.balls) do
+        ball:onReset()
+    end
+    self.balls = {}
+    self.cloneManager:reset()
+end
+
 function player:onCombine()
     self.currentClones = self.currentClones - 1
+    -- table.insert(debugMessages, )
 end
 
 
@@ -179,12 +176,17 @@ function player:update(dt)
 
     if self.balls then
         for _, obj in pairs(self.balls) do
-            obj.anim:update(dt)
+            if obj.anim then
+                obj.anim:update(dt)
+            end
         end
     end
 
     self.physicsManager:updatePlayerVelocity(self.vx, self.vy)
     self.cloneManager:update(dt, self.vx, self.vy, self.dir, self.state)
+
+
+    debugMessages.cloneCount = 'clones available: '..tostring(self.currentClones)
 end
 
 function player:draw()
@@ -254,7 +256,7 @@ function player:throwBall()
     end
     
     if self.currentClones < self.maxClones then
-        -- self.currentClones = self.currentClones + 1
+        self.currentClones = self.currentClones + 1
         canThrow = false
         timer.after(throwCooldown, function() canThrow = true end)
         
@@ -271,6 +273,8 @@ function player:throwBall()
         self.anim:gotoFrame(2)
         ball.anim:gotoFrame(1)
         ball.anim:pause()
+        ball.id = ballId
+        ballId = ballId + 1
 
         ball.collider = self.physicsManager:createBallCollider(calculateBallArgs(self.x, self.y, self.dir, ball.spawnDistance, ball.radius))
         ball.collider:setIdentifier(self.physicsManager.getValidIdentifiers().ball)
@@ -284,13 +288,24 @@ function player:throwBall()
             end
         end
 
-        table.insert(self.balls, ball)
+        function ball:onReset()
+            timer.cancel(ball.throwTimer)
+            if ball.collider then
+                ball.collider:destroy()
+                ball.collider = nil
+                ball = nil
+            end
+        end
+
+        self.balls[ball.id] = ball
         
         timer.after(0.25, function()
             self.state = validStates.IDLE
         end)
-        timer.after(gameParams.throwLength, function()
-            player:destroyBall(ball)
+        ball.throwTimer = timer.after(gameParams.throwLength, function()
+            if self.balls[ball.id] then
+                player:destroyBall(ball)
+            end
         end)
     else
         self:failThrow()
@@ -319,13 +334,14 @@ function player:destroyBall(ball)
             self.cloneManager:newClone(ball.endX, ball.endY, gameParams.playerMass)
         end)
 
-        timer.after(0.5, function() table.remove(self.balls, 1) end)
+        local destroyTimer = timer.after(0.5, function()
+            if self.balls[ball.id] then
+                self.balls[ball.id] = nil
+                ball.anim = nil
+            end
+        end)
         
     end
-end
-
-function player:resetPlayerLocation()
-
 end
 
 function player:decideAnim()
@@ -424,9 +440,24 @@ function player:handleMovementInput()
     end
 end
 
+function player:setAnims()
+    playerAnims.move['d'] = anim8.newAnimation(self.moveGrid('1-4', 1), 0.2)
+    playerAnims.move['dl'] = anim8.newAnimation(self.moveGrid('1-4', 2), 0.2)
+    playerAnims.move['l'] = anim8.newAnimation(self.moveGrid('1-4', 3), 0.2)
+    playerAnims.move['ul'] = anim8.newAnimation(self.moveGrid('1-4', 4), 0.2)
+    playerAnims.move['u'] = anim8.newAnimation(self.moveGrid('1-4', 5), 0.2)
+    playerAnims.move['ur'] = anim8.newAnimation(self.moveGrid('1-4', 6), 0.2)
+    playerAnims.move['r'] = anim8.newAnimation(self.moveGrid('1-4', 7), 0.2)
+    playerAnims.move['dr'] = anim8.newAnimation(self.moveGrid('1-4', 8), 0.2)
 
-function player:spawnClone()
-
+    playerAnims.throw['d'] = anim8.newAnimation(self.throwGrid('1-2', 1), 10)
+    playerAnims.throw['dl'] = anim8.newAnimation(self.throwGrid('1-2', 2), 10)
+    playerAnims.throw['l'] = anim8.newAnimation(self.throwGrid('1-2', 3), 10)
+    playerAnims.throw['ul'] = anim8.newAnimation(self.throwGrid('1-2', 4), 10)
+    playerAnims.throw['u'] = anim8.newAnimation(self.throwGrid('1-2', 5), 10)
+    playerAnims.throw['ur'] = anim8.newAnimation(self.throwGrid('1-2', 6), 10)
+    playerAnims.throw['r'] = anim8.newAnimation(self.throwGrid('1-2', 7), 10)
+    playerAnims.throw['dr'] = anim8.newAnimation(self.throwGrid('1-2', 8), 10)
 end
 
 return player

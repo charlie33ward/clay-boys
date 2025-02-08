@@ -99,6 +99,10 @@ function cloneManager:draw()
     end
 end
 
+function cloneManager:reset()
+    self:destroyAllClones()
+end
+
 function cloneManager:destroyAllClones()
     self.activeClones = {}
     self.combiningClones = {}
@@ -139,7 +143,7 @@ function cloneManager:newClone(x, y, mass)
 end
 
 function cloneManager:combine(sensor, clone)
-    
+    self.player:onCombine()
     
     clone.readyToDestroy = false
     clone.parent.combiningClones[clone.id] = clone
