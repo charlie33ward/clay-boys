@@ -143,8 +143,6 @@ function player:loadBall()
 end
 
 function player:update(dt)
-    timer.update(dt)
-
     self.vx = 0
     self.vy = 0
 

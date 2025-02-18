@@ -1,4 +1,5 @@
 local uiManager = require 'scripts.ui'
+local timer = require 'libraries.timer'
 
 local validGameStates = {
     startScreen = "START-SCREEN",
@@ -31,15 +32,16 @@ function gameManager:getPalette()
 end
 
 function gameManager:load()
-    self.startScreenImage = love.graphics.newImage('assets/backgrounds/greenBackground.png')
+    self.ui:load()
 end
 
 function gameManager:update(dt)
-
+    self.ui:update(dt)
+    timer.update(dt)
 end
 
 function gameManager:draw()
-
+    self.ui:draw()
 end
 
 function gameManager:isPlaying()

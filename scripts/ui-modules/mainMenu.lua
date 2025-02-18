@@ -1,8 +1,8 @@
 local helium = require 'libraries.helium'
+local timer = require 'libraries.timer'
 local useButton = require 'libraries.helium.shell.button'
 local useState = require 'libraries.helium.hooks.state'
 local useContainer = require 'libraries.helium.layout.container'
-local gameManager = require 'scripts.gameManager'
 
 -- shader is work in progress, not functioning properly yet
 local ditherShader = love.graphics.newShader[[
@@ -56,29 +56,50 @@ local solidColorShader = love.graphics.newShader[[
     }
 ]]
 
-local playerImage = nil
-local palette = gameManager.getInstance():getPalette()
+local mainMenu = {}
+local palette = nil
+love.graphics.setDefaultFilter('nearest', 'nearest')
+local playerImage = love.graphics.newImage('assets/images/redDude_title.png')
 
+function mainMenu:new(objects)
+    local manager = {}
+    setmetatable(manager, self)
+    self.__index = self
+    palette = objects.palette
+    return manager
+end
 
-local buttonFont = love.graphics.newFont('monogram.ttf', 48)
-local titleFont = love.graphics.newFont('GravityBold8.ttf', 64)
-local titleFontMini = love.graphics.newFont('GravityBold8.ttf', 57)
+local playButton = nil
+local settingsButton = nil
+local exitButton = nil
+
+function mainMenu:load()
+    playButton = {
+        color = palette.green,
+        text = 'PLAY'
+    }
+    settingsButton = {
+        color = palette.yellow,
+        text = 'CONTROLS'
+    }
+    exitButton = {
+        color = palette.purple,
+        text = 'EXIT'
+    }  
+end
+
+function mainMenu:update(dt)
+
+end
+
+  
+
+local buttonFont = love.graphics.newFont('assets/fonts/monogram.ttf', 48)
+local titleFont = love.graphics.newFont('assets/fonts/GravityBold8.ttf', 64)
+local titleFontMini = love.graphics.newFont('assets/fonts/GravityBold8.ttf', 57)
 
 
 local buttonMargin = 10
-
-local playButton = {
-    color = palette.green,
-    text = 'PLAY'
-}
-local settingsButton = {
-    color = palette.yellow,
-    text = 'CONTROLS'
-}
-local exitButton = {
-    color = palette.purple,
-    text = 'EXIT'
-}
 
 
 local screenDimensions = {
@@ -92,7 +113,6 @@ local buttonStats = {
 }
 
 local menuButtonFactory = helium(function(param, view)
-    local timer = param.timer
     local baseColor = param.color
     local baseWidth = view.w - 1
     local baseHeight = view.h - 1
@@ -119,17 +139,19 @@ local menuButtonFactory = helium(function(param, view)
         end
     end
     
+    local timerLength = 0.3
+
     local buttonState = useButton(
         param.onClick,
         nil,
         function()
             cancelTimer(temp.exitTimer)
 
-            temp.enterTimer = timer.tween(0.3, temp, {state = 1}, 'out-back', function()
+            temp.enterTimer = timer.tween(timerLength, temp, {state = 1}, 'out-back', function()
                 button.textColor = palette.background
             end)
 
-            timer.during(0.3, function()
+            timer.during(timerLength, function()
                 button.state = temp.state
                 button.textColor = {
                     baseColor[1] + ((palette.background[1] - baseColor[1]) * temp.state),
@@ -141,11 +163,11 @@ local menuButtonFactory = helium(function(param, view)
         function()
             cancelTimer(temp.enterTimer)
 
-            temp.exitTimer = timer.tween(0.3, temp, {state = 0}, 'out-back', function()
+            temp.exitTimer = timer.tween(timerLength, temp, {state = 0}, 'out-back', function()
                 button.textColor = baseColor
             end)
 
-            timer.during(0.3, function()
+            timer.during(timerLength, function()
                 button.state = temp.state
                 button.textColor = {
                     baseColor[1] + ((palette.background[1] - baseColor[1]) * temp.state),
@@ -191,6 +213,8 @@ local imageFactory = helium(function(param, view)
         love.graphics.draw(playerImage, 0, 0, 0, scaleX + 0.1, scaleY + 0.3, 8.5, 5.5)
         
         love.graphics.setShader()
+
+        love.graphics.setColor(1, 1, 1, 1)
         love.graphics.draw(playerImage, 0, 0, 0, scaleX, scaleY, 0.5, 0.5)
     end
 end)
@@ -203,45 +227,45 @@ local titleFactory = helium(function(param, view)
         love.graphics.setColor(textColor[1], textColor[2], textColor[3])
         love.graphics.setFont(param.font)
         love.graphics.printf(param.text, 0, 0, view.w, 'center', 0, 1, 1, param.offset or 0, param.offset or 0)
+
+        love.graphics.setColor(1, 1, 1, 1)
     end
 end)
 
--- need to pass in ui.lua's timer
-return helium(function(param, view)
-    local timer = param.timer
-    playerImage = love.graphics.newImage('redDude_title.png')
+function mainMenu:initHeliumFunction()
+    self.heliumFunction = helium(function(param, view)
+    
+        local centeredPos = (screenDimensions.width - buttonStats.width) / 2
+        local yStart = 340
+        local xOffset = -70
+    
+        local play = menuButtonFactory(playButton, buttonStats.width, buttonStats.height)
+        local settings = menuButtonFactory(settingsButton, buttonStats.width, buttonStats.height)
+        local exit = menuButtonFactory(exitButton, buttonStats.width, buttonStats.height)
+    
+        local imageX = (screenDimensions.width + buttonStats.width) / 2 + xOffset + 10
+        local imageY = yStart
+        local playerIcon = imageFactory({}, 140, 140)
+    
+        local titleWidth = 570
+        local titleY = 175
+        local title1 = titleFactory({text = 'CLAY GAME', font = titleFontMini, color = {palette.red}}, titleWidth, 100)
+        local title2 = titleFactory({text = 'PLAYTEST', font = titleFont}, titleWidth, 100)
+    
+        return function()
+            love.graphics.setColor(palette.background[1], palette.background[2], palette.background[3])
+            love.graphics.rectangle('fill', -1, -1, screenDimensions.width + 5, screenDimensions.height + 5)
+            love.graphics.setColor(1, 1, 1, 1)
+    
+            play:draw(centeredPos + xOffset, yStart)
+            settings:draw(centeredPos + xOffset, yStart + (buttonStats.height + buttonMargin))
+            exit:draw(centeredPos + xOffset, yStart + (buttonStats.height + buttonMargin) * 2)
+            playerIcon:draw(imageX, imageY)
+            
+            title1:draw((screenDimensions.width - titleWidth) / 2, titleY)
+            title2:draw((screenDimensions.width - titleWidth) / 2, titleY + 72)
+        end
+    end)
+end
 
-    local centeredPos = (screenDimensions.width - buttonStats.width) / 2
-    local yStart = 340
-    local xOffset = -70
-
-    local play = menuButtonFactory(playButton, buttonStats.width, buttonStats.height)
-    local settings = menuButtonFactory(settingsButton, buttonStats.width, buttonStats.height)
-    local exit = menuButtonFactory(exitButton, buttonStats.width, buttonStats.height)
-
-    play:setParam({timer = param.timer})
-    settings:setParam({timer = param.timer})
-    exit:setParam({timer = param.timer})
-
-    local imageX = (screenDimensions.width + buttonStats.width) / 2 + xOffset + 10
-    local imageY = yStart
-    local playerIcon = imageFactory({}, 140, 140)
-
-    local titleWidth = 570
-    local titleY = 175
-    local title1 = titleFactory({text = 'CLAY GAME', font = titleFontMini, color = {palette.red}}, titleWidth, 100)
-    local title2 = titleFactory({text = 'PLAYTEST', font = titleFont}, titleWidth, 100)
-
-    return function()
-        love.graphics.setColor(palette.background[1], palette.background[2], palette.background[3])
-        love.graphics.rectangle('fill', -1, -1, screenDimensions.width + 5, screenDimensions.height + 5)
-
-        play:draw(centeredPos + xOffset, yStart)
-        settings:draw(centeredPos + xOffset, yStart + (buttonStats.height + buttonMargin))
-        exit:draw(centeredPos + xOffset, yStart + (buttonStats.height + buttonMargin) * 2)
-        playerIcon:draw(imageX, imageY)
-        
-        title1:draw((screenDimensions.width - titleWidth) / 2, titleY)
-        title2:draw((screenDimensions.width - titleWidth) / 2, titleY + 72)
-    end
-end)
+return mainMenu

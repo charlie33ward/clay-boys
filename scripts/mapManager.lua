@@ -301,7 +301,6 @@ function mapManager:update(dt)
         table.remove(wallsToUpdate, i)
     end
     
-    timer.update(dt)
     if self.cam then
         camCoords.x = self.cam:getX()
         camCoords.y = self.cam:getY()

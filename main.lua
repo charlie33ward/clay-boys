@@ -53,6 +53,7 @@ function love.draw()
         -- map:getCurrentMap():drawDebug()
         player:drawDebug()
         -- map:drawDebug()
+        
     end
 
     game:draw()

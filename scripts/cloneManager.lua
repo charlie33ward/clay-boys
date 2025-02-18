@@ -39,7 +39,6 @@ function cloneManager:load()
 end
 
 function cloneManager:update(dt, vx, vy, dir, state)
-    timer.update(dt)
     self.cloneAnim = self.moveAnims[dir]
     self.cloneAnim:update(dt)
 
