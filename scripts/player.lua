@@ -1,7 +1,7 @@
 local anim8 = require 'libraries.anim8'
 local timer = require 'libraries.timer'
-local clone = require 'cloneManager'
-local gameManager = require 'gameManager'
+local clone = require 'scripts.cloneManager'
+local gameManager = require 'scripts.gameManager'
 
 local diagonalOffset = math.sqrt(2) / 2
 local throwVectors = {
@@ -246,7 +246,7 @@ function player:startThrowBall()
         startedThrow = false
         return
     end
-    self.state = validStates.THROWING
+    self.state = validStates.THROWING   
     startedThrow = true
 end
 

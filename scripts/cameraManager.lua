@@ -1,4 +1,4 @@
-camera = require 'libraries.camera'
+local camera = require 'libraries.camera'
 
 local cameraManager = {
     cam = nil,

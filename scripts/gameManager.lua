@@ -1,4 +1,4 @@
-local uiManager = require 'ui'
+local uiManager = require 'scripts.ui'
 
 local validGameStates = {
     startScreen = "START-SCREEN",
@@ -24,6 +24,10 @@ function gameManager.getInstance()
     end
     
     return gameManager.instance
+end
+
+function gameManager:getPalette()
+    return self.ui.getPalette()
 end
 
 function gameManager:load()

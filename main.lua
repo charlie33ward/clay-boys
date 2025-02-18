@@ -1,8 +1,8 @@
-local cameraManager = require 'cameraManager'
-local playerCharacter = require 'player'
-local physicsManager = require 'physicsManager'
-local mapManager = require 'mapManager'
-local gameManager = require 'gameManager'
+local cameraManager = require 'scripts.cameraManager'
+local playerCharacter = require 'scripts.player'
+local physicsManager = require 'scripts.physicsManager'
+local mapManager = require 'scripts.mapManager'
+local gameManager = require 'scripts.gameManager'
 
 function love.load()
     love.graphics.setDefaultFilter('nearest', 'nearest')
