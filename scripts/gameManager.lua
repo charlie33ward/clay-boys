@@ -31,6 +31,10 @@ function gameManager:getPalette()
     return self.ui.getPalette()
 end
 
+function gameManager:chooseLevel(levelName)
+
+end
+
 function gameManager:load()
     self.ui:load()
 end

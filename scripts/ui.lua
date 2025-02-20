@@ -35,7 +35,6 @@ function ui:load()
     self.mainMenu:initHeliumFunction()
     self.mainMenuRender = self.mainMenu.heliumFunction({}, love.graphics.getWidth(), love.graphics.getHeight())
     -- self.mainMenuRender:draw()
-    mainMenuScene:deactivate()
 
     levelSelectScene:activate()
     self.levelSelect:load()
