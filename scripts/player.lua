@@ -183,7 +183,6 @@ function player:update(dt)
     self.cloneManager:update(dt, self.vx, self.vy, self.dir, self.state)
 
 
-    debugMessages.cloneCount = self.currentClones
 end
 
 function player:draw()

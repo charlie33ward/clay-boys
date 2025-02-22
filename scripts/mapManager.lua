@@ -4,15 +4,8 @@ local timer = require 'libraries.timer'
 local debug = {}
 
 local mapManager = {
-    wallColliders = {}
-}
-
-local puzzle1 = {
-    filepath = 'maps/puzzle-test1.lua',
-    dimensions = {
-        rows = 3,
-        columns = 3
-    }
+    wallColliders = {},
+    currentMap = nil
 }
 
 local wallsToUpdate = {}
@@ -27,6 +20,11 @@ local puzzleState = {
         switch = nil
     },
     green = {
+        opacity = 1,
+        walls = {},
+        switch = nil
+    },
+    yellow = {
         opacity = 1,
         walls = {},
         switch = nil
@@ -56,6 +54,28 @@ end
 local camCoords = {
     x = 0,
     y = 0
+}
+
+local puzzle1 = {
+    filepath = 'maps/puzzle-test1.lua',
+    dimensions = {
+        rows = 3,
+        columns = 3
+    },
+    draw = function(manager)
+        manager.map:drawLayer(manager.map.layers["ground"])
+        manager.map:drawLayer(manager.map.layers["decorations"])
+        manager.map:drawLayer(manager.map.layers["puzzle-walls"])
+        manager.map:drawLayer(manager.map.layers["wall-sprites"])
+
+        love.graphics.setColor(1, 1, 1, puzzleState.green.opacity)
+        manager.map:drawLayer(manager.map.layers["green-puzzle"])
+        love.graphics.setColor(1, 1, 1, 1)
+
+        love.graphics.setColor(1, 1, 1, puzzleState.blue.opacity)
+        manager.map:drawLayer(manager.map.layers["blue-puzzle"])  
+        love.graphics.setColor(1, 1, 1, 1)
+    end
 }
 
 function mapManager:setCam(cam)
@@ -264,20 +284,7 @@ function mapManager:draw()
         self.map:drawImageLayer(self.map.layers["space"])
     end
 
-
-
-    self.map:drawLayer(self.map.layers["ground"])
-    self.map:drawLayer(self.map.layers["decorations"])
-    self.map:drawLayer(self.map.layers["puzzle-walls"])
-    self.map:drawLayer(self.map.layers["wall-sprites"])
-
-    love.graphics.setColor(1, 1, 1, puzzleState.green.opacity)
-    self.map:drawLayer(self.map.layers["green-puzzle"])
-    love.graphics.setColor(1, 1, 1, 1)
-
-    love.graphics.setColor(1, 1, 1, puzzleState.blue.opacity)
-    self.map:drawLayer(self.map.layers["blue-puzzle"])  
-    love.graphics.setColor(1, 1, 1, 1)
+    self.currentMapData.draw(self)
 
 end
 

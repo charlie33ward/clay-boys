@@ -29,7 +29,6 @@ function ui:new()
 end
 
 function ui:load()
-
     mainMenuScene:activate()
     self.mainMenu:load()
     self.mainMenu:initHeliumFunction()
