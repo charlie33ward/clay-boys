@@ -35,15 +35,17 @@ function ui:load()
     self.mainMenu:initHeliumFunction()
     self.mainMenuRender = self.mainMenu.heliumFunction({}, love.graphics.getWidth(), love.graphics.getHeight())
     -- self.mainMenuRender:draw()
+    mainMenuScene:deactivate()
 
     levelSelectScene:activate()
     self.levelSelect:load()
     self.levelSelect:initHeliumFunction()
     self.levelSelectRender = self.levelSelect.heliumFunction({}, love.graphics.getWidth(), love.graphics.getHeight())
-    self.levelSelectRender:draw()
+    -- self.levelSelectRender:draw()
+    mainMenuScene:deactivate()
     
     self.currentScene = levelSelectScene
-    self.currentScene:activate()
+    -- self.currentScene:activate()
 end
 
 function ui:update(dt)
@@ -52,6 +54,7 @@ end
 
 function ui:draw()
     self.currentScene:draw()
+    self.levelSelect:drawDebug()
 end
 
 return ui

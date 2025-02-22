@@ -179,17 +179,16 @@ local menuButtonFactory = helium(function(param, view)
     )
     
     return function()
-        love.graphics.setColor(param.color[1], param.color[2], param.color[3], button.state)
+        love.graphics.setColor(baseColor[1], baseColor[2], baseColor[3], button.state)
         love.graphics.rectangle('fill', 0.5, 0.5, baseWidth, baseHeight, buttonStats.rounding, buttonStats.rounding)
 
-        love.graphics.setColor(param.color)
+        love.graphics.setColor(baseColor)
         love.graphics.setLineWidth(2)
         love.graphics.rectangle('line', 0.5, 0.5, baseWidth, baseHeight, buttonStats.rounding, buttonStats.rounding) 
 
         love.graphics.setColor(button.textColor[1], button.textColor[2], button.textColor[3])
         love.graphics.setFont(buttonFont)
         local textW = buttonFont:getWidth(param.text)
-        local textH = buttonFont:getHeight(param.text)
         love.graphics.print(param.text, (view.w - textW) / 2, -1)
     end
 end)
@@ -237,7 +236,7 @@ function mainMenu:initHeliumFunction()
     
         local centeredPos = (screenDimensions.width - buttonStats.width) / 2
         local yStart = 340
-        local xOffset = -70
+        local xOffset = -80
     
         local play = menuButtonFactory(playButton, buttonStats.width, buttonStats.height)
         local settings = menuButtonFactory(settingsButton, buttonStats.width, buttonStats.height)
