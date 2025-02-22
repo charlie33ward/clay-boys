@@ -27,7 +27,7 @@ local playerAnims = {
 
 local gameParams = {
     walkSpeed = 150,
-    throwLength = 2.5,
+    throwLength = 0.75,
     combineDistance = 24,
     playerMass = 5
 }
@@ -62,7 +62,7 @@ function player:new(physicsManager, mapManager)
     self.__index = self
     self.physicsManager = physicsManager
     self.mapManager = mapManager
-    self.cloneManager = clone:new(physicsManager, self)
+    self.cloneManager = clone:new(physicsManager, manager)
     return manager
 end
 
@@ -117,7 +117,6 @@ end
 
 function player:onCombine()
     self.currentClones = self.currentClones - 1
-    -- table.insert(debugMessages, )
 end
 
 
@@ -184,7 +183,7 @@ function player:update(dt)
     self.cloneManager:update(dt, self.vx, self.vy, self.dir, self.state)
 
 
-    debugMessages.cloneCount = 'clones available: '..tostring(self.currentClones)
+    debugMessages.cloneCount = self.currentClones
 end
 
 function player:draw()

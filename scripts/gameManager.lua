@@ -35,6 +35,10 @@ function gameManager:chooseLevel(levelName)
 
 end
 
+function gameManager:completedLevel(levelName)
+
+end
+
 function gameManager:load()
     self.ui:load()
 end

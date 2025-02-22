@@ -23,8 +23,8 @@ end
 
 function cameraManager:setPuzzleCam(zoom, x, y)
     self.cameraZoom = zoom
-    puzzleCamPosition.x = x
-    puzzleCamPosition.y = y
+    puzzleCamPosition.x = math.floor(x)
+    puzzleCamPosition.y = math.floor(y)
     inPuzzle = true
 end
 
@@ -32,7 +32,6 @@ function cameraManager:setDefaultCam()
     self.cameraZoom = self.defaultCameraZoom
     inPuzzle = false
 end
-
 
 function cameraManager:setCameraZoom(zoom)
     self.cameraZoom = zoom

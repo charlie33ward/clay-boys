@@ -1,3 +1,3 @@
 function love.conf(t)
-    t.window.msaa = 6
+    t.window.msaa = 0
 end
