@@ -57,9 +57,14 @@ end
 
 
 
-function physicsManager:createWall(x, y, width, height)
+function physicsManager:createWall(x, y, width, height, rotation)
     local wall = self.world:newCollider('rectangle', {x, y, width, height})
     wall:setType('static')
+
+    if rotation then
+        wall:setRotation(rotation)
+    end
+
     table.insert(self.wallColliders, wall)
 end
 
