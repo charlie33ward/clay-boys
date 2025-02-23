@@ -134,7 +134,11 @@ function mapManager:load()
 
     if self.map.layers["walls"] then
         for i, obj in pairs(self.map.layers["walls"].objects) do
-            physicsManager:createWall(obj.x + (obj.width / 2), obj.y + (obj.height / 2), obj.width, obj.height)
+            if obj.rotation ~= 0 then
+                physicsManager:createWall(obj.x + (obj.width / 2), obj.y + (obj.height / 2), obj.width, obj.height, obj.rotation)    
+            else 
+                physicsManager:createWall(obj.x + (obj.width / 2), obj.y + (obj.height / 2), obj.width, obj.height)
+            end
         end
     end
 
@@ -209,12 +213,14 @@ function mapManager:createPuzzlePhysics()
     end
 end
 
-function mapManager:createPuzzleObject(obj, color)    
+function mapManager:createPuzzleObject(obj, color)
     if obj.name == 'switch' then
         if not puzzleState[color].switch then   
             local switch = self:createSwitch(obj, color)
             puzzleState[color].switch = switch
         end
+    elseif obj.name == 'switch-sprite' then
+        
     else
         local wall = self:createPuzzleWall(obj, color)
         table.insert(puzzleState[color].walls, wall)
@@ -259,7 +265,15 @@ function mapManager:createSwitch(obj, color)
         isTriggered = false
     }
 
-    switch.collider = physicsManager:createPuzzleWall(obj.x, obj.y, obj.width, obj.height)
+    local x = obj.x
+    local y = obj.y
+
+    -- custom shapes displace 1 height above for some reason, this fixes
+    if obj.properties.isCustomShape then
+        y = y + obj.height
+    end 
+
+    switch.collider = physicsManager:createPuzzleWall(x, y, obj.width, obj.height)
     switch.collider:setSensor(true)
     switch.collider:setIdentifier(physicsManager.getValidIdentifiers().switch)
 

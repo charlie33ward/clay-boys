@@ -62,7 +62,8 @@ function physicsManager:createWall(x, y, width, height, rotation)
     wall:setType('static')
 
     if rotation then
-        wall:setRotation(rotation)
+        wall:setAngle(math.rad(rotation))
+        wall:setPosition(x - width, y)
     end
 
     table.insert(self.wallColliders, wall)

@@ -10,7 +10,7 @@ return {
   tilewidth = 32,
   tileheight = 32,
   nextlayerid = 22,
-  nextobjectid = 225,
+  nextobjectid = 235,
   properties = {
     ["height"] = 0,
     ["width"] = 0
@@ -698,7 +698,7 @@ return {
         },
         {
           id = 186,
-          name = "switch",
+          name = "switch-sprite",
           type = "",
           shape = "rectangle",
           x = 224,
@@ -709,6 +709,21 @@ return {
           gid = 3598,
           visible = true,
           properties = {}
+        },
+        {
+          id = 229,
+          name = "switch",
+          type = "",
+          shape = "rectangle",
+          x = 225.25,
+          y = 290,
+          width = 48.5,
+          height = 26.75,
+          rotation = 0,
+          visible = false,
+          properties = {
+            ["isCustomShape"] = true
+          }
         }
       }
     },
@@ -725,7 +740,65 @@ return {
       parallaxx = 1,
       parallaxy = 1,
       properties = {},
-      objects = {}
+      objects = {
+        {
+          id = 224,
+          name = "switch-sprite",
+          type = "",
+          shape = "rectangle",
+          x = 480.333,
+          y = 176,
+          width = 32,
+          height = 32,
+          rotation = 0,
+          gid = 3594,
+          visible = true,
+          properties = {}
+        },
+        {
+          id = 232,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 512,
+          y = 288,
+          width = 32,
+          height = 32,
+          rotation = 0,
+          gid = 3595,
+          visible = true,
+          properties = {}
+        },
+        {
+          id = 233,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 512,
+          y = 320,
+          width = 32,
+          height = 32,
+          rotation = 0,
+          gid = 3595,
+          visible = true,
+          properties = {}
+        },
+        {
+          id = 234,
+          name = "switch",
+          type = "",
+          shape = "rectangle",
+          x = 481.25,
+          y = 145,
+          width = 48.25,
+          height = 27.25,
+          rotation = 0,
+          visible = false,
+          properties = {
+            ["isCustomShape"] = true
+          }
+        }
+      }
     },
     {
       type = "objectgroup",
@@ -756,20 +829,6 @@ return {
           properties = {}
         },
         {
-          id = 216,
-          name = "",
-          type = "",
-          shape = "rectangle",
-          x = 512,
-          y = 192,
-          width = 32,
-          height = 32,
-          rotation = 0,
-          gid = 3591,
-          visible = true,
-          properties = {}
-        },
-        {
           id = 217,
           name = "",
           type = "",
@@ -784,36 +843,8 @@ return {
           properties = {}
         },
         {
-          id = 218,
-          name = "",
-          type = "",
-          shape = "rectangle",
-          x = 512,
-          y = 288,
-          width = 32,
-          height = 32,
-          rotation = 0,
-          gid = 3595,
-          visible = true,
-          properties = {}
-        },
-        {
-          id = 219,
-          name = "",
-          type = "",
-          shape = "rectangle",
-          x = 512,
-          y = 320,
-          width = 32,
-          height = 32,
-          rotation = 0,
-          gid = 3595,
-          visible = true,
-          properties = {}
-        },
-        {
           id = 223,
-          name = "",
+          name = "switch-sprite",
           type = "",
           shape = "rectangle",
           x = 480.333,
@@ -826,18 +857,19 @@ return {
           properties = {}
         },
         {
-          id = 224,
-          name = "",
+          id = 231,
+          name = "switch",
           type = "",
           shape = "rectangle",
-          x = 480.333,
-          y = 176,
-          width = 32,
-          height = 32,
+          x = 481.5,
+          y = 273.5,
+          width = 48.25,
+          height = 27.25,
           rotation = 0,
-          gid = 3594,
-          visible = true,
-          properties = {}
+          visible = false,
+          properties = {
+            ["isCustomShape"] = true
+          }
         }
       }
     },
@@ -893,50 +925,6 @@ return {
           y = 256,
           width = 128,
           height = 64,
-          rotation = 0,
-          visible = true,
-          properties = {}
-        }
-      }
-    },
-    {
-      type = "objectgroup",
-      draworder = "topdown",
-      id = 17,
-      name = "cam",
-      class = "",
-      visible = false,
-      opacity = 1,
-      offsetx = 0,
-      offsety = 0,
-      parallaxx = 1,
-      parallaxy = 1,
-      properties = {},
-      objects = {
-        {
-          id = 180,
-          name = "cam-position",
-          type = "",
-          shape = "point",
-          x = 528.667,
-          y = 222.666,
-          width = 0,
-          height = 0,
-          rotation = 0,
-          visible = true,
-          properties = {
-            ["zoom"] = 1.5
-          }
-        },
-        {
-          id = 181,
-          name = "puzzle-zone",
-          type = "",
-          shape = "rectangle",
-          x = 402.667,
-          y = 100.667,
-          width = 268.666,
-          height = 264,
           rotation = 0,
           visible = true,
           properties = {}

@@ -27,7 +27,7 @@ local playerAnims = {
 
 local gameParams = {
     walkSpeed = 150,
-    throwLength = 0.75,
+    throwLength = 0.8,
     combineDistance = 24,
     playerMass = 5
 }

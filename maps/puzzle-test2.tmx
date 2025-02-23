@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.0" orientation="orthogonal" renderorder="right-down" width="24" height="20" tilewidth="32" tileheight="32" infinite="0" nextlayerid="22" nextobjectid="225">
+<map version="1.10" tiledversion="1.11.0" orientation="orthogonal" renderorder="right-down" width="24" height="20" tilewidth="32" tileheight="32" infinite="0" nextlayerid="22" nextobjectid="235">
  <editorsettings>
-  <export target="puzzle-test1.lua" format="lua"/>
+  <export target="puzzle-test2.lua" format="lua"/>
  </editorsettings>
  <properties>
   <property name="height" type="int" value="0"/>
@@ -128,17 +128,32 @@
   <object id="183" gid="3599" x="256" y="288" width="32" height="32"/>
   <object id="184" gid="3599" x="256" y="320" width="32" height="32"/>
   <object id="185" gid="3599" x="256" y="352" width="32" height="32"/>
-  <object id="186" name="switch" gid="3598" x="224" y="320" width="32" height="32"/>
+  <object id="186" name="switch-sprite" gid="3598" x="224" y="320" width="32" height="32"/>
+  <object id="229" name="switch" x="225.25" y="290" width="48.5" height="26.75" visible="0">
+   <properties>
+    <property name="isCustomShape" type="bool" value="true"/>
+   </properties>
+  </object>
  </objectgroup>
- <objectgroup id="8" name="green-puzzle"/>
+ <objectgroup id="8" name="green-puzzle">
+  <object id="224" name="switch-sprite" gid="3594" x="480.333" y="176" width="32" height="32"/>
+  <object id="232" gid="3595" x="512" y="288" width="32" height="32"/>
+  <object id="233" gid="3595" x="512" y="320" width="32" height="32"/>
+  <object id="234" name="switch" x="481.25" y="145" width="48.25" height="27.25" visible="0">
+   <properties>
+    <property name="isCustomShape" type="bool" value="true"/>
+   </properties>
+  </object>
+ </objectgroup>
  <objectgroup id="21" name="blue-puzzle">
   <object id="215" gid="3591" x="512" y="160" width="32" height="32"/>
-  <object id="216" gid="3591" x="512" y="192" width="32" height="32"/>
   <object id="217" gid="3591" x="512" y="192" width="32" height="32"/>
-  <object id="218" gid="3595" x="512" y="288" width="32" height="32"/>
-  <object id="219" gid="3595" x="512" y="320" width="32" height="32"/>
-  <object id="223" gid="3590" x="480.333" y="304" width="32" height="32"/>
-  <object id="224" gid="3594" x="480.333" y="176" width="32" height="32"/>
+  <object id="223" name="switch-sprite" gid="3590" x="480.333" y="304" width="32" height="32"/>
+  <object id="231" name="switch" x="481.5" y="273.5" width="48.25" height="27.25" visible="0">
+   <properties>
+    <property name="isCustomShape" type="bool" value="true"/>
+   </properties>
+  </object>
  </objectgroup>
  <objectgroup id="3" name="spawn-point" visible="0">
   <object id="8" x="122.667" y="308">
@@ -147,14 +162,5 @@
  </objectgroup>
  <objectgroup id="13" name="next-level" visible="0">
   <object id="40" x="640" y="256" width="128" height="64"/>
- </objectgroup>
- <objectgroup id="17" name="cam" visible="0" locked="1">
-  <object id="180" name="cam-position" x="528.667" y="222.666">
-   <properties>
-    <property name="zoom" type="float" value="1.5"/>
-   </properties>
-   <point/>
-  </object>
-  <object id="181" name="puzzle-zone" x="402.667" y="100.667" width="268.666" height="264"/>
  </objectgroup>
 </map>
