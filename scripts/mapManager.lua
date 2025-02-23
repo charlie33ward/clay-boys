@@ -243,13 +243,13 @@ function mapManager:createSwitch(obj, color)
     end
 
     function switch.collider:enter(other)
-        if other.identifier ~= physicsManager.getValidIdentifiers().ball then
+        if other.identifier ~= 'ball' and other.identifier ~= 'combineSensor' then
             switch:onTriggered()
         end
     end
 
     function switch.collider:exit(other)
-        if other.identifier ~= physicsManager.getValidIdentifiers().ball then
+        if other.identifier ~= 'ball' and other.identifier ~= 'combineSensor' then
             switch:onReleased()
         end
     end
