@@ -78,6 +78,31 @@ local puzzle1 = {
     end
 }
 
+local puzzle2 = {
+    filepath = 'maps/puzzle-test2.lua',
+    dimensions = {
+        rows = 3,
+        columns = 3
+    },
+    draw = function(manager)
+        manager.map:drawLayer(manager.map.layers["ground"])
+        manager.map:drawLayer(manager.map.layers["decorations"])
+        manager.map:drawLayer(manager.map.layers["puzzle-walls"])
+
+        love.graphics.setColor(1, 1, 1, puzzleState.green.opacity)
+        manager.map:drawLayer(manager.map.layers["green-puzzle"])
+        love.graphics.setColor(1, 1, 1, 1)
+
+        love.graphics.setColor(1, 1, 1, puzzleState.blue.opacity)
+        manager.map:drawLayer(manager.map.layers["blue-puzzle"])  
+        love.graphics.setColor(1, 1, 1, 1)
+
+        love.graphics.setColor(1, 1, 1, puzzleState.yellow.opacity)
+        manager.map:drawLayer(manager.map.layers["yellow-puzzle"])  
+        love.graphics.setColor(1, 1, 1, 1)
+    end
+}
+
 function mapManager:setCam(cam)
     self.cam = cam
 end
@@ -97,8 +122,8 @@ end
 
 function mapManager:load()
     love.graphics.setDefaultFilter('nearest', 'nearest')
-    self.map = sti(puzzle1.filepath)
-    self.currentMapData = puzzle1
+    self.map = sti(puzzle2.filepath)
+    self.currentMapData = puzzle2
 
     local bgLayer = self.map.layers["space"]
     if bgLayer then
