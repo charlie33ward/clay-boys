@@ -103,6 +103,11 @@ local puzzle2 = {
     end
 }
 
+local puzzleOrder = {
+    puzzle1 = {},
+    puzzle2 = {},
+}
+
 function mapManager:setCam(cam)
     self.cam = cam
 end

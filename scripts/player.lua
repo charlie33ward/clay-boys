@@ -108,10 +108,11 @@ end
 function player:reset()
     self.currentClones = 0
     self.collider:setPosition(self.spawnPoint.x, self.spawnPoint.y)
-    for _, ball in pairs(self.balls) do
+    for i, ball in pairs(self.balls) do
         ball:onReset()
+        self[i] = nil
     end
-    self.balls = {}
+
     self.cloneManager:reset()
 end
 
@@ -326,15 +327,18 @@ function player:destroyBall(ball)
         ball.collider = nil
 
 
+
         timer.after(0, function()
             self.cloneManager:newClone(ball.endX, ball.endY, gameParams.playerMass)
         end)
 
-        local destroyTimer = timer.after(0.5, function()
+
+        timer.after(0.5, function()
             if self.balls[ball.id] then
                 self.balls[ball.id] = nil
                 ball.anim = nil
             end
+            ball = nil
         end)
         
     end
