@@ -305,7 +305,7 @@ function player:throwBall()
             if other.identifier == 'tube' then
                 ball.canDestroy = true
                 ball.throwTimer = timer.after(gameParams.throwLength, function()
-                    if self.balls[ball.id] then
+                    if player.balls[ball.id] then
                         player:destroyBall(ball)
                     end
                 end)
@@ -320,6 +320,7 @@ function player:throwBall()
                 ball = nil
             end
         end
+
 
         self.balls[ball.id] = ball
         

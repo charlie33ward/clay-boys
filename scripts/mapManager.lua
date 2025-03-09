@@ -229,12 +229,13 @@ function mapManager:createTubes()
             function tube.collider:preSolve(other, collision)
                 if other.identifier == 'ball' then
                     collision:setEnabled(false)
+                    -- cancel ball timers
                 end
             end
 
             function tube.collider:postSolve(other, collision)
                 if other.identifier == 'ball' then
-                    
+                    -- resume new ball timers
                 end
             end
         end
