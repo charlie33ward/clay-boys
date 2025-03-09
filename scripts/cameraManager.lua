@@ -1,4 +1,5 @@
 local camera = require 'libraries.camera'
+local timer = require 'libraries.timer'
 
 local cameraManager = {
     cam = nil,
@@ -21,8 +22,13 @@ function cameraManager:new()
     return manager
 end
 
+local function tweenCameraZoom(camera, zoom)
+
+end
+
 function cameraManager:setPuzzleCam(zoom, x, y)
     self.cameraZoom = zoom
+    self.cam:zoomTo(self.cameraZoom)
     puzzleCamPosition.x = math.floor(x)
     puzzleCamPosition.y = math.floor(y)
     inPuzzle = true
@@ -30,6 +36,7 @@ end
 
 function cameraManager:setDefaultCam()
     self.cameraZoom = self.defaultCameraZoom
+    self.cam:zoomTo(self.cameraZoom)
     inPuzzle = false
 end
 

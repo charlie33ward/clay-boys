@@ -1536,7 +1536,7 @@ return {
           rotation = 0,
           visible = true,
           properties = {
-            ["zoom"] = 1
+            ["zoom"] = 1.25
           }
         },
         {

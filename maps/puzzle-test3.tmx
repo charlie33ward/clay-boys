@@ -264,7 +264,7 @@
  <objectgroup id="23" name="cam">
   <object id="235" name="cam-position" x="580" y="322">
    <properties>
-    <property name="zoom" type="float" value="1"/>
+    <property name="zoom" type="float" value="1.25"/>
    </properties>
    <point/>
   </object>
