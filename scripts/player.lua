@@ -264,7 +264,8 @@ function player:throwBall()
             spinSpeed = 10,
             anim = self.ball.anim:clone(),
             endX = 0,
-            endY = 0
+            endY = 0,
+            canDestroy = true
         }
 
         self.anim:gotoFrame(2)
@@ -277,11 +278,37 @@ function player:throwBall()
         ball.collider:setIdentifier(self.physicsManager.getValidIdentifiers().ball)
         ball.collider:setLinearVelocity(ball.speed * throwVectors[self.dir].x, ball.speed * throwVectors[self.dir].y)
 
+        timer.after(0.25, function()
+            self.state = validStates.IDLE
+        end)
+        ball.throwTimer = timer.after(gameParams.throwLength, function()
+            if self.balls[ball.id] then
+                player:destroyBall(ball)
+            end
+        end)
+
         function ball.collider:enter(other)
+            
             if other.userData and other.userData.identifier == 'combineSensor' then  
                 return
+            elseif other.identifier == 'tube' then
+                timer.cancel(ball.throwTimer)
+                ball.canDestroy = false
             elseif other.identifier == 'wall' or other.identifier == 'clone' or other.identifier == '' then
-                player:destroyBall(ball)
+                if ball.canDestroy then
+                    player:destroyBall(ball)
+                end
+            end
+        end
+
+        function ball.collider:exit(other)
+            if other.identifier == 'tube' then
+                ball.canDestroy = true
+                ball.throwTimer = timer.after(gameParams.throwLength, function()
+                    if self.balls[ball.id] then
+                        player:destroyBall(ball)
+                    end
+                end)
             end
         end
 
@@ -296,14 +323,6 @@ function player:throwBall()
 
         self.balls[ball.id] = ball
         
-        timer.after(0.25, function()
-            self.state = validStates.IDLE
-        end)
-        ball.throwTimer = timer.after(gameParams.throwLength, function()
-            if self.balls[ball.id] then
-                player:destroyBall(ball)
-            end
-        end)
     else
         self:failThrow()
     end

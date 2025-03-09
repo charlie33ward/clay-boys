@@ -84,7 +84,8 @@ local validIdentifiers = {
    ball = 'ball',
    switch = 'switch',
    detectionArea = 'detectionArea',
-   combineSensor = 'combineSensor'
+   combineSensor = 'combineSensor',
+   tube = 'tube'
 }
 
 

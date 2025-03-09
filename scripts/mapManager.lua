@@ -28,6 +28,36 @@ local puzzleState = {
         opacity = 1,
         walls = {},
         switch = nil
+    },
+    darkBlue = {
+        opacity = 1,
+        walls = {},
+        switch = nil
+    },
+    orange = {
+        opacity = 1,
+        walls = {},
+        switch = nil
+    },
+    purple = {
+        opacity = 1,
+        walls = {},
+        switch = nil
+    },
+    pink = {
+        opacity = 1,
+        walls = {},
+        switch = nil
+    },
+    lime = {
+        opacity = 1,
+        walls = {},
+        switch = nil
+    },
+    darkRed = {
+        opacity = 1,
+        walls = {},
+        switch = nil
     }
 }
 
@@ -103,9 +133,41 @@ local puzzle2 = {
     end
 }
 
+local puzzle3 = {
+    filepath = 'maps/puzzle-test3.lua',
+    dimensions = {
+        rows = 3,
+        columns = 4
+    },
+    draw = function(manager)
+        manager.map:drawLayer(manager.map.layers["ground"])
+        manager.map:drawLayer(manager.map.layers["bridges"])
+        manager.map:drawLayer(manager.map.layers["decorations"])
+        manager.map:drawLayer(manager.map.layers["decorations2"])
+        manager.map:drawLayer(manager.map.layers["puzzle-walls"])
+
+        love.graphics.push()
+        love.graphics.translate(0, 32)
+        manager.map:drawLayer(manager.map.layers["tubes"])
+        love.graphics.pop()
+
+        love.graphics.setColor(1, 1, 1, puzzleState.green.opacity)
+        manager.map:drawLayer(manager.map.layers["green-puzzle"])
+        love.graphics.setColor(1, 1, 1, 1)
+
+        love.graphics.setColor(1, 1, 1, puzzleState.blue.opacity)
+        manager.map:drawLayer(manager.map.layers["blue-puzzle"])  
+        love.graphics.setColor(1, 1, 1, 1)
+
+        love.graphics.setColor(1, 1, 1, puzzleState.orange.opacity)
+        manager.map:drawLayer(manager.map.layers["orange-puzzle"])  
+        love.graphics.setColor(1, 1, 1, 1)
+    end
+}
+
 local puzzleOrder = {
     puzzle1 = {},
-    puzzle2 = {},
+    puzzle2 = {}
 }
 
 function mapManager:setCam(cam)
@@ -127,8 +189,8 @@ end
 
 function mapManager:load()
     love.graphics.setDefaultFilter('nearest', 'nearest')
-    self.map = sti(puzzle2.filepath)
-    self.currentMapData = puzzle2
+    self.map = sti(puzzle3.filepath)
+    self.currentMapData = puzzle3
 
     local bgLayer = self.map.layers["space"]
     if bgLayer then
@@ -140,8 +202,8 @@ function mapManager:load()
     if self.map.layers["walls"] then
         for i, obj in pairs(self.map.layers["walls"].objects) do
             if obj.rotation ~= 0 then
-                physicsManager:createWall(obj.x + (obj.width / 2), obj.y + (obj.height / 2), obj.width, obj.height, obj.rotation)    
-            else 
+                physicsManager:createWall(obj.x, obj.y, obj.width, obj.height, obj.rotation)    
+            else
                 physicsManager:createWall(obj.x + (obj.width / 2), obj.y + (obj.height / 2), obj.width, obj.height)
             end
         end
@@ -149,11 +211,34 @@ function mapManager:load()
 
     local width = self.map.width * self.map.tilewidth
     local height = self.map.height * self.map.tileheight
+
     self:createMapBoundaries(width, height)
+    self:createTubes()
 
     self:createPuzzlePhysics()
     self:initializePuzzleState(self.currentMapData)
     self:createPuzzleCamArea()
+end
+
+function mapManager:createTubes()
+    if self.map.layers["tubes"] then
+        for i, obj in pairs(self.map.layers["tubes"].objects) do
+            local tube = {} 
+            tube.collider = physicsManager:createTube(obj.x, obj.y, obj.width, obj.height, obj.rotation)
+
+            function tube.collider:preSolve(other, collision)
+                if other.identifier == 'ball' then
+                    collision:setEnabled(false)
+                end
+            end
+
+            function tube.collider:postSolve(other, collision)
+                if other.identifier == 'ball' then
+                    
+                end
+            end
+        end
+    end
 end
 
 function mapManager:createPuzzleCamArea()
@@ -276,11 +361,11 @@ function mapManager:createSwitch(obj, color)
     -- custom shapes displace 1 height above for some reason, this fixes
     if obj.properties.isCustomShape then
         y = y + obj.height
-    end 
+    end
 
     switch.collider = physicsManager:createPuzzleWall(x, y, obj.width, obj.height)
     switch.collider:setSensor(true)
-    switch.collider:setIdentifier(physicsManager.getValidIdentifiers().switch)
+    switch.collider:setIdentifier('switch')
 
     function switch:getSwitchCollider()
         return switch.collider
@@ -293,6 +378,8 @@ function mapManager:createSwitch(obj, color)
     end
 
     function switch.collider:exit(other)
+        
+        
         if other.identifier ~= 'ball' and other.identifier ~= 'combineSensor' then
             switch:onReleased()
         end
