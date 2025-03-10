@@ -22,9 +22,6 @@ function cameraManager:new()
     return manager
 end
 
-local function tweenCameraZoom(camera, zoom)
-
-end
 
 function cameraManager:setPuzzleCam(zoom, x, y)
     self.cameraZoom = zoom

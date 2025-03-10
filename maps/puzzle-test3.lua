@@ -10,7 +10,7 @@ return {
   tilewidth = 32,
   tileheight = 32,
   nextlayerid = 28,
-  nextobjectid = 324,
+  nextobjectid = 331,
   properties = {
     ["height"] = 0,
     ["width"] = 0
@@ -317,6 +317,64 @@ return {
           }
         }
       }
+    },
+    {
+      name = "Car Green",
+      firstgid = 4480,
+      class = "",
+      tilewidth = 32,
+      tileheight = 32,
+      spacing = 0,
+      margin = 0,
+      columns = 2,
+      image = "../assets/sprites/Car Green.png",
+      imagewidth = 64,
+      imageheight = 64,
+      objectalignment = "unspecified",
+      tilerendersize = "tile",
+      fillmode = "stretch",
+      tileoffset = {
+        x = 0,
+        y = 0
+      },
+      grid = {
+        orientation = "orthogonal",
+        width = 32,
+        height = 32
+      },
+      properties = {},
+      wangsets = {},
+      tilecount = 4,
+      tiles = {}
+    },
+    {
+      name = "extra-buttons",
+      firstgid = 4484,
+      class = "",
+      tilewidth = 32,
+      tileheight = 32,
+      spacing = 2,
+      margin = 1,
+      columns = 3,
+      image = "tilesets/puzzle-test/ExtraButtons.png",
+      imagewidth = 102,
+      imageheight = 306,
+      objectalignment = "unspecified",
+      tilerendersize = "tile",
+      fillmode = "stretch",
+      tileoffset = {
+        x = 0,
+        y = 0
+      },
+      grid = {
+        orientation = "orthogonal",
+        width = 32,
+        height = 32
+      },
+      properties = {},
+      wangsets = {},
+      tilecount = 27,
+      tiles = {}
     }
   },
   layers = {
@@ -535,6 +593,62 @@ return {
           height = 32,
           rotation = 0,
           gid = 3881,
+          visible = true,
+          properties = {}
+        },
+        {
+          id = 324,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 610,
+          y = 123.333,
+          width = 32,
+          height = 32,
+          rotation = 0,
+          gid = 4480,
+          visible = true,
+          properties = {}
+        },
+        {
+          id = 325,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 642,
+          y = 123.333,
+          width = 32,
+          height = 32,
+          rotation = 0,
+          gid = 4481,
+          visible = true,
+          properties = {}
+        },
+        {
+          id = 326,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 642,
+          y = 155.333,
+          width = 32,
+          height = 32,
+          rotation = 0,
+          gid = 4483,
+          visible = true,
+          properties = {}
+        },
+        {
+          id = 327,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 610,
+          y = 155.333,
+          width = 32,
+          height = 32,
+          rotation = 0,
+          gid = 4482,
           visible = true,
           properties = {}
         }
@@ -1276,20 +1390,6 @@ return {
           properties = {}
         },
         {
-          id = 258,
-          name = "switch-sprite",
-          type = "",
-          shape = "rectangle",
-          x = 416.667,
-          y = 160,
-          width = 32,
-          height = 32,
-          rotation = 0,
-          gid = 3601,
-          visible = true,
-          properties = {}
-        },
-        {
           id = 304,
           name = "switch",
           type = "",
@@ -1299,10 +1399,24 @@ return {
           width = 26,
           height = 26.5,
           rotation = 0,
-          visible = true,
+          visible = false,
           properties = {
             ["isCustomShape"] = true
           }
+        },
+        {
+          id = 330,
+          name = "switch-sprite",
+          type = "",
+          shape = "rectangle",
+          x = 416,
+          y = 160,
+          width = 32,
+          height = 32,
+          rotation = 0,
+          gid = 4496,
+          visible = true,
+          properties = {}
         }
       }
     },
@@ -1372,7 +1486,7 @@ return {
           width = 26,
           height = 26.5,
           rotation = 0,
-          visible = true,
+          visible = false,
           properties = {
             ["isCustomShape"] = true
           }
@@ -1445,7 +1559,7 @@ return {
           width = 26,
           height = 26.5,
           rotation = 0,
-          visible = true,
+          visible = false,
           properties = {
             ["isCustomShape"] = true
           }
@@ -1516,7 +1630,7 @@ return {
       id = 23,
       name = "cam",
       class = "",
-      visible = true,
+      visible = false,
       opacity = 1,
       offsetx = 0,
       offsety = 0,
@@ -1530,13 +1644,13 @@ return {
           type = "",
           shape = "point",
           x = 580,
-          y = 322,
+          y = 321.333,
           width = 0,
           height = 0,
           rotation = 0,
           visible = true,
           properties = {
-            ["zoom"] = 1.25
+            ["zoom"] = 1.15
           }
         },
         {

@@ -103,7 +103,7 @@ local puzzle1 = {
         love.graphics.setColor(1, 1, 1, 1)
 
         love.graphics.setColor(1, 1, 1, puzzleState.blue.opacity)
-        manager.map:drawLayer(manager.map.layers["blue-puzzle"])  
+        manager.map:drawLayer(manager.map.layers["blue-puzzle"])
         love.graphics.setColor(1, 1, 1, 1)
     end
 }
@@ -306,10 +306,10 @@ end
 
 function mapManager:createPuzzleObject(obj, color)
     if obj.name == 'switch' then
-        if not puzzleState[color].switch then   
+        -- if not puzzleState[color].switch then   
             local switch = self:createSwitch(obj, color)
             puzzleState[color].switch = switch
-        end
+        -- end
     elseif obj.name == 'switch-sprite' then
         
     else
@@ -318,9 +318,6 @@ function mapManager:createPuzzleObject(obj, color)
     end
 end
 
-local function createPuzzleCollider(wall)
-    
-end
 
 
 function mapManager:createPuzzleWall(obj, color)

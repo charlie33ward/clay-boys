@@ -1105,14 +1105,13 @@ function Map:drawImageLayer(layer, camCoords, zoom, dimensions)
 		local baseX = getParallaxOffset(layer.offsetx, layer.parallaxx or 1, camCoords.x) - 200
 		local baseY = getParallaxOffset(layer.offsety, layer.parallaxy or 1, camCoords.y) - 200
 
-		lg.draw(layer.image, baseX, baseY)
-
-
 		for row = 0, rows - 1 do
 			local y = baseY + (row * imageheight)
+			y = math.floor(y)
 
 			for col = 0, columns - 1 do
 				local x = baseX + (col * imagewidth)
+				x = math.floor(x)
 				lg.draw(layer.image, x, y)
 			end
 		end
