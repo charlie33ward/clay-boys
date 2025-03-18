@@ -1084,7 +1084,7 @@ function Map:drawImageLayer(layer, camCoords, zoom, dimensions)
 	assert(layer.type == "imagelayer", "Invalid layer type: " .. layer.type .. ". Layer must be of type: imagelayer")
 
 	local function getParallaxOffset(baseOffset, parallaxFactor, cameraPos)
-		return baseOffset + (math.abs(cameraPos * -(parallaxFactor - 1)))
+		return baseOffset - (cameraPos * (1 - parallaxFactor))
 	end
 
 	local function getStartPosition(offset, dimension)

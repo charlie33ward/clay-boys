@@ -1,5 +1,6 @@
 local sti = require 'libraries.sti'
 local timer = require 'libraries.timer'
+local gameManager = require 'scripts.gameManager'
 
 local debug = {}
 
@@ -187,10 +188,19 @@ function mapManager:new(physics)
     return manager
 end
 
+function mapManager:reset()
+    if self.currentSwitches then
+        for _, switch in pairs(self.currentSwitches) do
+            switch:onReleased()
+        end
+    end
+end
+
 function mapManager:load()
     love.graphics.setDefaultFilter('nearest', 'nearest')
     self.map = sti(puzzle3.filepath)
     self.currentMapData = puzzle3
+    self.currentSwitches = {}
 
     local bgLayer = self.map.layers["space"]
     if bgLayer then
@@ -218,6 +228,8 @@ function mapManager:load()
     self:createPuzzlePhysics()
     self:initializePuzzleState(self.currentMapData)
     self:createPuzzleCamArea()
+
+    gameManager.getInstance():setMapManager(self)
 end
 
 function mapManager:createTubes()
@@ -370,13 +382,13 @@ function mapManager:createSwitch(obj, color)
     end
 
     function switch.collider:enter(other)
+
         if other.identifier ~= 'ball' and other.identifier ~= 'combineSensor' then
             switch:onTriggered()
         end
     end
 
     function switch.collider:exit(other)
-        
         
         if other.identifier ~= 'ball' and other.identifier ~= 'combineSensor' then
             switch:onReleased()
@@ -398,6 +410,8 @@ function mapManager:createSwitch(obj, color)
             wall:activateCollider()
         end
     end
+
+    table.insert(self.currentSwitches, switch)
 end
 
 
@@ -441,6 +455,8 @@ function mapManager:update(dt)
         camCoords.x = self.cam:getX()
         camCoords.y = self.cam:getY()
     end
+
+    
     
     self.map:update(dt)
 end

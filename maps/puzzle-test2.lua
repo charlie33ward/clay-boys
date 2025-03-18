@@ -173,8 +173,8 @@ return {
       opacity = 1,
       offsetx = 0,
       offsety = 0,
-      parallaxx = 1.3,
-      parallaxy = 1.3,
+      parallaxx = 0.3,
+      parallaxy = 0.3,
       repeatx = true,
       repeaty = true,
       properties = {}

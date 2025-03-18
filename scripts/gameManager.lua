@@ -10,7 +10,8 @@ local validGameStates = {
 local debug = {}
 
 local gameManager = {
-    instance = nil
+    instance = nil,
+    mapManager = nil
 }
 
 function gameManager.getInstance()
@@ -25,6 +26,10 @@ function gameManager.getInstance()
     end
     
     return gameManager.instance
+end
+
+function gameManager:setMapManager(mapManager)
+    self.mapManager = mapManager
 end
 
 function gameManager:getPalette()
@@ -72,6 +77,7 @@ function gameManager:restartPuzzle()
     if self.player then
         self.player:reset()
     end
+    self.mapManager:reset()
 end
 
 function gameManager:drawDebug()
