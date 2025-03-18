@@ -16,15 +16,18 @@ return helium(function(param, view)
     }
     
     local deathText = {
-        x = screenDimensions.width // 2,
+        x = screenDimensions.width / 2,
         y = 240,
+        opacity = 1,
         text = 'YOU DIED'
     }
 
-    local respawnText = {
-        x = screenDimensions.width // 2,
+    local restartText = {
+        x = screenDimensions.width / 2,
         y = 500,
-        text = 'Press \'r\' to restart level'
+        opacity = 1,
+        text = 'Press \'r\' at any time to restart level',
+        width = 400
     }
 
     return function()
@@ -33,6 +36,14 @@ return helium(function(param, view)
         love.graphics.rectangle('fill', -1, -1, screenDimensions.width + 5, screenDimensions.height + 5)
         love.graphics.setColor(1, 1, 1, 1)
 
+        love.graphics.setColor(palette.red[1], palette.red[2], palette.red[3], deathText.opacity)
+        love.graphics.setFont(deathTextFont)
+        love.graphics.printf(deathText.text, deathText.x - (deathText.width / 2), deathText.y, deathText.width, 'center')
+        love.graphics.setColor(1, 1, 1, 1)
 
+        love.graphics.setColor(palette.offWhite[1], palette.offWhite[2], palette.offWhite[3], respawnText.opacity)
+        love.graphics.setFont(restartFont)
+        love.graphics.printf(deathText.text, deathText.x - (deathText.width / 2), deathText.y, deathText.width, 'center')
+        love.graphics.setColor(1, 1, 1, 1)
     end
 end)

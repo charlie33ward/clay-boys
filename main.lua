@@ -45,7 +45,7 @@ function love.draw()
     if game:isPlaying() then
         cam:getCam():attach()
             map:draw()
-            -- phys:getWorld():draw()
+            phys:getWorld():draw()
             player:draw()
 
         cam:getCam():detach()

@@ -2,9 +2,11 @@ local helium = require 'libraries.helium'
 
 local mainMenu = require 'scripts.ui-modules.mainMenu'
 local levelSelect = require 'scripts.ui-modules.levelSelect'
+local deathScreen = require 'scripts.ui-modules.deathScreen'
 
 local mainMenuScene = helium.scene.new(true)
 local levelSelectScene = helium.scene.new(true)
+local deathScreenScene = helium.scene.new(true)
 
 local ui = {
     palette = {
@@ -44,7 +46,7 @@ function ui:load()
     mainMenuScene:deactivate()
     
     self.currentScene = levelSelectScene
-    -- self.currentScene:activate()
+    self.currentScene:activate()
 end
 
 function ui:update(dt)

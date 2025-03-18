@@ -367,6 +367,7 @@ function mapManager:createSwitch(obj, color)
 
     local x = obj.x
     local y = obj.y
+    local objectsInside = 0
 
     -- custom shapes displace 1 height above for some reason, this fixes
     if obj.properties.isCustomShape then
@@ -382,16 +383,18 @@ function mapManager:createSwitch(obj, color)
     end
 
     function switch.collider:enter(other)
-
         if other.identifier ~= 'ball' and other.identifier ~= 'combineSensor' then
+            objectsInside = objectsInside + 1
             switch:onTriggered()
         end
     end
 
     function switch.collider:exit(other)
-        
         if other.identifier ~= 'ball' and other.identifier ~= 'combineSensor' then
-            switch:onReleased()
+            objectsInside = objectsInside - 1
+            if objectsInside == 0 then
+                switch:onReleased()
+            end
         end
     end
 

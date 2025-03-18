@@ -57,7 +57,7 @@
  <tileset firstgid="4484" name="extra-buttons" tilewidth="32" tileheight="32" spacing="2" margin="1" tilecount="27" columns="3">
   <image source="tilesets/puzzle-test/ExtraButtons.png" width="102" height="306"/>
  </tileset>
- <imagelayer id="11" name="space" visible="0" locked="1" parallaxx="0.2" parallaxy="0.2" repeatx="1" repeaty="1">
+ <imagelayer id="11" name="space" locked="1" parallaxx="0.2" parallaxy="0.2" repeatx="1" repeaty="1">
   <image source="../assets/backgrounds/space-background.png" width="800" height="800"/>
  </imagelayer>
  <layer id="1" name="ground" width="40" height="24">
@@ -88,7 +88,7 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <layer id="22" name="bridges" width="40" height="24" visible="0">
+ <layer id="22" name="bridges" width="40" height="24">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -116,7 +116,7 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <layer id="12" name="decorations" width="40" height="24" visible="0" locked="1">
+ <layer id="12" name="decorations" width="40" height="24" locked="1">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -144,7 +144,7 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <objectgroup id="25" name="decorations2" visible="0" locked="1">
+ <objectgroup id="25" name="decorations2" locked="1">
   <object id="262" gid="3849" x="436.667" y="142.167" width="32" height="32"/>
   <object id="263" gid="3850" x="468.667" y="142.167" width="32" height="32"/>
   <object id="264" gid="3882" x="468.667" y="174.167" width="32" height="32"/>
@@ -159,7 +159,7 @@
   <object id="337" gid="611" x="482.67" y="534.67" width="32" height="32"/>
   <object id="338" gid="641" x="482.67" y="566.67" width="32" height="32"/>
  </objectgroup>
- <objectgroup id="20" name="walls" visible="0">
+ <objectgroup id="20" name="walls">
   <object id="266" x="450.333" y="127" width="32.6667" height="31.3333"/>
   <object id="267" x="319.667" y="66.3333" width="6" height="35.8333"/>
   <object id="271" x="397.462" y="168.553" width="6" height="102.316" rotation="135"/>
@@ -207,7 +207,7 @@
   <object id="339" x="490" y="494.5" width="17.5" height="66"/>
   <object id="340" x="545.5" y="494.5" width="17.25" height="33"/>
  </objectgroup>
- <objectgroup id="27" name="tubes" visible="0">
+ <objectgroup id="27" name="tubes">
   <object id="309" gid="4464" x="416.667" y="267" width="32" height="32"/>
   <object id="317" gid="4464" x="372.789" y="380.745" width="34.4749" height="34.4749" rotation="135"/>
   <object id="310" gid="4464" x="416.667" y="235" width="32" height="32"/>
@@ -215,7 +215,7 @@
   <object id="311" gid="4464" x="416.667" y="203" width="32" height="32"/>
   <object id="319" gid="4464" x="421.544" y="429.5" width="34.4749" height="34.4749" rotation="135"/>
  </objectgroup>
- <layer id="18" name="puzzle-walls" width="40" height="24" visible="0" locked="1">
+ <layer id="18" name="puzzle-walls" width="40" height="24" locked="1">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -243,31 +243,31 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <objectgroup id="14" name="orange-puzzle" visible="0">
+ <objectgroup id="14" name="orange-puzzle">
   <object id="253" gid="3602" x="704" y="311" width="32" height="32"/>
   <object id="254" gid="3602" x="704" y="343" width="32" height="32"/>
-  <object id="304" name="switch" x="419.5" y="130.875" width="26" height="26.5" visible="0">
+  <object id="304" name="switch" x="419.5" y="130.875" width="26" height="26.5">
    <properties>
     <property name="isCustomShape" type="bool" value="true"/>
    </properties>
   </object>
   <object id="330" name="switch-sprite" gid="4496" x="416" y="160" width="32" height="32"/>
  </objectgroup>
- <objectgroup id="8" name="green-puzzle" visible="0">
+ <objectgroup id="8" name="green-puzzle">
   <object id="251" gid="3593" x="608" y="311" width="32" height="32"/>
   <object id="252" gid="3593" x="608" y="343" width="32" height="32"/>
   <object id="261" name="switch-sprite" gid="3592" x="513.333" y="526" width="32" height="32"/>
-  <object id="302" name="switch" x="516.5" y="496" width="26" height="26.5" visible="0">
+  <object id="302" name="switch" x="516.5" y="496" width="27.3333" height="26.5">
    <properties>
     <property name="isCustomShape" type="bool" value="true"/>
    </properties>
   </object>
  </objectgroup>
- <objectgroup id="21" name="blue-puzzle" visible="0">
+ <objectgroup id="21" name="blue-puzzle">
   <object id="238" gid="3590" x="512" y="311" width="32" height="32"/>
   <object id="239" gid="3590" x="512" y="343" width="32" height="32"/>
   <object id="259" name="switch-sprite" gid="3589" x="578" y="127.333" width="32" height="32"/>
-  <object id="305" name="switch" x="581" y="97.375" width="26" height="26.5" visible="0">
+  <object id="305" name="switch" x="581" y="97.375" width="26" height="26.5">
    <properties>
     <property name="isCustomShape" type="bool" value="true"/>
    </properties>
