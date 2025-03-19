@@ -2,11 +2,13 @@ local helium = require 'libraries.helium'
 
 local mainMenu = require 'scripts.ui-modules.mainMenu'
 local levelSelect = require 'scripts.ui-modules.levelSelect'
-local deathScreen = require 'scripts.ui-modules.deathScreen'
+local deathScreenFactory = require 'scripts.ui-modules.deathScreen'
 
 local mainMenuScene = helium.scene.new(true)
 local levelSelectScene = helium.scene.new(true)
 local deathScreenScene = helium.scene.new(true)
+
+local debug = {}
 
 local ui = {
     palette = {
@@ -18,6 +20,12 @@ local ui = {
         offWhite = {0.93, 0.93, 0.93}
     }
 }
+
+local screenDimensions = {
+    width = love.graphics.getWidth(),
+    height = love.graphics.getHeight()
+}
+
 
 function ui:new()
     local manager = {}
@@ -34,18 +42,23 @@ function ui:load()
     mainMenuScene:activate()
     self.mainMenu:load()
     self.mainMenu:initHeliumFunction()
-    self.mainMenuRender = self.mainMenu.heliumFunction({}, love.graphics.getWidth(), love.graphics.getHeight())
+    self.mainMenuRender = self.mainMenu.heliumFunction({}, screenDimensions.width, screenDimensions.height)
     -- self.mainMenuRender:draw()
     mainMenuScene:deactivate()
 
     levelSelectScene:activate()
     self.levelSelect:load()
     self.levelSelect:initHeliumFunction()
-    self.levelSelectRender = self.levelSelect.heliumFunction({}, love.graphics.getWidth(), love.graphics.getHeight())
+    self.levelSelectRender = self.levelSelect.heliumFunction({}, screenDimensions.width, screenDimensions.height)
     -- self.levelSelectRender:draw()
     mainMenuScene:deactivate()
+
+    deathScreenScene:activate()
+    self.deathScreenRender = deathScreenFactory({palette = self.palette}, screenDimensions.width, screenDimensions.height)
+    self.deathScreenRender:draw()
+    deathScreenScene:deactivate()
     
-    self.currentScene = levelSelectScene
+    self.currentScene = nil
     self.currentScene:activate()
 end
 
@@ -55,7 +68,18 @@ end
 
 function ui:draw()
     self.currentScene:draw()
-    self.levelSelect:drawDebug()
+
+    self:drawDebug()
+end
+
+function ui:drawDebug()
+    local y = 50
+    if debug then
+        for _, message in pairs(debug) do
+            love.graphics.print(message, 50, y)
+            y = y + 20
+        end
+    end
 end
 
 return ui
