@@ -61,6 +61,7 @@ end
 
 function gameManager:update(dt)
     self.ui:update(dt)
+    self.specialEvents:update(dt)
     timer.update(dt)
 end
 
