@@ -47,7 +47,7 @@ function love.draw()
             map:draw()
             -- phys:getWorld():draw()
             player:draw()
-
+            game:drawSpecialEvents()
         cam:getCam():detach()
 
         -- map:getCurrentMap():drawDebug()

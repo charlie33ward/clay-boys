@@ -55,10 +55,10 @@ function ui:load()
 
     deathScreenScene:activate()
     self.deathScreenRender = deathScreenFactory({palette = self.palette}, screenDimensions.width, screenDimensions.height)
-    self.deathScreenRender:draw()
+    -- self.deathScreenRender:draw()
     deathScreenScene:deactivate()
     
-    self.currentScene = nil
+    self.currentScene = deathScreenScene
     self.currentScene:activate()
 end
 

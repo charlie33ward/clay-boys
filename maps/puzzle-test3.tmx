@@ -246,7 +246,7 @@
  <objectgroup id="14" name="orange-puzzle">
   <object id="253" gid="3602" x="704" y="311" width="32" height="32"/>
   <object id="254" gid="3602" x="704" y="343" width="32" height="32"/>
-  <object id="304" name="switch" x="419.5" y="130.875" width="26" height="26.5">
+  <object id="304" name="switch" x="419.5" y="130.875" width="26" height="26.5" visible="0">
    <properties>
     <property name="isCustomShape" type="bool" value="true"/>
    </properties>
@@ -257,7 +257,7 @@
   <object id="251" gid="3593" x="608" y="311" width="32" height="32"/>
   <object id="252" gid="3593" x="608" y="343" width="32" height="32"/>
   <object id="261" name="switch-sprite" gid="3592" x="513.333" y="526" width="32" height="32"/>
-  <object id="302" name="switch" x="516.5" y="496" width="27.3333" height="26.5">
+  <object id="302" name="switch" x="516.5" y="496" width="27.3333" height="26.5" visible="0">
    <properties>
     <property name="isCustomShape" type="bool" value="true"/>
    </properties>
@@ -267,7 +267,7 @@
   <object id="238" gid="3590" x="512" y="311" width="32" height="32"/>
   <object id="239" gid="3590" x="512" y="343" width="32" height="32"/>
   <object id="259" name="switch-sprite" gid="3589" x="578" y="127.333" width="32" height="32"/>
-  <object id="305" name="switch" x="581" y="97.375" width="26" height="26.5">
+  <object id="305" name="switch" x="581" y="97.375" width="26" height="26.5" visible="0">
    <properties>
     <property name="isCustomShape" type="bool" value="true"/>
    </properties>

@@ -1,4 +1,5 @@
 local uiManager = require 'scripts.ui'
+local specEvents = require 'scripts.specialEvents'
 local timer = require 'libraries.timer'
 
 local validGameStates = {
@@ -19,6 +20,7 @@ function gameManager.getInstance()
         gameManager.instance = {
             state = validGameStates.playing,
             ui = uiManager:new(),
+            specialEvents = specEvents:new(),
             player = nil
         }
 
@@ -36,6 +38,10 @@ function gameManager:getPalette()
     return self.ui.getPalette()
 end
 
+function gameManager:triggerDeathEvent(x, y)
+    self.specialEvents:onDeathEvent(x, y)
+end
+
 function gameManager:chooseLevel(levelName)
 
 end
@@ -46,6 +52,11 @@ end
 
 function gameManager:load()
     self.ui:load()
+    self.specialEvents:load()
+end
+
+function gameManager:drawSpecialEvents()
+    self.specialEvents:draw()
 end
 
 function gameManager:update(dt)

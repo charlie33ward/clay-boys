@@ -1534,7 +1534,7 @@ return {
           width = 26,
           height = 26.5,
           rotation = 0,
-          visible = true,
+          visible = false,
           properties = {
             ["isCustomShape"] = true
           }
@@ -1621,7 +1621,7 @@ return {
           width = 27.3333,
           height = 26.5,
           rotation = 0,
-          visible = true,
+          visible = false,
           properties = {
             ["isCustomShape"] = true
           }
@@ -1694,7 +1694,7 @@ return {
           width = 26,
           height = 26.5,
           rotation = 0,
-          visible = true,
+          visible = false,
           properties = {
             ["isCustomShape"] = true
           }
