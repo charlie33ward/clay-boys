@@ -62,7 +62,7 @@ function cloneManager:update(dt, vx, vy, dir, state)
         for _, clone in pairs(self.combiningClones) do
             if clone.readyToDestroy == true then
                 table.removekey(clone.parent.combiningClones, clone.id)
-                clone.collider:destroy() 
+                clone.collider:destroy()
             else
                 clone.collider:setPosition(clone.x, clone.y)
             end

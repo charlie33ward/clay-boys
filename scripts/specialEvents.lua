@@ -8,7 +8,7 @@ function specialEvents:new()
     local manager = {}
     setmetatable(manager, self)
     self.__index = self
-    return manage
+    return manager
 end
 
 function specialEvents:onDeathEvent(x, y)
@@ -16,22 +16,31 @@ function specialEvents:onDeathEvent(x, y)
 end
 
 function specialEvents:load()
-    -- 150 x 183 frames
+    self.explosionTable = {
+        width = 150,
+        height = 183,
+        frameLength = 0.02,
+        scale = 0.8
+    }
+
     self.explosionSheet = love.graphics.newImage('assets/sprites/explosion-sheet.png')
-    self.explosionGrid = anim8.newGrid(16, 16, self.explosionSheet.getWidth(), self.explosionSheet.getHeight())
-    self.explosionAnim = anim8.newAnimation(self.explosionGrid('1-69', 1), 0.02)
-
-
+    self.explosionGrid = anim8.newGrid(self.explosionTable.width, self.explosionTable.height, self.explosionSheet:getWidth(), self.explosionSheet:getHeight())
+    self.explosionAnim = anim8.newAnimation(self.explosionGrid('1-69', 1), self.explosionTable.frameLength, 'pauseAtEnd')
+    
 end
 
 function specialEvents:update(dt)
-    if activeAnims then
-        for _, animTable in pairs(activeAnims) do
-            animTable.anim:update(dt)
-        end
-    end
+    self.explosionAnim:update(dt)
+    
+    -- if activeAnims then 
+    --     for _, animTable in pairs(activeAnims) do
+    --         animTable.anim:update(dt)
+    --     end
+    -- end
 end
 
 function specialEvents:draw()
-
+    self.explosionAnim:draw(self.explosionSheet, 300, 300, nil, self.explosionTable.scale, self.explosionTable.scale, self.explosionTable.width / 2, self.explosionTable.height / 2)
 end
+
+return specialEvents
