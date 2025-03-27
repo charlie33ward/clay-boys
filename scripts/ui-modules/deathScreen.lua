@@ -8,7 +8,7 @@ local restartFont = love.graphics.newFont('assets/fonts/monogram.ttf', 48)
 
 return helium(function(param, view)
     local palette = param.palette
-    local backgroundOpacity = 0.6
+    local backgroundOpacity = 0.3
     
     
     local deathText = {

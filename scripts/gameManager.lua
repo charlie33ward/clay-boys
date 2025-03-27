@@ -44,6 +44,7 @@ function gameManager:triggerDeathEvent(x, y)
     self.state = validGameStates.dead
     self.ui:showDeathScreen()
     self.specialEvents:onDeathEvent(x, y)
+    self.player.canMove = false
 end
 
 function gameManager:chooseLevel(levelName)
@@ -73,8 +74,8 @@ function gameManager:draw()
     self.ui:draw()
 end
 
-function gameManager:isPlaying()
-    return self.state == validGameStates.playing
+function gameManager:getState()
+    return self.state
 end
 
 function gameManager.getValidGameStates()
@@ -96,6 +97,7 @@ function gameManager:restartPuzzle()
     self.mapManager:reset()
     self.state = validGameStates.playing
     self.ui:hideDeathScreen()
+    self.player.canMove = true
 end
 
 function gameManager:drawDebug()

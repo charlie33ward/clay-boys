@@ -4,6 +4,8 @@ local physicsManager = require 'scripts.physicsManager'
 local mapManager = require 'scripts.mapManager'
 local gameManager = require 'scripts.gameManager'
 
+local gameState = nil
+
 function love.load()
     love.graphics.setDefaultFilter('nearest', 'nearest')
 
@@ -28,7 +30,9 @@ function love.load()
 end
 
 function love.update(dt)
-    if game:isPlaying() then
+    local gameState = game:getState()
+    
+    if gameState == 'PLAYING' or gameState == 'DEAD' then
         player:update(dt)
         phys:update(dt)
 
@@ -42,7 +46,8 @@ function love.update(dt)
 end
 
 function love.draw()
-    if game:isPlaying() then
+    local gameState = game:getState()
+    if gameState == 'PLAYING' or gameState == 'DEAD' then
         cam:getCam():attach()
             map:draw()
             -- phys:getWorld():draw()

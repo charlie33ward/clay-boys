@@ -68,6 +68,8 @@ end
 
 
 function player:load()
+    self.canMove = true
+
     self.movementSheet = love.graphics.newImage('assets/sprites/redDude_movement.png')
     self.throwSheet = love.graphics.newImage('assets/sprites/redDude_throwing.png')
     self.currentSheet = self.movementSheet
@@ -143,6 +145,10 @@ function player:loadBall()
 end
 
 function player:update(dt)
+    if self.canMove == false then
+        return
+    end
+    
     self.vx = 0
     self.vy = 0
 
