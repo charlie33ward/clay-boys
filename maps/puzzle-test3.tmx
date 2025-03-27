@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.0" orientation="orthogonal" renderorder="right-down" width="40" height="24" tilewidth="32" tileheight="32" infinite="0" nextlayerid="28" nextobjectid="341">
+<map version="1.10" tiledversion="1.11.0" orientation="orthogonal" renderorder="right-down" width="40" height="24" tilewidth="32" tileheight="32" infinite="0" nextlayerid="28" nextobjectid="342">
  <editorsettings>
   <export target="puzzle-test3.lua" format="lua"/>
  </editorsettings>
@@ -206,6 +206,7 @@
   <object id="333" x="660.289" y="110.225" width="17.2698" height="27" rotation="63.6622"/>
   <object id="339" x="490" y="494.5" width="17.5" height="66"/>
   <object id="340" x="545.5" y="494.5" width="17.25" height="33"/>
+  <object id="341" x="506" y="253.273" width="44.9091" height="17.0909"/>
  </objectgroup>
  <objectgroup id="27" name="tubes">
   <object id="309" gid="4464" x="416.667" y="267" width="32" height="32"/>

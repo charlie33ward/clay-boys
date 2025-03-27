@@ -103,6 +103,13 @@ function cloneManager:reset()
 end
 
 function cloneManager:destroyAllClones()
+    for _, clone in pairs(self.activeClones) do
+        clone.collider:destroy()
+    end
+    for _, clone in pairs(self.combiningClones) do
+        clone.collider:destroy()
+    end
+
     self.activeClones = {}
     self.combiningClones = {}
 end
