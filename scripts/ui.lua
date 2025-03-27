@@ -18,7 +18,8 @@ local ui = {
         yellow = {0.976, 0.98, 0.361},
         purple = {0.698, 0.376, 0.922},
         offWhite = {0.93, 0.93, 0.93}
-    }
+    },
+    showDeath = false
 }
 
 local screenDimensions = {
@@ -55,21 +56,37 @@ function ui:load()
 
     deathScreenScene:activate()
     self.deathScreenRender = deathScreenFactory({palette = self.palette}, screenDimensions.width, screenDimensions.height)
-    -- self.deathScreenRender:draw()
+    self.deathScreenRender:draw()
     deathScreenScene:deactivate()
     
-    self.currentScene = deathScreenScene
+    self.currentScene = mainMenuScene
     self.currentScene:activate()
 end
 
 function ui:update(dt)
     self.currentScene:update(dt)
+    if self.showDeath then
+        deathScreenScene:update(dt)
+    end
 end
 
 function ui:draw()
     self.currentScene:draw()
+    if self.showDeath then
+        deathScreenScene:draw()
+    end
 
     self:drawDebug()
+end
+
+function ui:showDeathScreen()
+    deathScreenScene:activate()
+    self.showDeath = true
+end
+
+function ui:hideDeathScreen()
+    deathScreenScene:deactivate()
+    self.showDeath = false
 end
 
 function ui:drawDebug()

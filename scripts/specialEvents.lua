@@ -12,7 +12,11 @@ function specialEvents:new()
 end
 
 function specialEvents:onDeathEvent(x, y)
-
+    local animation = {
+        x = x,
+        y = y,
+        anim = self.explosionAnim:clone()
+    }
 end
 
 function specialEvents:load()

@@ -5,7 +5,8 @@ local timer = require 'libraries.timer'
 local validGameStates = {
     startScreen = "START-SCREEN",
     playing = "PLAYING",
-    paused = "PAUSED"
+    paused = "PAUSED",
+    dead = "DEAD"
 }
 
 local debug = {}
@@ -19,6 +20,7 @@ function gameManager.getInstance()
     if not gameManager.instance then
         gameManager.instance = {
             state = validGameStates.playing,
+            prevState = validGameStates.playing,
             ui = uiManager:new(),
             specialEvents = specEvents:new(),
             player = nil
@@ -39,6 +41,8 @@ function gameManager:getPalette()
 end
 
 function gameManager:triggerDeathEvent(x, y)
+    self.state = validGameStates.dead
+    self.ui:showDeathScreen()
     self.specialEvents:onDeathEvent(x, y)
 end
 
@@ -90,6 +94,8 @@ function gameManager:restartPuzzle()
         self.player:reset()
     end
     self.mapManager:reset()
+    self.state = validGameStates.playing
+    self.ui:hideDeathScreen()
 end
 
 function gameManager:drawDebug()

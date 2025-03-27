@@ -70,6 +70,9 @@ function love.keypressed(key, scancode, isrepeat)
     if key == 'r' then
         game:restartPuzzle()
     end
+    if key == 't' then
+        game:triggerDeathEvent()
+    end
 end
 
 function love.keyreleased(key, scancode, isrepeat)
