@@ -40,6 +40,14 @@ function gameManager:getPalette()
     return self.ui.getPalette()
 end
 
+function gameManager:onThrowClone()
+    -- update clone count ui
+end
+
+function gameManager:onCombineClone()
+
+end
+
 function gameManager:triggerDeathEvent(x, y)
     self.state = validGameStates.dead
     self.ui:showDeathScreen()
