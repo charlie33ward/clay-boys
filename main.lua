@@ -50,7 +50,7 @@ function love.draw()
     if gameState == 'PLAYING' or gameState == 'DEAD' then
         cam:getCam():attach()
             map:draw()
-            phys:getWorld():draw()
+            -- phys:getWorld():draw()
             player:draw()
             game:drawSpecialEvents()
         cam:getCam():detach()
@@ -70,7 +70,8 @@ function love.keypressed(key, scancode, isrepeat)
         player:startThrowBall()
     end
     if key == 'escape' then
-        game:onPauseButton()
+        love.event.quit()
+        -- game:onPauseButton()
     end
     if key == 'r' then
         game:restartPuzzle()

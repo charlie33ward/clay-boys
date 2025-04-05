@@ -146,18 +146,6 @@ local levelButtonFactory = helium(function(param, view)
     end
 end)
 
-local circleHoverContainer = helium(function(param, view)
-    local radius = param.radius
-    local centerX, centerY = view.w / 2, view.h / 1
-
-    
-
-    
-
-    return function()
-
-    end
-end)
 
 local levelGridFactory = helium(function(param, view)
     local gridData = {

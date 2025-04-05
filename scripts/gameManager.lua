@@ -21,12 +21,13 @@ function gameManager.getInstance()
         gameManager.instance = {
             state = validGameStates.playing,
             prevState = validGameStates.playing,
-            ui = uiManager:new(),
             specialEvents = specEvents:new(),
             player = nil
         }
 
         setmetatable(gameManager.instance, {__index = gameManager})
+
+        gameManager.instance.ui = uiManager:new(gameManager.instance)
     end
     
     return gameManager.instance

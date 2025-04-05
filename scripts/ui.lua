@@ -3,12 +3,15 @@ local helium = require 'libraries.helium'
 local mainMenu = require 'scripts.ui-modules.mainMenu'
 local levelSelect = require 'scripts.ui-modules.levelSelect'
 local deathScreenFactory = require 'scripts.ui-modules.deathScreen'
+local hud = require 'scripts.ui-modules.inGameHud'
 
 local mainMenuScene = helium.scene.new(true)
 local levelSelectScene = helium.scene.new(true)
 local deathScreenScene = helium.scene.new(true)
+local hudScene = helium.scene.new(true)
 
 local debug = {}
+local gameState = nil
 
 local ui = {
     palette = {
@@ -28,13 +31,15 @@ local screenDimensions = {
 }
 
 
-function ui:new()
+function ui:new(game)
     local manager = {}
     setmetatable(manager, self)
     self.__index = self
 
+    self.game = game
     self.mainMenu = mainMenu:new({palette = self.palette})
     self.levelSelect = levelSelect:new({palette = self.palette})
+    self.inGameHud = hud:new()
 
     return manager
 end
@@ -59,21 +64,59 @@ function ui:load()
     self.deathScreenRender:draw()
     deathScreenScene:deactivate()
     
+    hudScene:activate()
+    self.inGameHud:load()
+    self.inGameHud:initHeliumFunction()
+    self.hudRender = self.inGameHud.heliumFunction({
+        maxClones = 5,
+        currentClones = 5
+    }, 400, 400)
+    self.hudRender:draw()
+    hudScene:deactivate()
+
+    gameState = self.game:getState()
+
     self.currentScene = mainMenuScene
     self.currentScene:activate()
 end
 
+local updates = 0
+
 function ui:update(dt)
     self.currentScene:update(dt)
-    if self.showDeath then
-        deathScreenScene:update(dt)
+    gameState = self.game:getState()
+
+
+    if gameState == 'PLAYING' or gameState == 'DEAD' then
+        hudScene:activate()
+        hudScene:update(dt)
+        hudScene:deactivate()
     end
+    
+    if self.showDeath then
+        deathScreenScene:activate()
+        deathScreenScene:update(dt)
+        deathScreenScene:deactivate()
+    end
+
+    debug.gameState = "game state: " .. gameState
 end
 
 function ui:draw()
+    self.currentScene:activate()
     self.currentScene:draw()
+    self.currentScene:deactivate()
+    
+    if gameState == 'PLAYING' or gameState == 'DEAD' then
+        hudScene:activate()
+        hudScene:draw()
+        hudScene:deactivate()
+    end
+
     if self.showDeath then
+        deathScreenScene:activate()
         deathScreenScene:draw()
+        deathScreenScene:deactivate()
     end
 
     self:drawDebug()
@@ -93,7 +136,7 @@ function ui:drawDebug()
     local y = 50
     if debug then
         for _, message in pairs(debug) do
-            love.graphics.print(message, 50, y)
+            love.graphics.print(message, 100, y)
             y = y + 20
         end
     end
