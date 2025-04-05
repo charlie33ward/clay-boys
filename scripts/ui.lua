@@ -91,6 +91,7 @@ function ui:update(dt)
         hudScene:activate()
         hudScene:update(dt)
         hudScene:deactivate()
+        self.inGameHud:update(dt)
     end
     
     if self.showDeath then

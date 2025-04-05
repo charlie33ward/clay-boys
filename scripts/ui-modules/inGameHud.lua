@@ -21,15 +21,17 @@ function inGameHud:new()
 end
 
 function inGameHud:load()
-    self.cloneIndicatorSheet = love.graphics.newImage('assets/sprites/explosion-sheet.png')
+    self.cloneIndicatorSheet = love.graphics.newImage('assets/sprites/clone_ui_indicator_sheet.png')
     self.cloneIndicatorGrid = anim8.newGrid(16, 16, self.cloneIndicatorSheet:getWidth(), self.cloneIndicatorSheet:getHeight())
     self.indicatorScale = 2.5
 
-    self.combineAnim = anim8.newAnimation(self.cloneIndicatorGrid('1-11', 1), 0.07)
-    self.throwAnim = anim8.newAnimation(self.cloneIndicatorGrid('11-1', 1), 0.07)
+    self.combineAnim = anim8.newAnimation(self.cloneIndicatorGrid('1-11', 1), 0.03)
+    self.throwAnim = anim8.newAnimation(self.cloneIndicatorGrid('11-1', 1), 0.03)
     self.animTime = 11 * 0.07
 
+    self.exampleAnim = self.throwAnim:clone()
     
+
     self.indicators = {}
 end
 
@@ -44,7 +46,7 @@ local circleFactory = helium(function(param, view)
 
     
     return function()
-        anims.activeAnim:draw(param.cloneIndicatorSheet, param.x, param.y, nil, param.indicatorScale, param.indicatorScale, 16, 16)
+        anims.activeAnim:draw(param.cloneIndicatorSheet, param.x, param.y, nil, param.indicatorScale, param.indicatorScale, 0, 0)
     end
 end)
 
@@ -55,6 +57,11 @@ function inGameHud:update(dt)
     for _, indicator in pairs(self.indicators) do
         indicator.param.activeAnim:update(dt)
     end
+
+    if self.tick then
+        self.tick.dummy = self.tick.dummy + 1
+    end
+    self.exampleAnim:update(dt)
 end
 
 function inGameHud:initHeliumFunction()
@@ -70,14 +77,12 @@ function inGameHud:initHeliumFunction()
             activeCircle = param.maxClones - param.currentClones
         })
     
-    
         debug.indicators = 0
-    
     
         for i = 1, inGameHud.maxClones do
             self.indicators[i] = {}
-            local width = 16
-            local height = 16
+            local width = 100
+            local height = 100
     
             self.indicators[i].param = {
                 activeAnim = self.throwAnim:clone(),
@@ -96,9 +101,6 @@ function inGameHud:initHeliumFunction()
                 -- end
             }
     
-            timer.during(100, function(dt)
-                self.indicators[i].param.activeAnim:update(dt)
-            end)
     
             self.indicators[i].component = circleFactory(self.indicators[i].param, width, height)
     
@@ -114,6 +116,10 @@ function inGameHud:initHeliumFunction()
             -- after combine/gain a clone
     
         end
+
+        self.tick = useState({
+            dummy = 0
+        })
     
     
         prevActiveCircle = inGameHud.activeCircle
@@ -125,7 +131,13 @@ function inGameHud:initHeliumFunction()
                 indicator.component:draw()
             end
     
+            love.graphics.rectangle('fill', 200, 200, 16 * self.indicatorScale, 16 * self.indicatorScale)
+            love.graphics.draw(self.cloneIndicatorSheet, 200, 0)
+
+            self.exampleAnim:draw(self.cloneIndicatorSheet, 200, 200, nil, self.indicatorScale, self.indicatorScale, 0, 0)
             love.graphics.printf(debug.indicators .. ' hud elements', 100, 70, 300, 'left')
+
+
         end
     end)
 end
