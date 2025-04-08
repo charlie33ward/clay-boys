@@ -70,7 +70,7 @@ function ui:load()
     self.hudRender = self.inGameHud.heliumFunction({
         maxClones = 5,
         currentClones = 5
-    }, 400, 400)
+    }, screenDimensions.width, screenDimensions.height)
     self.hudRender:draw()
     hudScene:deactivate()
 
