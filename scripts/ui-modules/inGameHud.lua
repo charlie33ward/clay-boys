@@ -30,15 +30,21 @@ function inGameHud:load()
     self.cloneIndicatorGrid = anim8.newGrid(16, 16, self.cloneIndicatorSheet:getWidth(), self.cloneIndicatorSheet:getHeight())
     self.indicatorScale = 2.5
 
-    self.combineAnim = anim8.newAnimation(self.cloneIndicatorGrid('1-11', 1), 0.03)
-    self.throwAnim = anim8.newAnimation(self.cloneIndicatorGrid('11-1', 1), 0.03)
+    local frameLength = 0.04
+    self.combineAnim = anim8.newAnimation(self.cloneIndicatorGrid('1-11', 1), frameLength)
+    self.throwAnim = anim8.newAnimation(self.cloneIndicatorGrid('11-1', 1), frameLength)
     self.animTime = 11 * 0.07
     
-
     self.indicators = {}
 end
 
+function inGameHud:onThrow()
 
+end
+
+function inGameHud:onCombine()
+
+end
 
 local circleFactory = helium(function(param, view)
     local anims = useState({
@@ -50,7 +56,6 @@ local circleFactory = helium(function(param, view)
         tick = 0
     })
     
-    
     return function()
         dummyTick.tick = dummyTick.tick + 1
         anims.activeAnim:draw(param.cloneIndicatorSheet, param.x, param.y, nil, scale, scale, 0, 0)
@@ -58,7 +63,6 @@ local circleFactory = helium(function(param, view)
 end)
 
 local prevActiveCircle = 0
-
 
 function inGameHud:update(dt)
     for _, indicator in pairs(self.indicators) do
@@ -87,15 +91,19 @@ function inGameHud:initHeliumFunction()
             activeCircle = param.maxClones - param.currentClones
         })
     
-        debug.indicators = 0
     
         for i = 1, inGameHud.maxClones do
             self.indicators[i] = {}
             local width = view.w
             local height = view.h
     
+            self.indicators[i].animations = {
+                throw = self.throwAnim:clone(),
+                combine = self.combineAnim:clone()
+            }
+
             self.indicators[i].table = {
-                activeAnim = self.throwAnim:clone(),
+                activeAnim = self.indicators[i].animations.combine,
                 x = baseX,
                 y = y,
                 isFull = true,
@@ -111,26 +119,15 @@ function inGameHud:initHeliumFunction()
     
                 -- end
             }
+
     
-            
 
             self.indicators[i].component = circleFactory(self.indicators[i].table, width, height)
     
             y = y + vertSpacing
     
-            debug.indicators = debug.indicators + 1
         end
     
-        if prevActiveCircle > inGameHud.activeCircle then
-            -- after throw/spend a clone
-    
-        elseif prevActiveCircle < inGameHud.activeCircle then
-            -- after combine/gain a clone
-    
-        end
-
-    
-        prevActiveCircle = inGameHud.activeCircle
     
         return function()
             for _, indicator in pairs(self.indicators) do
