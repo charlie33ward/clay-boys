@@ -42,11 +42,11 @@ function gameManager:getPalette()
 end
 
 function gameManager:onThrow()
-    
+    self.ui:onThrow()
 end
 
 function gameManager:onCombine()
-
+    self.ui:onCombine()
 end
 
 function gameManager:triggerDeathEvent(x, y)

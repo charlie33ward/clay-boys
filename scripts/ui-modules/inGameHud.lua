@@ -31,8 +31,8 @@ function inGameHud:load()
     self.indicatorScale = 2.5
 
     local frameLength = 0.04
-    self.combineAnim = anim8.newAnimation(self.cloneIndicatorGrid('1-11', 1), frameLength)
-    self.throwAnim = anim8.newAnimation(self.cloneIndicatorGrid('11-1', 1), frameLength)
+    self.combineAnim = anim8.newAnimation(self.cloneIndicatorGrid('1-11', 1), frameLength, 'pauseAtEnd')
+    self.throwAnim = anim8.newAnimation(self.cloneIndicatorGrid('11-1', 1), frameLength, 'pauseAtEnd')
     self.animTime = 11 * 0.07
     self.activeIndicator = 5
     
@@ -40,15 +40,17 @@ function inGameHud:load()
 end
 
 function inGameHud:onThrow()
-    -- self.indicators[self.activeIndicator].table = 
+    if self.activeIndicator < 1 then
+        return
+    end
+    self.indicators[self.activeIndicator].table.playThrowAnim()
 
-    -- self.activeIndicator = self.activeIndicator - 1
+    self.activeIndicator = self.activeIndicator - 1
 end
 
 function inGameHud:onCombine()
-
-    
-    self.activeIndicator = self.activeIndicator - 1
+    self.activeIndicator = self.activeIndicator + 1
+    self.indicators[self.activeIndicator].table.playCombineAnim()
 end
 
 local circleFactory = helium(function(param, view)
@@ -62,6 +64,10 @@ local circleFactory = helium(function(param, view)
     })
     
     return function()
+        if anims.activeAnim ~= param.activeAnim then
+            anims.activeAnim = param.activeAnim
+        end
+
         dummyTick.tick = dummyTick.tick + 1
         anims.activeAnim:draw(param.cloneIndicatorSheet, param.x, param.y, nil, scale, scale, 0, 0)
     end
@@ -70,12 +76,25 @@ end)
 local prevActiveCircle = 0
 
 function inGameHud:update(dt)
-    for _, indicator in pairs(self.indicators) do
+    for i, indicator in pairs(self.indicators) do
         indicator.table.activeAnim:update(dt)
+
+        debug[i] = indicator.table.activeAnim.position
     end
 
     if tick then
         tick = tick + 1
+    end
+end
+
+
+local function drawDebug()
+    local y = 70
+    if debug then
+        for _, message in pairs(debug) do
+            love.graphics.print(message, 100, y)
+            y = y + 20
+        end
     end
 end
 
@@ -121,14 +140,12 @@ function inGameHud:initHeliumFunction()
             self.indicators[currentIndex].table.playThrowAnim = function()
                 self.indicators[currentIndex].table.activeAnim = self.indicators[currentIndex].animations.throw
                 self.indicators[currentIndex].table.activeAnim:gotoFrame(1)
-                self.indicators[currentIndex].table.activeAnim:resume()
             end
             self.indicators[currentIndex].table.playCombineAnim = function()
                 self.indicators[currentIndex].table.activeAnim = self.indicators[currentIndex].animations.combine
                 self.indicators[currentIndex].table.activeAnim:gotoFrame(1)
                 self.indicators[currentIndex].table.activeAnim:resume()
             end
-    
 
             self.indicators[currentIndex].component = circleFactory(self.indicators[currentIndex].table, width, height)
     
@@ -142,6 +159,7 @@ function inGameHud:initHeliumFunction()
                 indicator.component:draw()
             end    
 
+            drawDebug()
         end
     end)
 end

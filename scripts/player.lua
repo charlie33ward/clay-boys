@@ -105,6 +105,8 @@ function player:load()
 
     self.cloneManager:setValidStates(validStates)
     self.cloneManager:load()
+
+    self.game = gameManager.getInstance()
 end
 
 function player:reset()
@@ -120,6 +122,7 @@ end
 
 function player:onCombine()
     self.currentClones = self.currentClones - 1
+    self.game:onCombine()
 end
 
 
@@ -245,7 +248,8 @@ local canThrow = true
 local startedThrow = false
 
 function player:startThrowBall()
-    if not canThrow then
+    local gameState = self.game.state
+    if not canThrow or gameState ~= 'PLAYING' then
         startedThrow = false
         return
     end
@@ -257,6 +261,8 @@ function player:throwBall()
     if not canThrow or not startedThrow then
         return
     end
+
+    self.game:onThrow()
     
     if self.currentClones < self.maxClones then
         self.currentClones = self.currentClones + 1

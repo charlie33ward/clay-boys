@@ -81,15 +81,11 @@ function ui:load()
 end
 
 function ui:onThrow()
-    if gameState == 'PLAYING' then
-        
-    end
+    self.inGameHud:onThrow()
 end
 
 function ui:onCombine()
-    if gameState == 'PLAYING' then
-        
-    end
+    self.inGameHud:onCombine()
 end
 
 local updates = 0
