@@ -41,11 +41,11 @@ function gameManager:getPalette()
     return self.ui.getPalette()
 end
 
-function gameManager:onThrowClone()
-    -- update clone count ui
+function gameManager:onThrow()
+    
 end
 
-function gameManager:onCombineClone()
+function gameManager:onCombine()
 
 end
 

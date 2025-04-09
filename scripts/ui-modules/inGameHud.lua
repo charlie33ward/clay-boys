@@ -34,16 +34,21 @@ function inGameHud:load()
     self.combineAnim = anim8.newAnimation(self.cloneIndicatorGrid('1-11', 1), frameLength)
     self.throwAnim = anim8.newAnimation(self.cloneIndicatorGrid('11-1', 1), frameLength)
     self.animTime = 11 * 0.07
+    self.activeIndicator = 5
     
     self.indicators = {}
 end
 
 function inGameHud:onThrow()
+    -- self.indicators[self.activeIndicator].table = 
 
+    -- self.activeIndicator = self.activeIndicator - 1
 end
 
 function inGameHud:onCombine()
 
+    
+    self.activeIndicator = self.activeIndicator - 1
 end
 
 local circleFactory = helium(function(param, view)
@@ -93,36 +98,39 @@ function inGameHud:initHeliumFunction()
     
     
         for i = 1, inGameHud.maxClones do
-            self.indicators[i] = {}
+            local currentIndex = i
+            self.indicators[currentIndex] = {}
             local width = view.w
             local height = view.h
     
-            self.indicators[i].animations = {
+            self.indicators[currentIndex].animations = {
                 throw = self.throwAnim:clone(),
                 combine = self.combineAnim:clone()
             }
 
-            self.indicators[i].table = {
-                activeAnim = self.indicators[i].animations.combine,
+            self.indicators[currentIndex].table = {
+                activeAnim = self.indicators[currentIndex].animations.combine,
                 x = baseX,
                 y = y,
                 isFull = true,
                 tick = tick,
                 cloneIndicatorSheet = self.cloneIndicatorSheet,
                 indicatorScale = inGameHud.cloneIndicatorScale
-                
-                -- playThrowAnim = function(self)
-                    
-                -- end,
-    
-                -- playCombineAnim = function(self)
-    
-                -- end
             }
 
+            self.indicators[currentIndex].table.playThrowAnim = function()
+                self.indicators[currentIndex].table.activeAnim = self.indicators[currentIndex].animations.throw
+                self.indicators[currentIndex].table.activeAnim:gotoFrame(1)
+                self.indicators[currentIndex].table.activeAnim:resume()
+            end
+            self.indicators[currentIndex].table.playCombineAnim = function()
+                self.indicators[currentIndex].table.activeAnim = self.indicators[currentIndex].animations.combine
+                self.indicators[currentIndex].table.activeAnim:gotoFrame(1)
+                self.indicators[currentIndex].table.activeAnim:resume()
+            end
     
 
-            self.indicators[i].component = circleFactory(self.indicators[i].table, width, height)
+            self.indicators[currentIndex].component = circleFactory(self.indicators[currentIndex].table, width, height)
     
             y = y + vertSpacing
     

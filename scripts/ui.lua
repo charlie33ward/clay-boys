@@ -80,6 +80,18 @@ function ui:load()
     self.currentScene:activate()
 end
 
+function ui:onThrow()
+    if gameState == 'PLAYING' then
+        
+    end
+end
+
+function ui:onCombine()
+    if gameState == 'PLAYING' then
+        
+    end
+end
+
 local updates = 0
 
 function ui:update(dt)
