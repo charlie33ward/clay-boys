@@ -48,9 +48,22 @@ function inGameHud:onThrow()
     self.activeIndicator = self.activeIndicator - 1
 end
 
+
 function inGameHud:onCombine()
+    if self.activeIndicator >= 5 then
+        return
+    end
+    if self.indicators then
+        if self.indicators[self.activeIndicator + 1].table then
+            self.indicators[self.activeIndicator + 1].table.playCombineAnim()
+        else
+            debug.table = 'nil table'
+        end
+    else
+        debug.nilIndic = 'nil indicator'
+    end
+    -- self.indicators[self.activeIndicator + 1].table.playCombineAnim()
     self.activeIndicator = self.activeIndicator + 1
-    self.indicators[self.activeIndicator].table.playCombineAnim()
 end
 
 local circleFactory = helium(function(param, view)
@@ -78,8 +91,6 @@ local prevActiveCircle = 0
 function inGameHud:update(dt)
     for i, indicator in pairs(self.indicators) do
         indicator.table.activeAnim:update(dt)
-
-        debug[i] = indicator.table.activeAnim.position
     end
 
     if tick then
@@ -131,7 +142,7 @@ function inGameHud:initHeliumFunction()
                 activeAnim = self.indicators[currentIndex].animations.combine,
                 x = baseX,
                 y = y,
-                isFull = true,
+                isCombining = false,
                 tick = tick,
                 cloneIndicatorSheet = self.cloneIndicatorSheet,
                 indicatorScale = inGameHud.cloneIndicatorScale
@@ -140,6 +151,7 @@ function inGameHud:initHeliumFunction()
             self.indicators[currentIndex].table.playThrowAnim = function()
                 self.indicators[currentIndex].table.activeAnim = self.indicators[currentIndex].animations.throw
                 self.indicators[currentIndex].table.activeAnim:gotoFrame(1)
+                self.indicators[currentIndex].table.activeAnim:resume()
             end
             self.indicators[currentIndex].table.playCombineAnim = function()
                 self.indicators[currentIndex].table.activeAnim = self.indicators[currentIndex].animations.combine
