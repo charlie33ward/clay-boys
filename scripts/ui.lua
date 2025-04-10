@@ -88,6 +88,10 @@ function ui:onCombine()
     self.inGameHud:onCombine()
 end
 
+function ui:onReset()
+    self.inGameHud:onReset()
+end
+
 local updates = 0
 
 function ui:update(dt)

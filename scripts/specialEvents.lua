@@ -59,7 +59,6 @@ function specialEvents:update(dt)
 end
 
 function specialEvents:draw()
-    self.explosionAnim:draw(self.explosionSheet, 300, 300, nil, self.explosionTable.scale, self.explosionTable.scale, self.explosionTable.width / 2, self.explosionTable.height / 2)
 
     if activeAnims then
         for _, animTable in pairs(activeAnims) do

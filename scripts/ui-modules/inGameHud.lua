@@ -53,17 +53,17 @@ function inGameHud:onCombine()
     if self.activeIndicator >= 5 then
         return
     end
-    if self.indicators then
-        if self.indicators[self.activeIndicator + 1].table then
-            self.indicators[self.activeIndicator + 1].table.playCombineAnim()
-        else
-            debug.table = 'nil table'
-        end
-    else
-        debug.nilIndic = 'nil indicator'
-    end
-    -- self.indicators[self.activeIndicator + 1].table.playCombineAnim()
+    self.indicators[self.activeIndicator + 1].table.playCombineAnim()
     self.activeIndicator = self.activeIndicator + 1
+end
+
+function inGameHud:onReset()
+    if self.activeIndicator < 5 then
+        for i = self.activeIndicator, 4, 1 do
+            self.indicators[i + 1].table.playCombineAnim()
+        end
+        self.activeIndicator = 5
+    end
 end
 
 local circleFactory = helium(function(param, view)

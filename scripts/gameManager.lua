@@ -107,6 +107,8 @@ function gameManager:restartPuzzle()
     self.state = validGameStates.playing
     self.ui:hideDeathScreen()
     self.player.canMove = true
+
+    self.ui:onReset()
 end
 
 function gameManager:drawDebug()
