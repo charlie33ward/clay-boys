@@ -94,7 +94,7 @@ function physicsManager:createWall(x, y, width, height, rotation)
     end
 
     wall:setType('static')
-    table.insert(self.wallColliders, wall)
+    return wall
 end
 
 function physicsManager:createBallCollider(args)

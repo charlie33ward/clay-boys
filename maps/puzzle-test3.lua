@@ -9,8 +9,8 @@ return {
   height = 24,
   tilewidth = 32,
   tileheight = 32,
-  nextlayerid = 28,
-  nextobjectid = 342,
+  nextlayerid = 29,
+  nextobjectid = 343,
   properties = {
     ["height"] = 0,
     ["width"] = 0
@@ -393,6 +393,35 @@ return {
       repeatx = true,
       repeaty = true,
       properties = {}
+    },
+    {
+      type = "objectgroup",
+      draworder = "topdown",
+      id = 28,
+      name = "hazard",
+      class = "",
+      visible = true,
+      opacity = 1,
+      offsetx = 0,
+      offsety = 0,
+      parallaxx = 1,
+      parallaxy = 1,
+      properties = {},
+      objects = {
+        {
+          id = 342,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 258.667,
+          y = 276,
+          width = 43.3333,
+          height = 120,
+          rotation = 0,
+          visible = true,
+          properties = {}
+        }
+      }
     },
     {
       type = "tilelayer",
@@ -1342,7 +1371,7 @@ return {
           type = "",
           shape = "rectangle",
           x = 506,
-          y = 253.273,
+          y = 249.94,
           width = 44.9091,
           height = 17.0909,
           rotation = 0,

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.0" orientation="orthogonal" renderorder="right-down" width="40" height="24" tilewidth="32" tileheight="32" infinite="0" nextlayerid="29" nextobjectid="342">
+<map version="1.10" tiledversion="1.11.0" orientation="orthogonal" renderorder="right-down" width="40" height="24" tilewidth="32" tileheight="32" infinite="0" nextlayerid="29" nextobjectid="343">
  <editorsettings>
   <export target="puzzle-test3.lua" format="lua"/>
  </editorsettings>
@@ -60,7 +60,9 @@
  <imagelayer id="11" name="space" locked="1" parallaxx="0.2" parallaxy="0.2" repeatx="1" repeaty="1">
   <image source="../assets/backgrounds/space-background.png" width="800" height="800"/>
  </imagelayer>
- <objectgroup id="28" name="hazard"/>
+ <objectgroup id="28" name="hazard">
+  <object id="342" x="258.667" y="276" width="43.3333" height="120"/>
+ </objectgroup>
  <layer id="1" name="ground" width="40" height="24">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,

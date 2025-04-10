@@ -166,10 +166,6 @@ local puzzle3 = {
     end
 }
 
-local puzzleOrder = {
-    puzzle1 = {},
-    puzzle2 = {}
-}
 
 function mapManager:setCam(cam)
     self.cam = cam
@@ -221,33 +217,60 @@ function mapManager:load()
 
     local width = self.map.width * self.map.tilewidth
     local height = self.map.height * self.map.tileheight
+    
+    self.game = gameManager.getInstance()
+    self.game:setMapManager(self)
 
     self:createMapBoundaries(width, height)
     self:createTubes()
+    self:createMapHazards()
 
     self:createPuzzlePhysics()
     self:initializePuzzleState(self.currentMapData)
     self:createPuzzleCamArea()
+end
 
-    gameManager.getInstance():setMapManager(self)
+function mapManager:createMapHazards()
+    if self.map.layers["hazard"] then
+
+        local currentGame = self.game
+
+        for _, obj in pairs(self.map.layers['hazard'].objects) do
+            local hazard = nil
+
+            if obj.rotation ~= 0 then
+                hazard = physicsManager:createWall(obj.x, obj.y, obj.width, obj.height, obj.rotation)
+            else
+                hazard = physicsManager:createWall(obj.x + (obj.width / 2), obj.y + (obj.height / 2), obj.width, obj.height)
+            end
+
+            hazard:setSensor(true)
+
+            function hazard:enter(other)
+                if other.identifier == 'clone' or other.identifier == 'player' then
+                    currentGame:triggerDeathEvent(other.getX(), other.getY())
+                end
+            end
+        end
+    end
 end
 
 function mapManager:createTubes()
     if self.map.layers["tubes"] then
         for i, obj in pairs(self.map.layers["tubes"].objects) do
-            local tube = {} 
+            local tube = {}
             tube.collider = physicsManager:createTube(obj.x, obj.y, obj.width, obj.height, obj.rotation)
 
             function tube.collider:preSolve(other, collision)
                 if other.identifier == 'ball' then
                     collision:setEnabled(false)
-                    -- cancel ball timers
+                    
                 end
             end
 
             function tube.collider:postSolve(other, collision)
                 if other.identifier == 'ball' then
-                    -- resume new ball timers
+                    
                 end
             end
         end

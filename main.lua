@@ -15,7 +15,7 @@ function love.load()
     phys = physicsManager:new()
     phys:load()
 
-    map = mapManager:new(phys)
+    map = mapManager:new(phys, game)
     map:load()
 
     player = playerCharacter:new(phys, map)
@@ -50,7 +50,7 @@ function love.draw()
     if gameState == 'PLAYING' or gameState == 'DEAD' then
         cam:getCam():attach()
             map:draw()
-            -- phys:getWorld():draw()
+            phys:getWorld():draw()
             player:draw()
             game:drawSpecialEvents()
         cam:getCam():detach()
