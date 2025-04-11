@@ -54,6 +54,7 @@ function gameManager:triggerDeathEvent(x, y)
     self.ui:showDeathScreen()
     self.specialEvents:onDeathEvent(x, y)
     self.player.canMove = false
+    self.player.collider:setLinearVelocity(0, 0)
 end
 
 function gameManager:chooseLevel(levelName)

@@ -14,20 +14,20 @@ end
 
 function specialEvents:onDeathEvent(x, y)
     local animation = {
-        x = x,
-        y = y,
+        x = x + 3,
+        y = y - 34,
         anim = self.explosionAnim:clone(),
         id = idCounter
     }
 
     idCounter = idCounter + 1
 
-    table.insert(animation, activeAnims)
+    table.insert(activeAnims, animation)
 
     timer.after(1.5, function()
         for i, animTable in pairs(activeAnims) do
             if animTable.id == animation.id then
-                table.remove(activeAnims, i)
+                -- table.remove(activeAnims, i)
             end
         end
     end)
