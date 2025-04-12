@@ -50,7 +50,7 @@ function love.draw()
     if gameState == 'PLAYING' or gameState == 'DEAD' then
         cam:getCam():attach()
             map:draw()
-            phys:getWorld():draw()
+            -- phys:getWorld():draw()
             player:draw()
             game:drawSpecialEvents()
         cam:getCam():detach()

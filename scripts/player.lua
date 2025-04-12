@@ -322,15 +322,13 @@ function player:throwBall()
             end
         end)
 
-        local function attemptDestroyBall()
+        local function attemptDestroyBall(debug)
             if ball.canDestroy then
                 player:destroyBall(ball)
             end
         end
 
         function ball.collider:enter(other)
-            debugMessages.ballCollide = 'ball Collision'
-
             if other.userData and other.userData.identifier == 'combineSensor' then  
                 return
             elseif other.identifier == 'tube' then

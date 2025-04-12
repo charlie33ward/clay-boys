@@ -147,10 +147,6 @@ local puzzle3 = {
         manager.map:drawLayer(manager.map.layers["decorations2"])
         manager.map:drawLayer(manager.map.layers["puzzle-walls"])
 
-        love.graphics.push()
-        love.graphics.translate(0, 32)
-        manager.map:drawLayer(manager.map.layers["tubes"])
-        love.graphics.pop()
 
         love.graphics.setColor(1, 1, 1, puzzleState.green.opacity)
         manager.map:drawLayer(manager.map.layers["green-puzzle"])
@@ -235,28 +231,16 @@ function mapManager:createWalls()
 
             if obj.properties.wallType then
                 if obj.properties.wallType == 'islandBorder' then
-                    debug.border = 'islandborder detected'
                     wall:setIdentifier('islandBorder')
 
                     function wall:preSolve(other, collision)
-                        debug.haha = 'haha'
-                        debug.identifier = other.identifier
                         if other.identifier == 'ball' then
-                            debug.islandPresolve = 'presolve'
                             collision:setEnabled(false)
                         end
                     end
                 end
             end
 
-            -- if type == 'islandBorder' then
-            --     function wall:preSolve(other, collision)
-            --         if other.identifier == 'ball' then
-            --             debug.islandPresolve = 'presolve'
-            --             collision:setEnabled(false)
-            --         end
-            --     end
-            -- end
         end
     end
 end
@@ -276,6 +260,13 @@ function mapManager:createMapHazards()
             end
 
             hazard:setSensor(true)
+            hazard:setIdentifier('hazard')
+
+            function hazard:preSolve(other, collision)
+                if other.identifier == 'ball' then
+                    collision:setEnabled(false)
+                end
+            end
 
             function hazard:enter(other)
                 if other.identifier == 'clone' or other.identifier == 'player' then

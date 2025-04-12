@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.0" orientation="orthogonal" renderorder="right-down" width="40" height="24" tilewidth="32" tileheight="32" infinite="0" nextlayerid="29" nextobjectid="343">
+<map version="1.10" tiledversion="1.11.0" orientation="orthogonal" renderorder="right-down" width="40" height="24" tilewidth="32" tileheight="32" infinite="0" nextlayerid="29" nextobjectid="377">
  <editorsettings>
   <export target="puzzle-test3.lua" format="lua"/>
  </editorsettings>
@@ -60,9 +60,6 @@
  <imagelayer id="11" name="space" locked="1" parallaxx="0.2" parallaxy="0.2" repeatx="1" repeaty="1">
   <image source="../assets/backgrounds/space-background.png" width="800" height="800"/>
  </imagelayer>
- <objectgroup id="28" name="hazard">
-  <object id="342" x="258.667" y="276" width="43.3333" height="120"/>
- </objectgroup>
  <layer id="1" name="ground" width="40" height="24">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -189,12 +186,7 @@
     <property name="wallType" value="islandBorder"/>
    </properties>
   </object>
-  <object id="272" x="448.333" y="172" width="249.334" height="1.66667">
-   <properties>
-    <property name="wallType" value="islandBorder"/>
-   </properties>
-  </object>
-  <object id="308" x="392.75" y="171.75" width="23.167" height="3.66667">
+  <object id="272" x="393.083" y="172" width="304.584" height="1.66667">
    <properties>
     <property name="wallType" value="islandBorder"/>
    </properties>
@@ -254,12 +246,12 @@
     <property name="wallType" value="islandBorder"/>
    </properties>
   </object>
-  <object id="294" x="478.5" y="344" width="307.667" height="2.33333">
+  <object id="294" x="478.5" y="344" width="307.667" height="12.3333">
    <properties>
     <property name="wallType" value="islandBorder"/>
    </properties>
   </object>
-  <object id="295" x="500.5" y="269.5" width="299.167" height="2.33333">
+  <object id="295" x="500.5" y="258.167" width="299.167" height="13.6666">
    <properties>
     <property name="wallType" value="islandBorder"/>
    </properties>
@@ -274,7 +266,7 @@
     <property name="wallType" value="islandBorder"/>
    </properties>
   </object>
-  <object id="286" x="449" y="454" width="206.667" height="2.33333">
+  <object id="286" x="444.5" y="454" width="211.167" height="2.33333">
    <properties>
     <property name="wallType" value="islandBorder"/>
    </properties>
@@ -284,15 +276,11 @@
     <property name="wallType" value="islandBorder"/>
    </properties>
   </object>
-  <object id="287" x="386.564" y="510.536" width="49.3397" height="2.33333" rotation="315">
+  <object id="287" x="386.564" y="510.536" width="80.4524" height="2.33333" rotation="315">
    <properties>
     <property name="wallType" value="islandBorder"/>
    </properties>
   </object>
-  <object id="315" x="352.464" y="404.148" width="103.433" height="2.33333" rotation="-315"/>
-  <object id="316" x="377.964" y="381.648" width="103.433" height="2.33333" rotation="-315"/>
-  <object id="320" x="448.625" y="172.075" width="92.4334" height="2.33333" rotation="90"/>
-  <object id="321" x="418.375" y="172.325" width="92.4334" height="2.33333" rotation="90"/>
   <object id="288" x="389.214" y="509.147" width="80.4524" height="2.33333" rotation="-315">
    <properties>
     <property name="wallType" value="islandBorder"/>
@@ -303,7 +291,7 @@
     <property name="wallType" value="islandBorder"/>
    </properties>
   </object>
-  <object id="300" x="377.183" y="382.878" width="22.3424" height="2.33333" rotation="315">
+  <object id="300" x="353.433" y="406.628" width="55.93" height="2.33333" rotation="315">
    <properties>
     <property name="wallType" value="islandBorder"/>
    </properties>
@@ -338,12 +326,7 @@
     <property name="wallType" value="islandBorder"/>
    </properties>
   </object>
-  <object id="296" x="112.5" y="262.5" width="303.917" height="2.33333">
-   <properties>
-    <property name="wallType" value="islandBorder"/>
-   </properties>
-  </object>
-  <object id="306" x="448" y="261.75" width="54" height="2.75">
+  <object id="296" x="112.5" y="262.5" width="392.667" height="2.33333">
    <properties>
     <property name="wallType" value="islandBorder"/>
    </properties>
@@ -353,15 +336,6 @@
   <object id="333" x="660.289" y="110.225" width="17.2698" height="27" rotation="63.6622"/>
   <object id="339" x="490" y="494.5" width="17.5" height="66"/>
   <object id="340" x="545.5" y="494.5" width="17.25" height="33"/>
-  <object id="341" x="506" y="249.94" width="44.9091" height="17.0909"/>
- </objectgroup>
- <objectgroup id="27" name="tubes">
-  <object id="309" gid="4464" x="416.667" y="267" width="32" height="32"/>
-  <object id="317" gid="4464" x="372.789" y="380.745" width="34.4749" height="34.4749" rotation="135"/>
-  <object id="310" gid="4464" x="416.667" y="235" width="32" height="32"/>
-  <object id="318" gid="4464" x="397.167" y="405.123" width="34.4749" height="34.4749" rotation="135"/>
-  <object id="311" gid="4464" x="416.667" y="203" width="32" height="32"/>
-  <object id="319" gid="4464" x="421.544" y="429.5" width="34.4749" height="34.4749" rotation="135"/>
  </objectgroup>
  <layer id="18" name="puzzle-walls" width="40" height="24" locked="1">
   <data encoding="csv">
@@ -437,5 +411,38 @@
    <point/>
   </object>
   <object id="236" name="puzzle-zone" x="287" y="210.667" width="537" height="249"/>
+ </objectgroup>
+ <objectgroup id="28" name="hazard" locked="1">
+  <object id="343" x="0" y="-2" width="318" height="258"/>
+  <object id="344" x="-3" y="254" width="108" height="518"/>
+  <object id="345" x="103" y="411" width="279" height="362"/>
+  <object id="347" x="397.269" y="375.358" width="83.0232" height="105.233" rotation="45"/>
+  <object id="349" x="424.269" y="365.691" width="359.023" height="83.8995"/>
+  <object id="350" x="399" y="371.667" width="51.3333" height="34"/>
+  <object id="352" x="477.667" y="357.333" width="296.333" height="51.3333"/>
+  <object id="353" x="707.333" y="160.667" width="28.3333" height="96.3333"/>
+  <object id="354" x="733.333" y="192.333" width="66.3333" height="64"/>
+  <object id="355" x="799.667" y="190.333" width="30.6667" height="14"/>
+  <object id="356" x="799.333" y="204.333" width="15.3333" height="28"/>
+  <object id="357" x="315.333" y="180" width="390" height="75.3333"/>
+  <object id="358" x="396.355" y="185.29" width="52.4183" height="115.935" rotation="135"/>
+  <object id="359" x="316" y="1.33333" width="448.667" height="60.6667"/>
+  <object id="360" x="765.333" y="1.33333" width="512" height="120.667"/>
+  <object id="361" x="1032.67" y="120.667" width="245.333" height="644"/>
+  <object id="362" x="782" y="400" width="26" height="72"/>
+  <object id="363" x="808.667" y="440" width="18.6667" height="20.6667"/>
+  <object id="364" x="667.333" y="450.667" width="118" height="20"/>
+  <object id="365" x="672.667" y="512" width="158" height="53.3333"/>
+  <object id="366" x="645.333" y="556.667" width="30" height="83.3333"/>
+  <object id="367" x="386" y="575.333" width="488" height="192"/>
+  <object id="368" x="652" y="528.667" width="192" height="84"/>
+  <object id="369" x="844.667" y="548.667" width="14" height="34"/>
+  <object id="370" x="380.667" y="538.667" width="28.6667" height="69.3333"/>
+  <object id="371" x="869.333" y="607.333" width="183.333" height="158.667"/>
+  <object id="372" x="1006" y="415.333" width="30" height="211.333"/>
+  <object id="373" x="975.333" y="465.333" width="49.3333" height="161.333"/>
+  <object id="374" x="950" y="514.667" width="15.3333" height="120"/>
+  <object id="375" x="927.333" y="552.667" width="22" height="90.6667"/>
+  <object id="376" x="910.667" y="580.667" width="20" height="44"/>
  </objectgroup>
 </map>
