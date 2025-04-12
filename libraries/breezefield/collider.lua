@@ -4,7 +4,8 @@ local set_funcs, lp, lg, COLLIDER_TYPES = unpack(
 
 local Collider = {
    identifier = '',
-   parent = nil
+   parent = nil,
+   wallType = nil
 }
 Collider.__index = Collider
 
@@ -89,6 +90,23 @@ local validIdentifiers = {
    hazard = 'hazard'
 }
 
+local wallTypes = {
+   island = 'island'
+}
+
+function Collider:setWallType(wallType)
+   if wallTypes[wallType] then
+      self.wallType = wallTypes[wallType]
+   end
+end
+
+function Collider:getWallType()
+   if self.wallType then
+      return self.wallType
+   else
+      return nil
+   end
+end
 
 function Collider.getValidIdentifiers()
    return validIdentifiers
