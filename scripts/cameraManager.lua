@@ -15,20 +15,23 @@ local puzzleCamPosition = {
     y = 0
 }
 
-function cameraManager:new()
+function cameraManager:new(game)
     local manager = {}
     setmetatable(manager, self)
     self.__index = self
+    self.game = game
     return manager
 end
 
 
 function cameraManager:setPuzzleCam(zoom, x, y)
-    self.cameraZoom = zoom
-    self.cam:zoomTo(self.cameraZoom)
-    puzzleCamPosition.x = math.floor(x)
-    puzzleCamPosition.y = math.floor(y)
-    inPuzzle = true
+    if self.game.state == 'PLAYING' then
+        self.cameraZoom = zoom
+        self.cam:zoomTo(self.cameraZoom)
+        puzzleCamPosition.x = math.floor(x)
+        puzzleCamPosition.y = math.floor(y)
+        inPuzzle = true
+    end
 end
 
 function cameraManager:setDefaultCam()
@@ -38,7 +41,9 @@ function cameraManager:setDefaultCam()
 end
 
 function cameraManager:setCameraZoom(zoom)
-    self.cameraZoom = zoom
+    if self.game.state == 'PLAYING' then
+        self.cameraZoom = zoom
+    end
 end
 
 function cameraManager:getCameraZoom()
@@ -53,6 +58,10 @@ function cameraManager:load(x, y)
 end
 
 function cameraManager:update(dt, x, y, width, height, tileWidth)
+    if self.game.state ~= 'PLAYING' then
+        return
+    end
+
     if inPuzzle then
         self.cam:lockPosition(puzzleCamPosition.x, puzzleCamPosition.y, camera.smooth.damped(8))
     else
