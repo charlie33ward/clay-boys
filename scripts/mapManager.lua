@@ -226,32 +226,37 @@ function mapManager:createWalls()
     if self.map.layers["walls"] then
         for i, obj in pairs(self.map.layers["walls"].objects) do
             local wall = nil
-            local type = nil
-
-            if obj.properties.wallType then
-                type = obj.properties.wallType
-                if obj.properties.wallType == 'islandBorder' then
-                    debug.border = 'islandborder detected'
-                end
-            end
             
             if obj.rotation ~= 0 then
-                wall = physicsManager:createWall(obj.x, obj.y, obj.width, obj.height, obj.rotation, type)
+                wall = physicsManager:createWall(obj.x, obj.y, obj.width, obj.height, obj.rotation)
             else
-                wall = physicsManager:createWall(obj.x + (obj.width / 2), obj.y + (obj.height / 2), obj.width, obj.height, nil, type)
+                wall = physicsManager:createWall(obj.x + (obj.width / 2), obj.y + (obj.height / 2), obj.width, obj.height, nil)
             end
 
-            if obj.properties.isIslandBorder then
+            if obj.properties.wallType then
+                if obj.properties.wallType == 'islandBorder' then
+                    debug.border = 'islandborder detected'
+                    wall:setIdentifier('islandBorder')
 
-                wall:setWallType('islandBorder')
-                
-                function wall:preSolve(other, collision)
-                    if other.identifier == 'ball' then
-                        debug.islandPresolve = 'presolve'
-                        collision:setEnabled(false)
+                    function wall:preSolve(other, collision)
+                        debug.haha = 'haha'
+                        debug.identifier = other.identifier
+                        if other.identifier == 'ball' then
+                            debug.islandPresolve = 'presolve'
+                            collision:setEnabled(false)
+                        end
                     end
                 end
             end
+
+            -- if type == 'islandBorder' then
+            --     function wall:preSolve(other, collision)
+            --         if other.identifier == 'ball' then
+            --             debug.islandPresolve = 'presolve'
+            --             collision:setEnabled(false)
+            --         end
+            --     end
+            -- end
         end
     end
 end
@@ -281,6 +286,7 @@ function mapManager:createMapHazards()
     end
 end
 
+-- MAY REUSE TUBE LOGIC FOR LATER FEATURE
 function mapManager:createTubes()
     if self.map.layers["tubes"] then
         for i, obj in pairs(self.map.layers["tubes"].objects) do

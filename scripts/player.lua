@@ -236,10 +236,10 @@ function player:getCurrentSheet()
 end
 
 function player:drawDebug()
-    local y = 50
+    local y = 110
     if debugMessages then
         for i, message in pairs(debugMessages) do
-            love.graphics.print(message, 50, y)
+            love.graphics.print(message, 100, y)
             y = y + 20
         end
     end
@@ -324,19 +324,18 @@ function player:throwBall()
         end
 
         function ball.collider:enter(other)
-            
+            debugMessages.ballCollide = 'ball Collision'
+
             if other.userData and other.userData.identifier == 'combineSensor' then  
                 return
             elseif other.identifier == 'tube' then
                 timer.cancel(ball.throwTimer)
                 ball.canDestroy = false
-            elseif other.identifier == 'wall' then
-                if other.wallType == 'islandBorder' then
-                    return
-                else
-                    attemptDestroyBall()
-                end
+            elseif other.identifier == 'islandBorder' then
+                debugMessages.islandBorderHit = 'islandBorderHit'
+                return
             elseif other.identifier == 'clone' or other.identifier == '' then
+                debugMessages.misc = 'misc'
                 attemptDestroyBall()
             end
         end

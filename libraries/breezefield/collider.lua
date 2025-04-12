@@ -87,26 +87,27 @@ local validIdentifiers = {
    detectionArea = 'detectionArea',
    combineSensor = 'combineSensor',
    tube = 'tube',
-   hazard = 'hazard'
-}
-
-local wallTypes = {
+   hazard = 'hazard',
    islandBorder = 'islandBorder'
 }
 
-function Collider:setWallType(wallType)
-   if wallTypes[wallType] then
-      self.wallType = wallTypes[wallType]
-   end
-end
+-- local wallTypes = {
+--    islandBorder = 'islandBorder'
+-- }
 
-function Collider:getWallType()
-   if self.wallType then
-      return self.wallType
-   else
-      return nil
-   end
-end
+-- function Collider:setWallType(wallType)
+--    if wallTypes[wallType] then
+--       self.wallType = wallTypes[wallType]
+--    end
+-- end
+
+-- function Collider:getWallType()
+--    if self.wallType then
+--       return self.wallType
+--    else
+--       return nil
+--    end
+-- end
 
 function Collider.getValidIdentifiers()
    return validIdentifiers

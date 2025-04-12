@@ -79,7 +79,7 @@ function physicsManager:createTube(x, y, width, height, rotation)
     return tube
 end
 
-function physicsManager:createWall(x, y, width, height, rotation, wallType)
+function physicsManager:createWall(x, y, width, height, rotation)
     -- TILED rotates these around top left, love2d around center
 
     local wall = self.world:newCollider('rectangle', {x, y, width, height})
@@ -97,13 +97,6 @@ function physicsManager:createWall(x, y, width, height, rotation, wallType)
 
     wall:setType('static')
 
-    if wallType then
-        wall:setWallType(wallType)
-
-        if wallType == 'islandBorder' then
-            debug.island = 'islandBorder physics initialization'
-        end
-    end
     return wall
 end
 
