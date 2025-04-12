@@ -110,6 +110,9 @@ function player:load()
 end
 
 function player:onDeath()
+    self.deathX = self.x
+    self.deathY = self.y
+
     timer.after(0, function()
         self.collider:setType('static')
         self.collider:setPosition(self.spawnPoint.x, self.spawnPoint.y)
@@ -212,8 +215,10 @@ function player:update(dt)
 end
 
 function player:draw()
-    if game.state == 'PLAYING' then
+    if self.game.state == 'PLAYING' then
         self.anim:draw(self.currentSheet, self.x, self.y, nil, self.scale, self.scale, 8, 8)
+    elseif self.game.state == 'DEAD' then
+        self.anim:draw(self.currentSheet, self.deathX, self.deathY, nil, self.scale, self.scale, 8, 8)
     end
     if self.balls then
         for _, ball in pairs(self.balls) do
@@ -331,11 +336,9 @@ function player:throwBall()
             elseif other.identifier == 'tube' then
                 timer.cancel(ball.throwTimer)
                 ball.canDestroy = false
-            elseif other.identifier == 'islandBorder' then
-                debugMessages.islandBorderHit = 'islandBorderHit'
+            elseif other.identifier == 'islandBorder' or other.identifier == 'hazard' then
                 return
             elseif other.identifier == 'clone' or other.identifier == '' then
-                debugMessages.misc = 'misc'
                 attemptDestroyBall()
             end
         end
