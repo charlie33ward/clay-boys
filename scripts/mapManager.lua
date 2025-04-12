@@ -205,15 +205,7 @@ function mapManager:load()
         bgLayer.parallaxy = 1.3
     end
 
-    if self.map.layers["walls"] then
-        for i, obj in pairs(self.map.layers["walls"].objects) do
-            if obj.rotation ~= 0 then
-                physicsManager:createWall(obj.x, obj.y, obj.width, obj.height, obj.rotation)    
-            else
-                physicsManager:createWall(obj.x + (obj.width / 2), obj.y + (obj.height / 2), obj.width, obj.height)
-            end
-        end
-    end
+    self:createWalls()
 
     local width = self.map.width * self.map.tilewidth
     local height = self.map.height * self.map.tileheight
@@ -228,6 +220,26 @@ function mapManager:load()
     self:createPuzzlePhysics()
     self:initializePuzzleState(self.currentMapData)
     self:createPuzzleCamArea()
+end
+
+function mapManager:createWalls()
+    if self.map.layers["walls"] then
+        for i, obj in pairs(self.map.layers["walls"].objects) do
+            local wall = nil
+            
+            if obj.rotation ~= 0 then
+                wall = physicsManager:createWall(obj.x, obj.y, obj.width, obj.height, obj.rotation)    
+            else
+                wall = physicsManager:createWall(obj.x + (obj.width / 2), obj.y + (obj.height / 2), obj.width, obj.height)
+            end
+
+            if obj.properties.isIslandBorder then
+                debug.border = 'border created'
+
+                wall:setWallType('islandBorder')
+            end
+        end
+    end
 end
 
 function mapManager:createMapHazards()

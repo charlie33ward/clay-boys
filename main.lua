@@ -55,7 +55,7 @@ function love.draw()
             game:drawSpecialEvents()
         cam:getCam():detach()
 
-        -- map:getCurrentMap():drawDebug()
+        map:getCurrentMap():drawDebug()
         player:drawDebug()
         map:drawDebug()
         

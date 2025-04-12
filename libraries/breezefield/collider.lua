@@ -91,7 +91,7 @@ local validIdentifiers = {
 }
 
 local wallTypes = {
-   island = 'island'
+   islandBorder = 'islandBorder'
 }
 
 function Collider:setWallType(wallType)

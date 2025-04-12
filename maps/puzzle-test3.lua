@@ -791,7 +791,9 @@ return {
           height = 35.8333,
           rotation = 0,
           visible = true,
-          properties = {}
+          properties = {
+            ["isIslandBorder"] = true
+          }
         },
         {
           id = 271,
@@ -804,7 +806,9 @@ return {
           height = 102.316,
           rotation = 135,
           visible = true,
-          properties = {}
+          properties = {
+            ["isIslandBorder"] = true
+          }
         },
         {
           id = 268,
@@ -817,7 +821,9 @@ return {
           height = 13,
           rotation = 0,
           visible = true,
-          properties = {}
+          properties = {
+            ["isIslandBorder"] = true
+          }
         },
         {
           id = 269,
@@ -830,7 +836,9 @@ return {
           height = 10.3333,
           rotation = 45,
           visible = true,
-          properties = {}
+          properties = {
+            ["isIslandBorder"] = true
+          }
         },
         {
           id = 270,
@@ -843,7 +851,9 @@ return {
           height = 4.44074,
           rotation = 135,
           visible = true,
-          properties = {}
+          properties = {
+            ["isIslandBorder"] = true
+          }
         },
         {
           id = 272,
@@ -856,7 +866,9 @@ return {
           height = 1.66667,
           rotation = 0,
           visible = true,
-          properties = {}
+          properties = {
+            ["isIslandBorder"] = true
+          }
         },
         {
           id = 308,
@@ -869,7 +881,9 @@ return {
           height = 3.66667,
           rotation = 0,
           visible = true,
-          properties = {}
+          properties = {
+            ["isIslandBorder"] = true
+          }
         },
         {
           id = 273,
@@ -882,7 +896,9 @@ return {
           height = 2.33333,
           rotation = 0,
           visible = true,
-          properties = {}
+          properties = {
+            ["isIslandBorder"] = true
+          }
         },
         {
           id = 280,
@@ -895,7 +911,9 @@ return {
           height = 2.33333,
           rotation = 0,
           visible = true,
-          properties = {}
+          properties = {
+            ["isIslandBorder"] = true
+          }
         },
         {
           id = 281,
@@ -908,7 +926,9 @@ return {
           height = 7,
           rotation = 90,
           visible = true,
-          properties = {}
+          properties = {
+            ["isIslandBorder"] = true
+          }
         },
         {
           id = 282,
@@ -921,7 +941,9 @@ return {
           height = 7,
           rotation = 120,
           visible = true,
-          properties = {}
+          properties = {
+            ["isIslandBorder"] = true
+          }
         },
         {
           id = 283,
@@ -934,7 +956,9 @@ return {
           height = 7,
           rotation = -120,
           visible = true,
-          properties = {}
+          properties = {
+            ["isIslandBorder"] = true
+          }
         },
         {
           id = 299,
@@ -947,7 +971,9 @@ return {
           height = 4.10289,
           rotation = 120,
           visible = true,
-          properties = {}
+          properties = {
+            ["isIslandBorder"] = true
+          }
         },
         {
           id = 278,
@@ -960,7 +986,9 @@ return {
           height = 2.33333,
           rotation = 0,
           visible = true,
-          properties = {}
+          properties = {
+            ["isIslandBorder"] = true
+          }
         },
         {
           id = 279,
@@ -973,7 +1001,9 @@ return {
           height = 2.33333,
           rotation = 330,
           visible = true,
-          properties = {}
+          properties = {
+            ["isIslandBorder"] = true
+          }
         },
         {
           id = 277,
@@ -986,7 +1016,9 @@ return {
           height = 2.33333,
           rotation = 0,
           visible = true,
-          properties = {}
+          properties = {
+            ["isIslandBorder"] = true
+          }
         },
         {
           id = 285,
@@ -999,7 +1031,9 @@ return {
           height = 2.33333,
           rotation = 0,
           visible = true,
-          properties = {}
+          properties = {
+            ["isIslandBorder"] = true
+          }
         },
         {
           id = 284,
@@ -1012,7 +1046,9 @@ return {
           height = 2.33333,
           rotation = 0,
           visible = true,
-          properties = {}
+          properties = {
+            ["isIslandBorder"] = true
+          }
         },
         {
           id = 294,
@@ -1025,7 +1061,9 @@ return {
           height = 2.33333,
           rotation = 0,
           visible = true,
-          properties = {}
+          properties = {
+            ["isIslandBorder"] = true
+          }
         },
         {
           id = 295,
@@ -1038,7 +1076,9 @@ return {
           height = 2.33333,
           rotation = 0,
           visible = true,
-          properties = {}
+          properties = {
+            ["isIslandBorder"] = true
+          }
         },
         {
           id = 298,
@@ -1051,7 +1091,9 @@ return {
           height = 2.33333,
           rotation = 0,
           visible = true,
-          properties = {}
+          properties = {
+            ["isIslandBorder"] = true
+          }
         },
         {
           id = 297,
@@ -1064,7 +1106,9 @@ return {
           height = 2.33333,
           rotation = 90,
           visible = true,
-          properties = {}
+          properties = {
+            ["isIslandBorder"] = true
+          }
         },
         {
           id = 286,
@@ -1077,7 +1121,9 @@ return {
           height = 2.33333,
           rotation = 0,
           visible = true,
-          properties = {}
+          properties = {
+            ["isIslandBorder"] = true
+          }
         },
         {
           id = 289,
@@ -1090,7 +1136,9 @@ return {
           height = 2.33333,
           rotation = 0,
           visible = true,
-          properties = {}
+          properties = {
+            ["isIslandBorder"] = true
+          }
         },
         {
           id = 287,
@@ -1103,7 +1151,9 @@ return {
           height = 2.33333,
           rotation = 315,
           visible = true,
-          properties = {}
+          properties = {
+            ["isIslandBorder"] = true
+          }
         },
         {
           id = 315,
@@ -1168,7 +1218,9 @@ return {
           height = 2.33333,
           rotation = -315,
           visible = true,
-          properties = {}
+          properties = {
+            ["isIslandBorder"] = true
+          }
         },
         {
           id = 290,
@@ -1181,7 +1233,9 @@ return {
           height = 2.33333,
           rotation = 315,
           visible = true,
-          properties = {}
+          properties = {
+            ["isIslandBorder"] = true
+          }
         },
         {
           id = 300,
@@ -1194,7 +1248,9 @@ return {
           height = 2.33333,
           rotation = 315,
           visible = true,
-          properties = {}
+          properties = {
+            ["isIslandBorder"] = true
+          }
         },
         {
           id = 301,
@@ -1207,7 +1263,9 @@ return {
           height = 2.33333,
           rotation = 345,
           visible = true,
-          properties = {}
+          properties = {
+            ["isIslandBorder"] = true
+          }
         },
         {
           id = 291,
@@ -1220,7 +1278,9 @@ return {
           height = 2.33333,
           rotation = -315,
           visible = true,
-          properties = {}
+          properties = {
+            ["isIslandBorder"] = true
+          }
         },
         {
           id = 275,
@@ -1233,7 +1293,9 @@ return {
           height = 2.33333,
           rotation = 90,
           visible = true,
-          properties = {}
+          properties = {
+            ["isIslandBorder"] = true
+          }
         },
         {
           id = 276,
@@ -1246,7 +1308,9 @@ return {
           height = 2.33333,
           rotation = 90,
           visible = true,
-          properties = {}
+          properties = {
+            ["isIslandBorder"] = true
+          }
         },
         {
           id = 274,
@@ -1259,7 +1323,9 @@ return {
           height = 5,
           rotation = 0,
           visible = true,
-          properties = {}
+          properties = {
+            ["isIslandBorder"] = true
+          }
         },
         {
           id = 292,
@@ -1272,7 +1338,9 @@ return {
           height = 7,
           rotation = -120,
           visible = true,
-          properties = {}
+          properties = {
+            ["isIslandBorder"] = true
+          }
         },
         {
           id = 296,
@@ -1285,7 +1353,9 @@ return {
           height = 2.33333,
           rotation = 0,
           visible = true,
-          properties = {}
+          properties = {
+            ["isIslandBorder"] = true
+          }
         },
         {
           id = 306,
@@ -1298,7 +1368,9 @@ return {
           height = 2.75,
           rotation = 0,
           visible = true,
-          properties = {}
+          properties = {
+            ["isIslandBorder"] = true
+          }
         },
         {
           id = 331,
