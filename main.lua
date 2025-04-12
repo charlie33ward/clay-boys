@@ -23,7 +23,7 @@ function love.load()
 
     game:setPlayer(player)
 
-    cam = cameraManager:new()
+    cam = cameraManager:new(game)
     cam:load(player.x + 8, player.y + 8)
     mapManager:setCam(cam)
 
@@ -58,6 +58,7 @@ function love.draw()
         map:getCurrentMap():drawDebug()
         player:drawDebug()
         map:drawDebug()
+        phys:drawDebug()
         
     end
 

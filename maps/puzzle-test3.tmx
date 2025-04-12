@@ -166,127 +166,127 @@
   <object id="266" x="450.333" y="127" width="32.6667" height="31.3333"/>
   <object id="267" x="319.667" y="66.3333" width="6" height="35.8333">
    <properties>
-    <property name="isIslandBorder" type="bool" value="true"/>
+    <property name="wallType" value="islandBorder"/>
    </properties>
   </object>
   <object id="271" x="397.462" y="168.553" width="6" height="102.316" rotation="135">
    <properties>
-    <property name="isIslandBorder" type="bool" value="true"/>
+    <property name="wallType" value="islandBorder"/>
    </properties>
   </object>
   <object id="268" x="325" y="66" width="329" height="13">
    <properties>
-    <property name="isIslandBorder" type="bool" value="true"/>
+    <property name="wallType" value="islandBorder"/>
    </properties>
   </object>
   <object id="269" x="649" y="63" width="87.3333" height="10.3333" rotation="45">
    <properties>
-    <property name="isIslandBorder" type="bool" value="true"/>
+    <property name="wallType" value="islandBorder"/>
    </properties>
   </object>
   <object id="270" x="712.087" y="154.974" width="29.1148" height="4.44074" rotation="135">
    <properties>
-    <property name="isIslandBorder" type="bool" value="true"/>
+    <property name="wallType" value="islandBorder"/>
    </properties>
   </object>
   <object id="272" x="448.333" y="172" width="249.334" height="1.66667">
    <properties>
-    <property name="isIslandBorder" type="bool" value="true"/>
+    <property name="wallType" value="islandBorder"/>
    </properties>
   </object>
   <object id="308" x="392.75" y="171.75" width="23.167" height="3.66667">
    <properties>
-    <property name="isIslandBorder" type="bool" value="true"/>
+    <property name="wallType" value="islandBorder"/>
    </properties>
   </object>
   <object id="273" x="705" y="123.667" width="61.3333" height="2.33333">
    <properties>
-    <property name="isIslandBorder" type="bool" value="true"/>
+    <property name="wallType" value="islandBorder"/>
    </properties>
   </object>
   <object id="280" x="911.667" y="126.667" width="109" height="2.33333">
    <properties>
-    <property name="isIslandBorder" type="bool" value="true"/>
+    <property name="wallType" value="islandBorder"/>
    </properties>
   </object>
   <object id="281" x="1026" y="128" width="272.917" height="7" rotation="90">
    <properties>
-    <property name="isIslandBorder" type="bool" value="true"/>
+    <property name="wallType" value="islandBorder"/>
    </properties>
   </object>
   <object id="282" x="1025.96" y="376.324" width="263.638" height="7" rotation="120">
    <properties>
-    <property name="isIslandBorder" type="bool" value="true"/>
+    <property name="wallType" value="islandBorder"/>
    </properties>
   </object>
   <object id="283" x="891.894" y="602.641" width="110.614" height="7" rotation="-120">
    <properties>
-    <property name="isIslandBorder" type="bool" value="true"/>
+    <property name="wallType" value="islandBorder"/>
    </properties>
   </object>
   <object id="299" x="847.815" y="187.624" width="96.9216" height="4.10289" rotation="120">
    <properties>
-    <property name="isIslandBorder" type="bool" value="true"/>
+    <property name="wallType" value="islandBorder"/>
    </properties>
   </object>
   <object id="278" x="764.333" y="156.333" width="98" height="2.33333">
    <properties>
-    <property name="isIslandBorder" type="bool" value="true"/>
+    <property name="wallType" value="islandBorder"/>
    </properties>
   </object>
   <object id="279" x="859.315" y="157.323" width="61.2425" height="2.33333" rotation="330">
    <properties>
-    <property name="isIslandBorder" type="bool" value="true"/>
+    <property name="wallType" value="islandBorder"/>
    </properties>
   </object>
   <object id="277" x="739.667" y="185" width="113.125" height="2.33333">
    <properties>
-    <property name="isIslandBorder" type="bool" value="true"/>
+    <property name="wallType" value="islandBorder"/>
    </properties>
   </object>
   <object id="285" x="668.333" y="503" width="175.333" height="2.33333">
    <properties>
-    <property name="isIslandBorder" type="bool" value="true"/>
+    <property name="wallType" value="islandBorder"/>
    </properties>
   </object>
   <object id="284" x="667" y="477" width="192.667" height="2.33333">
    <properties>
-    <property name="isIslandBorder" type="bool" value="true"/>
+    <property name="wallType" value="islandBorder"/>
    </properties>
   </object>
   <object id="294" x="478.5" y="344" width="307.667" height="2.33333">
    <properties>
-    <property name="isIslandBorder" type="bool" value="true"/>
+    <property name="wallType" value="islandBorder"/>
    </properties>
   </object>
   <object id="295" x="500.5" y="269.5" width="299.167" height="2.33333">
    <properties>
-    <property name="isIslandBorder" type="bool" value="true"/>
+    <property name="wallType" value="islandBorder"/>
    </properties>
   </object>
   <object id="298" x="109" y="406" width="246.667" height="2.33333">
    <properties>
-    <property name="isIslandBorder" type="bool" value="true"/>
+    <property name="wallType" value="islandBorder"/>
    </properties>
   </object>
   <object id="297" x="112.5" y="262.833" width="145.667" height="2.33333" rotation="90">
    <properties>
-    <property name="isIslandBorder" type="bool" value="true"/>
+    <property name="wallType" value="islandBorder"/>
    </properties>
   </object>
   <object id="286" x="449" y="454" width="206.667" height="2.33333">
    <properties>
-    <property name="isIslandBorder" type="bool" value="true"/>
+    <property name="wallType" value="islandBorder"/>
    </properties>
   </object>
   <object id="289" x="435.5" y="558.5" width="193.667" height="2.33333">
    <properties>
-    <property name="isIslandBorder" type="bool" value="true"/>
+    <property name="wallType" value="islandBorder"/>
    </properties>
   </object>
   <object id="287" x="386.564" y="510.536" width="49.3397" height="2.33333" rotation="315">
    <properties>
-    <property name="isIslandBorder" type="bool" value="true"/>
+    <property name="wallType" value="islandBorder"/>
    </properties>
   </object>
   <object id="315" x="352.464" y="404.148" width="103.433" height="2.33333" rotation="-315"/>
@@ -295,57 +295,57 @@
   <object id="321" x="418.375" y="172.325" width="92.4334" height="2.33333" rotation="90"/>
   <object id="288" x="389.214" y="509.147" width="80.4524" height="2.33333" rotation="-315">
    <properties>
-    <property name="isIslandBorder" type="bool" value="true"/>
+    <property name="wallType" value="islandBorder"/>
    </properties>
   </object>
   <object id="290" x="612.564" y="561.036" width="80.4524" height="2.33333" rotation="315">
    <properties>
-    <property name="isIslandBorder" type="bool" value="true"/>
+    <property name="wallType" value="islandBorder"/>
    </properties>
   </object>
   <object id="300" x="377.183" y="382.878" width="22.3424" height="2.33333" rotation="315">
    <properties>
-    <property name="isIslandBorder" type="bool" value="true"/>
+    <property name="wallType" value="islandBorder"/>
    </properties>
   </object>
   <object id="301" x="392.91" y="368.437" width="92.9262" height="2.33333" rotation="345">
    <properties>
-    <property name="isIslandBorder" type="bool" value="true"/>
+    <property name="wallType" value="islandBorder"/>
    </properties>
   </object>
   <object id="291" x="647.964" y="453.897" width="31.662" height="2.33333" rotation="-315">
    <properties>
-    <property name="isIslandBorder" type="bool" value="true"/>
+    <property name="wallType" value="islandBorder"/>
    </properties>
   </object>
   <object id="275" x="766.833" y="124.5" width="34.3333" height="2.33333" rotation="90">
    <properties>
-    <property name="isIslandBorder" type="bool" value="true"/>
+    <property name="wallType" value="islandBorder"/>
    </properties>
   </object>
   <object id="276" x="740.167" y="152.5" width="37.6667" height="2.33333" rotation="90">
    <properties>
-    <property name="isIslandBorder" type="bool" value="true"/>
+    <property name="wallType" value="islandBorder"/>
    </properties>
   </object>
   <object id="274" x="708.333" y="152.333" width="32.6667" height="5">
    <properties>
-    <property name="isIslandBorder" type="bool" value="true"/>
+    <property name="wallType" value="islandBorder"/>
    </properties>
   </object>
   <object id="292" x="851.894" y="478.641" width="147.229" height="7" rotation="-120">
    <properties>
-    <property name="isIslandBorder" type="bool" value="true"/>
+    <property name="wallType" value="islandBorder"/>
    </properties>
   </object>
   <object id="296" x="112.5" y="262.5" width="303.917" height="2.33333">
    <properties>
-    <property name="isIslandBorder" type="bool" value="true"/>
+    <property name="wallType" value="islandBorder"/>
    </properties>
   </object>
   <object id="306" x="448" y="261.75" width="54" height="2.75">
    <properties>
-    <property name="isIslandBorder" type="bool" value="true"/>
+    <property name="wallType" value="islandBorder"/>
    </properties>
   </object>
   <object id="331" x="610.5" y="96.5" width="38.5" height="27"/>

@@ -226,17 +226,31 @@ function mapManager:createWalls()
     if self.map.layers["walls"] then
         for i, obj in pairs(self.map.layers["walls"].objects) do
             local wall = nil
+            local type = nil
+
+            if obj.properties.wallType then
+                type = obj.properties.wallType
+                if obj.properties.wallType == 'islandBorder' then
+                    debug.border = 'islandborder detected'
+                end
+            end
             
             if obj.rotation ~= 0 then
-                wall = physicsManager:createWall(obj.x, obj.y, obj.width, obj.height, obj.rotation)    
+                wall = physicsManager:createWall(obj.x, obj.y, obj.width, obj.height, obj.rotation, type)
             else
-                wall = physicsManager:createWall(obj.x + (obj.width / 2), obj.y + (obj.height / 2), obj.width, obj.height)
+                wall = physicsManager:createWall(obj.x + (obj.width / 2), obj.y + (obj.height / 2), obj.width, obj.height, nil, type)
             end
 
             if obj.properties.isIslandBorder then
-                debug.border = 'border created'
 
                 wall:setWallType('islandBorder')
+                
+                function wall:preSolve(other, collision)
+                    if other.identifier == 'ball' then
+                        debug.islandPresolve = 'presolve'
+                        collision:setEnabled(false)
+                    end
+                end
             end
         end
     end
@@ -276,7 +290,6 @@ function mapManager:createTubes()
             function tube.collider:preSolve(other, collision)
                 if other.identifier == 'ball' then
                     collision:setEnabled(false)
-                    
                 end
             end
 

@@ -7,6 +7,8 @@ local physicsManager = {
     cloneRadius = 5
 }
 
+local debug = {}
+
 function physicsManager:new()
     local manager = {}
     setmetatable(manager, self)
@@ -77,7 +79,7 @@ function physicsManager:createTube(x, y, width, height, rotation)
     return tube
 end
 
-function physicsManager:createWall(x, y, width, height, rotation)
+function physicsManager:createWall(x, y, width, height, rotation, wallType)
     -- TILED rotates these around top left, love2d around center
 
     local wall = self.world:newCollider('rectangle', {x, y, width, height})
@@ -94,6 +96,14 @@ function physicsManager:createWall(x, y, width, height, rotation)
     end
 
     wall:setType('static')
+
+    if wallType then
+        wall:setWallType(wallType)
+
+        if wallType == 'islandBorder' then
+            debug.island = 'islandBorder physics initialization'
+        end
+    end
     return wall
 end
 
@@ -113,6 +123,18 @@ end
 
 function physicsManager:getWorld()
     return self.world
+end
+
+
+function physicsManager:drawDebug()
+    local y = 110
+
+    if debug then
+        for _, message in pairs(debug) do
+            love.graphics.print(message, 400, y)
+            y = y + 20
+        end
+    end
 end
 
 return physicsManager

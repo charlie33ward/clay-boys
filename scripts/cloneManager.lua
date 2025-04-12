@@ -134,7 +134,7 @@ function cloneManager:newClone(x, y, mass)
 
     clone.id = cloneID
     cloneID = cloneID + 1
-    clone.mergeTimer = 0.75
+    clone.mergeTimer = 0.7
     clone.opacity = 1
     clone.parent = self
 

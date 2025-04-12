@@ -109,6 +109,19 @@ function player:load()
     self.game = gameManager.getInstance()
 end
 
+function player:onDeath()
+    timer.after(0, function()
+        self.collider:setType('static')
+        self.collider:setPosition(self.spawnPoint.x, self.spawnPoint.y)
+        self.collider:setLinearVelocity(0, 0)
+        timer.after(0.01, function() self.collider:setLinearVelocity(0, 0) end)
+        timer.after(0.02, function() 
+            self.collider:setLinearVelocity(0, 0)
+            self.collider:setType('dynamic')
+        end)
+    end)
+end
+
 function player:reset()
     self.currentClones = 0
     self.collider:setPosition(self.spawnPoint.x, self.spawnPoint.y)
@@ -148,9 +161,6 @@ function player:loadBall()
 end
 
 function player:update(dt)
-    if self.canMove == false then
-        return
-    end
     
     self.vx = 0
     self.vy = 0
@@ -161,10 +171,16 @@ function player:update(dt)
         self.speed = gameParams.walkSpeed
     end
 
-    self:handleMovementInput()
 
     self.x = lerp(self.x, self.collider.getX(), smoothingFactor * dt)
     self.y = lerp(self.y, self.collider.getY(), smoothingFactor * dt)
+
+    if self.game.state == 'PLAYING' then
+        self:handleMovementInput()
+    elseif self.game.state == 'DEAD' then
+        -- timer.after(0, self.collider:setType('static'))
+        return
+    end
 
     local newAnim = self:decideAnim()
     if newAnim ~= self.anim then
@@ -196,7 +212,9 @@ function player:update(dt)
 end
 
 function player:draw()
-    self.anim:draw(self.currentSheet, self.x, self.y, nil, self.scale, self.scale, 8, 8)
+    if game.state == 'PLAYING' then
+        self.anim:draw(self.currentSheet, self.x, self.y, nil, self.scale, self.scale, 8, 8)
+    end
     if self.balls then
         for _, ball in pairs(self.balls) do
             if ball.collider then
@@ -299,6 +317,12 @@ function player:throwBall()
             end
         end)
 
+        local function attemptDestroyBall()
+            if ball.canDestroy then
+                player:destroyBall(ball)
+            end
+        end
+
         function ball.collider:enter(other)
             
             if other.userData and other.userData.identifier == 'combineSensor' then  
@@ -306,10 +330,14 @@ function player:throwBall()
             elseif other.identifier == 'tube' then
                 timer.cancel(ball.throwTimer)
                 ball.canDestroy = false
-            elseif other.identifier == 'wall' or other.identifier == 'clone' or other.identifier == '' then
-                if ball.canDestroy then
-                    player:destroyBall(ball)
+            elseif other.identifier == 'wall' then
+                if other.wallType == 'islandBorder' then
+                    return
+                else
+                    attemptDestroyBall()
                 end
+            elseif other.identifier == 'clone' or other.identifier == '' then
+                attemptDestroyBall()
             end
         end
 

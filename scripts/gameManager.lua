@@ -53,10 +53,7 @@ function gameManager:triggerDeathEvent(x, y)
     self.state = validGameStates.dead
     self.ui:showDeathScreen()
     self.specialEvents:onDeathEvent(x, y)
-    self.player.canMove = false
-    timer.after(0, function()
-        self.player.collider:setType('static')
-    end)
+    self.player:onDeath()
 end
 
 function gameManager:chooseLevel(levelName)
@@ -104,13 +101,11 @@ end
 
 function gameManager:restartPuzzle()
     if self.player then
-        self.player.collider:setType('dynamic')
         self.player:reset()
     end
     self.mapManager:reset()
     self.state = validGameStates.playing
     self.ui:hideDeathScreen()
-    self.player.canMove = true
 
     self.ui:onReset()
 end
