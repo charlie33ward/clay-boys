@@ -114,13 +114,12 @@ function player:onDeath()
     self.deathY = self.y
 
     timer.after(0, function()
-        self.collider:setType('static')
-        self.collider:setPosition(self.spawnPoint.x, self.spawnPoint.y)
         self.collider:setLinearVelocity(0, 0)
+        self.collider:setPosition(self.spawnPoint.x, self.spawnPoint.y)
         timer.after(0.01, function() self.collider:setLinearVelocity(0, 0) end)
         timer.after(0.02, function() 
             self.collider:setLinearVelocity(0, 0)
-            self.collider:setType('dynamic')
+            self.collider:setPosition(self.spawnPoint.x, self.spawnPoint.y)
         end)
     end)
 end
@@ -130,7 +129,7 @@ function player:reset()
     self.collider:setPosition(self.spawnPoint.x, self.spawnPoint.y)
     for i, ball in pairs(self.balls) do
         ball:onReset()
-        self[i] = nil
+        self.balls[i] = nil
     end
 
     self.cloneManager:reset()
