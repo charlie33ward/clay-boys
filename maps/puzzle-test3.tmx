@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.0" orientation="orthogonal" renderorder="right-down" width="40" height="24" tilewidth="32" tileheight="32" infinite="0" nextlayerid="29" nextobjectid="377">
+<map version="1.10" tiledversion="1.11.0" orientation="orthogonal" renderorder="right-down" width="40" height="24" tilewidth="32" tileheight="32" infinite="0" nextlayerid="29" nextobjectid="380">
  <editorsettings>
   <export target="puzzle-test3.lua" format="lua"/>
  </editorsettings>
@@ -412,7 +412,7 @@
   </object>
   <object id="236" name="puzzle-zone" x="287" y="210.667" width="537" height="249"/>
  </objectgroup>
- <objectgroup id="28" name="hazard" locked="1">
+ <objectgroup id="28" name="hazard" visible="0" locked="1">
   <object id="343" x="0" y="-2" width="318" height="258"/>
   <object id="344" x="-3" y="254" width="108" height="518"/>
   <object id="345" x="103" y="411" width="279" height="362"/>
@@ -444,5 +444,8 @@
   <object id="374" x="950" y="514.667" width="15.3333" height="120"/>
   <object id="375" x="927.333" y="552.667" width="22" height="90.6667"/>
   <object id="376" x="910.667" y="580.667" width="20" height="44"/>
+  <object id="377" x="674.333" y="61.3333" width="100.667" height="22.6667"/>
+  <object id="378" x="707.667" y="85" width="83.3333" height="33"/>
+  <object id="379" x="774" y="120.333" width="104" height="22.6667"/>
  </objectgroup>
 </map>

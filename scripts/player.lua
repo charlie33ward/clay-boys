@@ -109,17 +109,22 @@ function player:load()
     self.game = gameManager.getInstance()
 end
 
+function player:moveToSpawnPoint()
+    self.collider:setPosition(self.spawnPoint.x, self.spawnPoint.y)
+    self.combineSensor:setPosition(self.spawnPoint.x, self.spawnPoint.y)
+end
+
 function player:onDeath()
     self.deathX = self.x
     self.deathY = self.y
 
     timer.after(0, function()
         self.collider:setLinearVelocity(0, 0)
-        self.collider:setPosition(self.spawnPoint.x, self.spawnPoint.y)
+        self:moveToSpawnPoint()
         timer.after(0.01, function() self.collider:setLinearVelocity(0, 0) end)
         timer.after(0.02, function() 
             self.collider:setLinearVelocity(0, 0)
-            self.collider:setPosition(self.spawnPoint.x, self.spawnPoint.y)
+            self:moveToSpawnPoint()
         end)
     end)
 end

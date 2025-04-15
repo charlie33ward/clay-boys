@@ -1,6 +1,7 @@
 local sti = require 'libraries.sti'
 local timer = require 'libraries.timer'
 local gameManager = require 'scripts.gameManager'
+local anim8 = require 'libraries.anim8'
 
 local debug = {}
 

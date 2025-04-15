@@ -10,7 +10,7 @@ return {
   tilewidth = 32,
   tileheight = 32,
   nextlayerid = 29,
-  nextobjectid = 377,
+  nextobjectid = 380,
   properties = {
     ["height"] = 0,
     ["width"] = 0
@@ -1699,7 +1699,7 @@ return {
       id = 28,
       name = "hazard",
       class = "",
-      visible = true,
+      visible = false,
       opacity = 1,
       offsetx = 0,
       offsety = 0,
@@ -2106,6 +2106,45 @@ return {
           y = 580.667,
           width = 20,
           height = 44,
+          rotation = 0,
+          visible = true,
+          properties = {}
+        },
+        {
+          id = 377,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 674.333,
+          y = 61.3333,
+          width = 100.667,
+          height = 22.6667,
+          rotation = 0,
+          visible = true,
+          properties = {}
+        },
+        {
+          id = 378,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 707.667,
+          y = 85,
+          width = 83.3333,
+          height = 33,
+          rotation = 0,
+          visible = true,
+          properties = {}
+        },
+        {
+          id = 379,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 774,
+          y = 120.333,
+          width = 104,
+          height = 22.6667,
           rotation = 0,
           visible = true,
           properties = {}
