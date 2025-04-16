@@ -38,6 +38,13 @@ function physicsManager:createCloneCollider(x, y)
     return cloneCollider
 end
 
+function physicsManager:createStaticCircleCollider(x, y, r)
+    local collider = self.world:newCollider('circle', {x, y, r})
+    collider:setFixedRotation(true)
+    collider:setType('static')
+    return collider
+end
+
 function physicsManager:updatePlayerVelocity(vx, vy)
     self.playerCollider:setLinearVelocity(vx, vy)
 end

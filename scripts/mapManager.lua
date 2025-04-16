@@ -228,8 +228,11 @@ function mapManager:createVictoryPlatform()
     local x, y  = 0, 0
     
     if self.map.layers['victoryPlatform'] then
+        debug.layer = 'layer detected'
         for _, obj in pairs(self.map.layers['victoryPlatform'].objects) do
-            if obj.name == 'platform' then
+            debug.obj = 'obj detected'
+
+            if obj.name == 'victoryPlatform' then
                 x = obj.x
                 y = obj.y
             end
@@ -246,12 +249,16 @@ function mapManager:createVictoryPlatform()
     debug.vic = 'victoryPlatform initialization'
 
     local victoryPlatform = {
-        scale = 1
+        scale = 1.3,
+        radius = 26
     }
 
     victoryPlatform.sheet = love.graphics.newImage('assets/sprites/victoryStarSheet.png')
-    victoryPlatform.grid = anim8.newGrid(64, 64, victoryPlatform.image:getWidth(), victoryPlatform.image:getHeight())
-    victoryPlatform.anim = anim8.newAnimation(victoryPlatform.grid('1-11', 1), 0.16)
+    victoryPlatform.grid = anim8.newGrid(64, 64, victoryPlatform.sheet:getWidth(), victoryPlatform.sheet:getHeight())
+    victoryPlatform.anim = anim8.newAnimation(victoryPlatform.grid('1-11', 1), 0.12)
+
+    victoryPlatform.collider = physicsManager:createStaticCircleCollider(x, y, victoryPlatform.radius)
+    victoryPlatform.collider:setSensor(true)
 
     victoryPlatform.draw = function()
         victoryPlatform.anim:draw(victoryPlatform.sheet, x, y, 0, victoryPlatform.scale, victoryPlatform.scale, 32, 32)
