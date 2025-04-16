@@ -35,11 +35,11 @@ function specialEvents:onDeathEvent(x, y)
 end
 
 function specialEvents:onEnterVictoryZone(anim)
-
+    debug.enter = 'enter'
 end
 
-function specialEvents:onLeaveVictoryZone(anim)
-
+function specialEvents:onExitVictoryZone(anim)
+    debug.exit = 'exit'
 end
 
 function specialEvents:load()
@@ -78,7 +78,6 @@ function specialEvents:update(dt)
 end
 
 function specialEvents:draw()
-
     if activeAnims then
         for _, animTable in pairs(activeAnims) do
             animTable.anim:draw(self.explosionSheet, animTable.x, animTable.y, nil, self.explosionTable.scale, self.explosionTable.scale, self.explosionTable.width / 2, self.explosionTable.height / 2)

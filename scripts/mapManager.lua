@@ -213,6 +213,7 @@ function mapManager:load()
     
     self.game = gameManager.getInstance()
     self.game:setMapManager(self)
+    self.specialEvents = self.game:getSpecialEvents()
 
     self:createMapBoundaries(width, height)
     self:createTubes()
@@ -222,8 +223,6 @@ function mapManager:load()
     self:createPuzzlePhysics()
     self:initializePuzzleState(self.currentMapData)
     self:createPuzzleCamArea()
-
-    self.specialEvents = self.game:getSpecialEvents()
 end
 
 function mapManager:createVictoryPlatform()
@@ -258,15 +257,17 @@ function mapManager:createVictoryPlatform()
         victoryPlatform.anim:draw(victoryPlatform.sheet, x, y, 0, victoryPlatform.scale, victoryPlatform.scale, 32, 32)
     end
 
+    local specEvents = self.specialEvents
+
     function victoryPlatform.collider:enter(other)
         if other.identifier == 'player' then
-            self.specialEvents:onEnterVictoryZone(victoryPlatform.anim)
+            specEvents:onEnterVictoryZone(victoryPlatform.anim)
         end
     end
 
     function victoryPlatform.collider:exit(other)
         if other.identifier == 'player' then
-            self.specialEvents:onExitVictoryZone(victoryPlatform.anim)
+            specEvents:onExitVictoryZone(victoryPlatform.anim)
         end
     end
 
