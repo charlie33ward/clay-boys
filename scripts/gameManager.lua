@@ -16,6 +16,7 @@ local gameManager = {
     mapManager = nil
 }
 
+
 function gameManager.getInstance()
     if not gameManager.instance then
         gameManager.instance = {
@@ -33,6 +34,15 @@ function gameManager.getInstance()
     return gameManager.instance
 end
 
+local updateCamAfterReset = false
+local resetCoords = {
+    x = 0,
+    y = 0
+}
+
+local currTick = 0
+
+
 function gameManager:setMapManager(mapManager)
     self.mapManager = mapManager
 end
@@ -48,6 +58,7 @@ end
 function gameManager:onCombine()
     self.ui:onCombine()
 end
+
 
 function gameManager:triggerDeathEvent(x, y)
     self.state = validGameStates.dead
@@ -114,7 +125,7 @@ function gameManager:drawDebug()
     local y = 50
     if debug then
         for i, message in pairs(debug) do
-            love.graphics.print(message, 50, y)
+            love.graphics.print(message, 300, y)
             y = y + 20
         end
     end

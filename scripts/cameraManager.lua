@@ -8,11 +8,17 @@ local cameraManager = {
     yOffset = 0,
     xOffset = 0
 }
+local debug = {}
 
 local inPuzzle = false
 local puzzleCamPosition = {
     x = 0,
     y = 0
+}
+
+local resetCoords = {
+    x = nil,
+    y = nil
 }
 
 function cameraManager:new(game)
@@ -57,12 +63,17 @@ function cameraManager:load(x, y)
     love.graphics.setDefaultFilter("nearest", "nearest")
 end
 
+
 function cameraManager:update(dt, x, y, width, height, tileWidth)
     if self.game.state ~= 'PLAYING' then
         return
     end
 
-    if inPuzzle then
+    if resetCoords.x and resetCoords.y then
+        self.cam:lockPosition(resetCoords.x, resetCoords.y, camera.smooth.damped(8))
+        debug.reset = 'reset'
+        resetCoords = {x = nil, y = nil}
+    elseif inPuzzle then
         self.cam:lockPosition(puzzleCamPosition.x, puzzleCamPosition.y, camera.smooth.damped(8))
     else
         self.cam.smoother = camera.smooth.damped(5)
@@ -91,7 +102,6 @@ function cameraManager:update(dt, x, y, width, height, tileWidth)
     if self.cam.y > (mapH - minY) then
         self.cam.y = (mapH - minY)
     end
-
 end
 
 function cameraManager:getX()
@@ -104,6 +114,19 @@ end
 
 function cameraManager:getCam()
     return self.cam
+end
+
+
+
+
+function cameraManager:drawDebug()
+    local y = 50
+    if debug then
+        for _, message in pairs(debug) do
+            love.graphics.print(message, 300, y)
+            y = y + 20
+        end
+    end
 end
 
 return cameraManager

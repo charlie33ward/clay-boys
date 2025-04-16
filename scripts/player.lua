@@ -132,12 +132,18 @@ end
 function player:reset()
     self.currentClones = 0
     self.collider:setPosition(self.spawnPoint.x, self.spawnPoint.y)
+    self.x = self.spawnPoint.x
+    self.y = self.spawnPoint.y
+
     for i, ball in pairs(self.balls) do
         ball:onReset()
         self.balls[i] = nil
     end
 
     self.cloneManager:reset()
+    -- self.game:updateCameraPosition(self.collider:getX(), self.collider:getY())
+    self.collider:setLinearVelocity(0, 0.01)
+    timer.after(0.01, function() self.collider:setLinearVelocity(0, 0) end)
 end
 
 function player:onCombine()
@@ -417,6 +423,7 @@ function player:decideAnim()
         return playerAnims.move[self.dir]
     end
 end
+
 
 function player:decideStateAfterMove()
     if self.state ~= validStates.THROWING then

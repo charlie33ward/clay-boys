@@ -160,6 +160,10 @@ local puzzle3 = {
         love.graphics.setColor(1, 1, 1, puzzleState.orange.opacity)
         manager.map:drawLayer(manager.map.layers["orange-puzzle"])  
         love.graphics.setColor(1, 1, 1, 1)
+
+        if manager.currentMapData.victoryPlatform then 
+            manager.currentMapData.victoryPlatform.draw()
+        end
     end
 }
 
@@ -213,10 +217,47 @@ function mapManager:load()
     self:createMapBoundaries(width, height)
     self:createTubes()
     self:createMapHazards()
+    self:createVictoryPlatform()
 
     self:createPuzzlePhysics()
     self:initializePuzzleState(self.currentMapData)
     self:createPuzzleCamArea()
+end
+
+function mapManager:createVictoryPlatform()
+    local x, y  = 0, 0
+    
+    if self.map.layers['victoryPlatform'] then
+        for _, obj in pairs(self.map.layers['victoryPlatform'].objects) do
+            if obj.name == 'platform' then
+                x = obj.x
+                y = obj.y
+            end
+        end
+    end
+
+    debug.x = x
+    debug.y = y
+    
+    if x == 0 and y == 0 then
+        return
+    end
+
+    debug.vic = 'victoryPlatform initialization'
+
+    local victoryPlatform = {
+        scale = 1
+    }
+
+    victoryPlatform.sheet = love.graphics.newImage('assets/sprites/victoryStarSheet.png')
+    victoryPlatform.grid = anim8.newGrid(64, 64, victoryPlatform.image:getWidth(), victoryPlatform.image:getHeight())
+    victoryPlatform.anim = anim8.newAnimation(victoryPlatform.grid('1-11', 1), 0.16)
+
+    victoryPlatform.draw = function()
+        victoryPlatform.anim:draw(victoryPlatform.sheet, x, y, 0, victoryPlatform.scale, victoryPlatform.scale, 32, 32)
+    end
+
+    self.currentMapData.victoryPlatform = victoryPlatform
 end
 
 function mapManager:createWalls()
@@ -505,7 +546,9 @@ function mapManager:update(dt)
         camCoords.y = self.cam:getY()
     end
 
-    
+    if self.currentMapData.victoryPlatform then
+        self.currentMapData.victoryPlatform.anim:update(dt)
+    end
     
     self.map:update(dt)
 end

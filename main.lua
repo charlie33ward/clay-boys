@@ -25,9 +25,10 @@ function love.load()
 
     cam = cameraManager:new(game)
     cam:load(player.x + 8, player.y + 8)
-    mapManager:setCam(cam)
 
+    mapManager:setCam(cam)
 end
+
 
 function love.update(dt)
     local gameState = game:getState()
@@ -50,7 +51,7 @@ function love.draw()
     if gameState == 'PLAYING' or gameState == 'DEAD' then
         cam:getCam():attach()
             map:draw()
-            phys:getWorld():draw()
+            -- phys:getWorld():draw()
             player:draw()
             game:drawSpecialEvents()
         cam:getCam():detach()
@@ -59,6 +60,7 @@ function love.draw()
         player:drawDebug()
         map:drawDebug()
         phys:drawDebug()
+        cam:drawDebug()
         
     end
 

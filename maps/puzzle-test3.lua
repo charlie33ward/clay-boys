@@ -9,8 +9,8 @@ return {
   height = 24,
   tilewidth = 32,
   tileheight = 32,
-  nextlayerid = 29,
-  nextobjectid = 380,
+  nextlayerid = 30,
+  nextobjectid = 381,
   properties = {
     ["height"] = 0,
     ["width"] = 0
@@ -2145,6 +2145,35 @@ return {
           y = 120.333,
           width = 104,
           height = 22.6667,
+          rotation = 0,
+          visible = true,
+          properties = {}
+        }
+      }
+    },
+    {
+      type = "objectgroup",
+      draworder = "topdown",
+      id = 29,
+      name = "victoryPlatform",
+      class = "",
+      visible = true,
+      opacity = 1,
+      offsetx = 0,
+      offsety = 0,
+      parallaxx = 1,
+      parallaxy = 1,
+      properties = {},
+      objects = {
+        {
+          id = 380,
+          name = "victoryPlatform",
+          type = "",
+          shape = "point",
+          x = 222.5,
+          y = 350,
+          width = 0,
+          height = 0,
           rotation = 0,
           visible = true,
           properties = {}

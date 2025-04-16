@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.0" orientation="orthogonal" renderorder="right-down" width="40" height="24" tilewidth="32" tileheight="32" infinite="0" nextlayerid="29" nextobjectid="380">
+<map version="1.10" tiledversion="1.11.0" orientation="orthogonal" renderorder="right-down" width="40" height="24" tilewidth="32" tileheight="32" infinite="0" nextlayerid="30" nextobjectid="381">
  <editorsettings>
   <export target="puzzle-test3.lua" format="lua"/>
  </editorsettings>
@@ -447,5 +447,10 @@
   <object id="377" x="674.333" y="61.3333" width="100.667" height="22.6667"/>
   <object id="378" x="707.667" y="85" width="83.3333" height="33"/>
   <object id="379" x="774" y="120.333" width="104" height="22.6667"/>
+ </objectgroup>
+ <objectgroup id="29" name="victoryPlatform">
+  <object id="380" name="victoryPlatform" x="222.5" y="350">
+   <point/>
+  </object>
  </objectgroup>
 </map>

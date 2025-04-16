@@ -111,8 +111,6 @@ function ui:update(dt)
         deathScreenScene:update(dt)
         deathScreenScene:deactivate()
     end
-
-    debug.gameState = "game state: " .. gameState
 end
 
 function ui:draw()
