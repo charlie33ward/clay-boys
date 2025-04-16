@@ -4,6 +4,7 @@ local anim8 = require 'libraries.anim8'
 local specialEvents = {}
 local activeAnims = {}
 local idCounter = 0
+local debug = {}
 
 function specialEvents:new()
     local manager = {}
@@ -27,11 +28,18 @@ function specialEvents:onDeathEvent(x, y)
     timer.after(1.5, function()
         for i, animTable in pairs(activeAnims) do
             if animTable.id == animation.id then
-                -- table.remove(activeAnims, i)
+                table.remove(activeAnims, i)
             end
         end
     end)
-    
+end
+
+function specialEvents:onEnterVictoryZone(anim)
+
+end
+
+function specialEvents:onLeaveVictoryZone(anim)
+
 end
 
 function specialEvents:load()
@@ -46,6 +54,17 @@ function specialEvents:load()
     self.explosionGrid = anim8.newGrid(self.explosionTable.width, self.explosionTable.height, self.explosionSheet:getWidth(), self.explosionSheet:getHeight())
     self.explosionAnim = anim8.newAnimation(self.explosionGrid('1-69', 1), self.explosionTable.frameLength, 'pauseAtEnd')
     
+end
+
+function specialEvents:drawDebug()
+    local y = 50
+
+    if debug then
+        for _, message in pairs(debug) do
+            love.graphics.print(message, 400, y)
+            y = y + 20
+        end
+    end
 end
 
 function specialEvents:update(dt)

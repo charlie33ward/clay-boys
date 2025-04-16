@@ -222,35 +222,29 @@ function mapManager:load()
     self:createPuzzlePhysics()
     self:initializePuzzleState(self.currentMapData)
     self:createPuzzleCamArea()
+
+    self.specialEvents = self.game:getSpecialEvents()
 end
 
 function mapManager:createVictoryPlatform()
     local x, y  = 0, 0
     
     if self.map.layers['victoryPlatform'] then
-        debug.layer = 'layer detected'
         for _, obj in pairs(self.map.layers['victoryPlatform'].objects) do
-            debug.obj = 'obj detected'
-
             if obj.name == 'victoryPlatform' then
                 x = obj.x
                 y = obj.y
             end
         end
     end
-
-    debug.x = x
-    debug.y = y
     
     if x == 0 and y == 0 then
         return
     end
 
-    debug.vic = 'victoryPlatform initialization'
-
     local victoryPlatform = {
         scale = 1.3,
-        radius = 26
+        radius = 18
     }
 
     victoryPlatform.sheet = love.graphics.newImage('assets/sprites/victoryStarSheet.png')
@@ -262,6 +256,18 @@ function mapManager:createVictoryPlatform()
 
     victoryPlatform.draw = function()
         victoryPlatform.anim:draw(victoryPlatform.sheet, x, y, 0, victoryPlatform.scale, victoryPlatform.scale, 32, 32)
+    end
+
+    function victoryPlatform.collider:enter(other)
+        if other.identifier == 'player' then
+            self.specialEvents:onEnterVictoryZone(victoryPlatform.anim)
+        end
+    end
+
+    function victoryPlatform.collider:exit(other)
+        if other.identifier == 'player' then
+            self.specialEvents:onExitVictoryZone(victoryPlatform.anim)
+        end
     end
 
     self.currentMapData.victoryPlatform = victoryPlatform

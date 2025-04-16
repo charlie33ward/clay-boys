@@ -61,6 +61,8 @@ function love.draw()
         map:drawDebug()
         phys:drawDebug()
         cam:drawDebug()
+        game:drawSpecialEventsDebug()
+
         
     end
 

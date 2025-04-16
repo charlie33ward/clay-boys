@@ -84,6 +84,10 @@ function gameManager:drawSpecialEvents()
     self.specialEvents:draw()
 end
 
+function gameManager:drawSpecialEventsDebug()
+    self.specialEvents:drawDebug()
+end
+
 function gameManager:update(dt)
     self.ui:update(dt)
     self.specialEvents:update(dt)
@@ -92,6 +96,10 @@ end
 
 function gameManager:draw()
     self.ui:draw()
+end
+
+function gameManager:getSpecialEvents()
+    return self.specialEvents
 end
 
 function gameManager:getState()
