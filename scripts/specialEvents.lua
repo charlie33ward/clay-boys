@@ -35,6 +35,10 @@ function specialEvents:setPlayer(player)
     self.player = player
 end
 
+function specialEvents:setGame(game)
+    self.game = game
+end
+
 function specialEvents:onDeathEvent(x, y)
     local animation = {
         x = x + 3,
@@ -95,10 +99,10 @@ function specialEvents:onEnterVictoryZone(anim)
 
     enterTimer = timer.tween(timerLength.timeToWin, event, {time = timerLength.timeToWin}, 'linear', function()
         -- executes after timer
-        debug.win = 'win'
+        
     end)
 
-    enterTimerDuring = timer.during(timerLength.timeToWin, function()
+    enterTimerDuring = timer.during(timerLength.timeToWin, function(dt)
         if victoryZone.frame == 1 and event.time >= timerLength.timePerClone then
             if clonesAvailable >= 1 then
                 nextFrame()
@@ -121,6 +125,12 @@ function specialEvents:onEnterVictoryZone(anim)
             end
         elseif victoryZone.frame == 6 and event.time >= (timerLength.timePerClone * 6) then
             nextFrame()
+        
+        elseif anim.position == 11 then
+            self.game:triggerVictoryEvent()
+        else
+            anim:resume()
+            anim:update(dt)
         end
         
     end)

@@ -59,12 +59,15 @@ function gameManager:onCombine()
     self.ui:onCombine()
 end
 
-
 function gameManager:triggerDeathEvent(x, y)
     self.state = validGameStates.dead
     self.ui:showDeathScreen()
     self.specialEvents:onDeathEvent(x, y)
     self.player:onDeath()
+end
+
+function gameManager:triggerVictoryEvent()
+    debug.victoryEvent = 'victory'
 end
 
 function gameManager:chooseLevel(levelName)
@@ -78,6 +81,8 @@ end
 function gameManager:load()
     self.specialEvents:load()
     self.ui:load(self.specialEvents)
+
+    self.specialEvents:setGame(self)
 end
 
 function gameManager:drawSpecialEvents()
@@ -96,6 +101,8 @@ end
 
 function gameManager:draw()
     self.ui:draw()
+
+    self:drawDebug()
 end
 
 function gameManager:getSpecialEvents()
