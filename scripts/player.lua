@@ -280,6 +280,14 @@ local throwCooldown = 0.5
 local canThrow = true
 local startedThrow = false
 
+function player:disableThrows()
+    canThrow = false
+end
+
+function player:enableThrows()
+    canThrow = true
+end
+
 function player:startThrowBall()
     local gameState = self.game.state
     if not canThrow or gameState ~= 'PLAYING' then

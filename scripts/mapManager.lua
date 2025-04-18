@@ -249,6 +249,7 @@ function mapManager:createVictoryPlatform()
     victoryPlatform.sheet = love.graphics.newImage('assets/sprites/victoryStarSheet.png')
     victoryPlatform.grid = anim8.newGrid(64, 64, victoryPlatform.sheet:getWidth(), victoryPlatform.sheet:getHeight())
     victoryPlatform.anim = anim8.newAnimation(victoryPlatform.grid('1-11', 1), 0.12)
+    victoryPlatform.anim:pause()
 
     victoryPlatform.collider = physicsManager:createStaticCircleCollider(x, y, victoryPlatform.radius)
     victoryPlatform.collider:setSensor(true)

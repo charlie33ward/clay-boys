@@ -76,8 +76,8 @@ function gameManager:completedLevel(levelName)
 end
 
 function gameManager:load()
-    self.ui:load()
     self.specialEvents:load()
+    self.ui:load(self.specialEvents)
 end
 
 function gameManager:drawSpecialEvents()
@@ -112,6 +112,7 @@ end
 
 function gameManager:setPlayer(player)
     self.player = player
+    self.specialEvents:setPlayer(player)
 end
 
 function gameManager:loadLevel()

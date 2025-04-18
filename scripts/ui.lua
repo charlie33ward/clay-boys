@@ -44,7 +44,7 @@ function ui:new(game)
     return manager
 end
 
-function ui:load()
+function ui:load(specialEvents)
     mainMenuScene:activate()
     self.mainMenu:load()
     self.mainMenu:initHeliumFunction()
@@ -78,6 +78,8 @@ function ui:load()
 
     self.currentScene = mainMenuScene
     self.currentScene:activate()
+
+    self.specialEvents = specialEvents
 end
 
 function ui:onThrow()

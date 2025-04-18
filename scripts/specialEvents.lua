@@ -13,6 +13,25 @@ function specialEvents:new()
     return manager
 end
 
+
+function specialEvents:load()
+    self.explosionTable = {
+        width = 150,
+        height = 183,
+        frameLength = 0.02,
+        scale = 0.8
+    }
+
+    self.explosionSheet = love.graphics.newImage('assets/sprites/explosion-sheet.png')
+    self.explosionGrid = anim8.newGrid(self.explosionTable.width, self.explosionTable.height, self.explosionSheet:getWidth(), self.explosionSheet:getHeight())
+    self.explosionAnim = anim8.newAnimation(self.explosionGrid('1-69', 1), self.explosionTable.frameLength, 'pauseAtEnd')
+    
+end
+
+function specialEvents:setPlayer(player)
+    self.player = player
+end
+
 function specialEvents:onDeathEvent(x, y)
     local animation = {
         x = x + 3,
@@ -34,26 +53,35 @@ function specialEvents:onDeathEvent(x, y)
     end)
 end
 
+local victoryZone = {
+    frame = 1
+}
+local timerLength = {
+    timeToWin = 1.2
+}
+
+local enterTimer = nil
+local exitTimer = nil
+local interruptTimeLength = 0.0
+
 function specialEvents:onEnterVictoryZone(anim)
-    debug.enter = 'enter'
+    local event = {
+        time = 0
+    }
+
+    self.player:disableThrows()
+    
+    enterTimer = timer.tween(timerLength.timeToWin, event, {time = timerLength.timeToWin}, 'linear', function()
+        -- executes after timer
+    end)
+
+    timer.during(timerLength.timeToWin, function()
+        
+    end)
 end
 
 function specialEvents:onExitVictoryZone(anim)
-    debug.exit = 'exit'
-end
-
-function specialEvents:load()
-    self.explosionTable = {
-        width = 150,
-        height = 183,
-        frameLength = 0.02,
-        scale = 0.8
-    }
-
-    self.explosionSheet = love.graphics.newImage('assets/sprites/explosion-sheet.png')
-    self.explosionGrid = anim8.newGrid(self.explosionTable.width, self.explosionTable.height, self.explosionSheet:getWidth(), self.explosionSheet:getHeight())
-    self.explosionAnim = anim8.newAnimation(self.explosionGrid('1-69', 1), self.explosionTable.frameLength, 'pauseAtEnd')
-    
+    self.player:enableThrows()
 end
 
 function specialEvents:drawDebug()
