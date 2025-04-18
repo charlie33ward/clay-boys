@@ -280,12 +280,24 @@ local throwCooldown = 0.5
 local canThrow = true
 local startedThrow = false
 
+local currentClonesHolder = nil
+
 function player:disableThrows()
     canThrow = false
 end
 
 function player:enableThrows()
     canThrow = true
+end
+
+function player:onEnterVictoryZone()
+    currentClonesHolder = self.currentClones
+    self:disableThrows()
+end
+
+function player:onExitVictoryZone()
+    self.currentClones = currentClonesHolder
+    self:enableThrows()
 end
 
 function player:startThrowBall()

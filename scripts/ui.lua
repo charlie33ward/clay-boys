@@ -65,7 +65,7 @@ function ui:load(specialEvents)
     deathScreenScene:deactivate()
     
     hudScene:activate()
-    self.inGameHud:load()
+    self.inGameHud:load(specialEvents)
     self.inGameHud:initHeliumFunction()
     self.hudRender = self.inGameHud.heliumFunction({
         maxClones = 5,

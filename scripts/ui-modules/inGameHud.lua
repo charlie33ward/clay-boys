@@ -25,7 +25,10 @@ function inGameHud:new()
     return manager
 end
 
-function inGameHud:load()
+function inGameHud:load(specialEvents)
+    self.specialEvents = specialEvents
+    self.specialEvents:setInGameHud(self)
+
     self.cloneIndicatorSheet = love.graphics.newImage('assets/sprites/clone_ui_indicator_sheet.png')
     self.cloneIndicatorGrid = anim8.newGrid(16, 16, self.cloneIndicatorSheet:getWidth(), self.cloneIndicatorSheet:getHeight())
     self.indicatorScale = 2.5
@@ -48,6 +51,13 @@ function inGameHud:onThrow()
     self.activeIndicator = self.activeIndicator - 1
 end
 
+function inGameHud:playAllCombine(stopIndex)
+    local stopIndex = stopIndex or 5
+
+    for i = 1, stopIndex, 1 do
+        self.indicators[i].table.playCombineAnim()
+    end
+end
 
 function inGameHud:onCombine()
     if self.activeIndicator >= 5 then
